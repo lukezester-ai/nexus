@@ -7,29 +7,28 @@ import { useCreateProposal, useGetAudit } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Plus, Trash2, FileText, Send, Calendar } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Send, Calendar, FileText } from "lucide-react";
 import { Link } from "wouter";
 import { format, addDays } from "date-fns";
 
 const serviceSchema = z.object({
-  name: z.string().min(1, "Service name is required"),
+  name: z.string().min(1, "Required"),
   description: z.string().optional(),
-  price: z.coerce.number().min(0, "Price must be positive"),
+  price: z.coerce.number().min(0, "Positive"),
   duration: z.string().optional(),
 });
 
 const schema = z.object({
   auditId: z.coerce.number().optional(),
-  clientName: z.string().min(1, "Client name is required"),
+  clientName: z.string().min(1, "Required"),
   clientEmail: z.string().email("Valid email required"),
-  title: z.string().min(1, "Title is required"),
+  title: z.string().min(1, "Required"),
   description: z.string().optional(),
   currency: z.string().default("USD"),
   validUntil: z.string().optional(),
-  services: z.array(serviceSchema).min(1, "At least one service is required"),
+  services: z.array(serviceSchema).min(1, "Min. 1 service required"),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -45,7 +44,7 @@ export function NewProposal() {
   const createProposal = useCreateProposal();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { data: audit, isLoading: isAuditLoading } = useGetAudit(parsedAuditId as number, {
+  const { data: audit } = useGetAudit(parsedAuditId as number, {
     query: { enabled: !!parsedAuditId }
   });
 
@@ -55,12 +54,12 @@ export function NewProposal() {
       auditId: parsedAuditId,
       clientName: "",
       clientEmail: "",
-      title: "Comprehensive Digital Audit & Strategy",
-      description: "Based on our analysis, we recommend the following services to improve your digital presence.",
+      title: "SYSTEM OPTIMIZATION PROPOSAL",
+      description: "Proposed directives to rectify identified anomalies and optimize system output.",
       currency: "USD",
       validUntil: format(addDays(new Date(), 14), "yyyy-MM-dd"),
       services: [
-        { name: "Technical SEO Fixes", description: "Resolve critical crawler issues", price: 1500, duration: "2 weeks" }
+        { name: "Technical SEO Fixes", description: "Resolve critical crawler issues", price: 1500, duration: "2w" }
       ],
     },
   });
@@ -70,7 +69,6 @@ export function NewProposal() {
     name: "services",
   });
 
-  // Pre-fill form from audit if available
   useEffect(() => {
     if (audit) {
       form.setValue("clientName", audit.clientName || "");
@@ -78,13 +76,13 @@ export function NewProposal() {
       
       const newServices = [];
       if (audit.seoScore && audit.seoScore < 80) {
-        newServices.push({ name: "SEO Optimization Package", description: "Technical and on-page SEO improvements", price: 2500, duration: "1 month" });
+        newServices.push({ name: "SEO Optimization", description: "Resolve core index anomalies", price: 2500, duration: "4w" });
       }
       if (audit.geoScore && audit.geoScore < 80) {
-        newServices.push({ name: "Local SEO & Citation Building", description: "Improve local map pack presence", price: 1200, duration: "3 weeks" });
+        newServices.push({ name: "GEO Graph Expansion", description: "Enhance local presence signals", price: 1200, duration: "3w" });
       }
       if (audit.aeoScore && audit.aeoScore < 80) {
-        newServices.push({ name: "AEO & Structured Data", description: "Schema markup and featured snippet optimization", price: 1800, duration: "2 weeks" });
+        newServices.push({ name: "AEO Structured Data", description: "Inject schema directives", price: 1800, duration: "2w" });
       }
       
       if (newServices.length > 0) {
@@ -100,164 +98,149 @@ export function NewProposal() {
     setIsSubmitting(true);
     try {
       const proposal = await createProposal.mutateAsync({
-        data: {
-          ...data,
-          totalPrice,
-        }
+        data: { ...data, totalPrice }
       });
-      
-      toast({
-        title: "Proposal Created",
-        description: "The proposal has been saved successfully.",
-      });
-      
+      toast({ title: "RECORD GENERATED", description: "Proposal logged to database." });
       setLocation(`/proposals/${proposal.id}`);
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to create proposal.",
-        variant: "destructive",
-      });
+      toast({ title: "SYS ERR", description: "Write failed.", variant: "destructive" });
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="p-8 max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between mb-4">
-        <Link href="/proposals" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Proposals
-        </Link>
-      </div>
+    <div className="space-y-6 max-w-4xl mx-auto">
+      <Link href="/proposals" className="inline-flex items-center text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
+        <ArrowLeft className="w-3 h-3 mr-2" /> Return to Proposals
+      </Link>
 
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">New Proposal</h1>
-        <p className="text-muted-foreground mt-1">
-          {audit ? `Generating from audit ${audit.url}` : 'Create a new service proposal'}
+        <h1 className="text-xl font-bold uppercase tracking-widest text-primary mb-1 flex items-center gap-2">
+          <FileText className="w-5 h-5" /> Generate Proposal
+        </h1>
+        <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider">
+          {audit ? `[ SRC: AUDIT-${audit.id.toString().padStart(4,'0')} ]` : '[ MODE: MANUAL ENTRY ]'}
         </p>
       </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Client Details</CardTitle>
-            </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="clientName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Client Name</FormLabel>
-                    <FormControl><Input placeholder="Acme Corp" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="clientEmail"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Client Email</FormLabel>
-                    <FormControl><Input type="email" placeholder="client@example.com" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Proposal Info</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Proposal Title</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl><Textarea className="min-h-[100px]" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="currency"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Currency</FormLabel>
-                      <FormControl><Input {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="validUntil"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Valid Until</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Calendar className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                          <Input type="date" className="pl-9" {...field} />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-6">
+              <div className="bg-card border border-border p-6">
+                <h2 className="font-mono text-[10px] uppercase tracking-widest text-primary mb-4 border-b border-border pb-2">Target Entity</h2>
+                <div className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="clientName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-mono text-[10px] uppercase text-muted-foreground">Entity Name</FormLabel>
+                        <FormControl><Input className="rounded-none h-8 font-mono text-sm bg-background border-border" {...field} /></FormControl>
+                        <FormMessage className="font-mono text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="clientEmail"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-mono text-[10px] uppercase text-muted-foreground">Comm Vector</FormLabel>
+                        <FormControl><Input type="email" className="rounded-none h-8 font-mono text-sm bg-background border-border" {...field} /></FormControl>
+                        <FormMessage className="font-mono text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
-            </CardContent>
-          </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Services & Pricing</CardTitle>
-              <Button type="button" variant="outline" size="sm" onClick={() => append({ name: "", price: 0 })}>
-                <Plus className="w-4 h-4 mr-2" /> Add Service
-              </Button>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {fields.map((field, index) => (
-                <div key={field.id} className="p-4 border border-border rounded-lg bg-muted/20 relative">
-                  <Button 
-                    type="button" 
-                    variant="ghost" 
-                    size="icon" 
-                    className="absolute top-2 right-2 text-muted-foreground hover:text-destructive"
-                    onClick={() => remove(index)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-4 pr-8">
-                    <div className="md:col-span-5 space-y-4">
+              <div className="bg-card border border-border p-6">
+                <h2 className="font-mono text-[10px] uppercase tracking-widest text-primary mb-4 border-b border-border pb-2">Meta Data</h2>
+                <div className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-mono text-[10px] uppercase text-muted-foreground">Doc Title</FormLabel>
+                        <FormControl><Input className="rounded-none h-8 font-mono text-sm bg-background border-border" {...field} /></FormControl>
+                        <FormMessage className="font-mono text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-mono text-[10px] uppercase text-muted-foreground">Abstract</FormLabel>
+                        <FormControl><Textarea className="rounded-none min-h-[80px] font-mono text-xs bg-background border-border" {...field} /></FormControl>
+                        <FormMessage className="font-mono text-[10px]" />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="currency"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="font-mono text-[10px] uppercase text-muted-foreground">Currency</FormLabel>
+                          <FormControl><Input className="rounded-none h-8 font-mono text-sm bg-background border-border" {...field} /></FormControl>
+                          <FormMessage className="font-mono text-[10px]" />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="validUntil"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="font-mono text-[10px] uppercase text-muted-foreground">Expiry</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <Calendar className="absolute left-2.5 top-2 h-4 w-4 text-muted-foreground" />
+                              <Input type="date" className="pl-8 rounded-none h-8 font-mono text-sm bg-background border-border" {...field} />
+                            </div>
+                          </FormControl>
+                          <FormMessage className="font-mono text-[10px]" />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-card border border-border flex flex-col">
+              <div className="p-4 border-b border-border flex items-center justify-between bg-muted/10">
+                <h2 className="font-mono text-[10px] uppercase tracking-widest text-primary">Service Modules</h2>
+                <Button type="button" variant="outline" size="sm" className="rounded-none h-6 text-[10px] font-mono uppercase px-2 py-0 border-border" onClick={() => append({ name: "", price: 0 })}>
+                  <Plus className="w-3 h-3 mr-1" /> Add
+                </Button>
+              </div>
+              <div className="p-4 space-y-4 flex-1 overflow-y-auto">
+                {fields.map((field, index) => (
+                  <div key={field.id} className="p-3 border border-border bg-background relative group">
+                    <Button 
+                      type="button" 
+                      variant="ghost" 
+                      size="icon" 
+                      className="absolute top-1 right-1 h-6 w-6 rounded-none text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => remove(index)}
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                    
+                    <div className="grid grid-cols-1 gap-3 pr-6">
                       <FormField
                         control={form.control}
                         name={`services.${index}.name`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-xs">Service Name</FormLabel>
-                            <FormControl><Input {...field} /></FormControl>
-                            <FormMessage />
+                            <FormLabel className="font-mono text-[10px] uppercase text-muted-foreground sr-only">Name</FormLabel>
+                            <FormControl><Input placeholder="MOD_NAME" className="rounded-none h-7 font-mono text-sm bg-transparent border-0 border-b border-border focus-visible:ring-0 focus-visible:border-primary px-0" {...field} /></FormControl>
                           </FormItem>
                         )}
                       />
@@ -266,67 +249,60 @@ export function NewProposal() {
                         name={`services.${index}.description`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-xs">Details (Optional)</FormLabel>
-                            <FormControl><Input {...field} /></FormControl>
+                            <FormControl><Input placeholder="DESC (OPT)" className="rounded-none h-6 font-mono text-xs text-muted-foreground bg-transparent border-0 px-0 focus-visible:ring-0" {...field} /></FormControl>
                           </FormItem>
                         )}
                       />
-                    </div>
-                    
-                    <div className="md:col-span-4 space-y-4">
-                      <FormField
-                        control={form.control}
-                        name={`services.${index}.duration`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-xs">Duration (Optional)</FormLabel>
-                            <FormControl><Input placeholder="e.g. 2 weeks" {...field} /></FormControl>
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    
-                    <div className="md:col-span-3 space-y-4">
-                      <FormField
-                        control={form.control}
-                        name={`services.${index}.price`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-xs">Price</FormLabel>
-                            <FormControl>
-                              <div className="relative">
-                                <span className="absolute left-3 top-2.5 text-muted-foreground">$</span>
-                                <Input type="number" className="pl-7" {...field} />
+                      <div className="grid grid-cols-2 gap-3 mt-2">
+                        <FormField
+                          control={form.control}
+                          name={`services.${index}.duration`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <div className="flex items-center gap-2 border border-border px-2 h-8">
+                                <span className="font-mono text-[10px] text-muted-foreground shrink-0">DUR</span>
+                                <FormControl><Input className="rounded-none h-full font-mono text-xs bg-transparent border-0 focus-visible:ring-0 px-0" {...field} /></FormControl>
                               </div>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name={`services.${index}.price`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <div className="flex items-center gap-2 border border-border px-2 h-8 bg-primary/5">
+                                <span className="font-mono text-[10px] text-primary font-bold shrink-0">VAL $</span>
+                                <FormControl><Input type="number" className="rounded-none h-full font-mono text-sm font-bold bg-transparent border-0 focus-visible:ring-0 px-0 text-right" {...field} /></FormControl>
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-              
-              {fields.length === 0 && (
-                <div className="text-center py-6 text-muted-foreground bg-muted/10 rounded-lg border border-dashed">
-                  No services added. Click "Add Service" to include pricing.
-                </div>
-              )}
-            </CardContent>
-            <CardFooter className="bg-muted/30 border-t border-border px-6 py-4 flex items-center justify-between">
-              <div className="text-sm text-muted-foreground font-medium">Total Value</div>
-              <div className="text-2xl font-bold">${totalPrice.toLocaleString()}</div>
-            </CardFooter>
-          </Card>
+                ))}
+                
+                {fields.length === 0 && (
+                  <div className="text-center py-6 font-mono text-[10px] uppercase text-muted-foreground border border-dashed border-border">
+                    NO MODULES LOADED
+                  </div>
+                )}
+              </div>
+              <div className="bg-primary/10 border-t border-border p-4 flex items-center justify-between mt-auto">
+                <div className="font-mono text-[10px] uppercase tracking-widest text-primary">Aggregate TX Value</div>
+                <div className="font-mono text-xl font-bold text-foreground">${totalPrice.toLocaleString()}</div>
+              </div>
+            </div>
+          </div>
 
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-end gap-4 border-t border-border pt-6">
             <Link href="/proposals">
-              <Button variant="outline" type="button">Cancel</Button>
+              <Button variant="outline" type="button" className="rounded-none font-mono text-[10px] uppercase tracking-widest border-border">Abort</Button>
             </Link>
-            <Button type="submit" disabled={isSubmitting} className="gap-2">
-              <Send className="w-4 h-4" /> 
-              {isSubmitting ? "Creating..." : "Create Proposal"}
+            <Button type="submit" disabled={isSubmitting} className="rounded-none font-mono text-[10px] uppercase tracking-widest font-bold border border-primary gap-2">
+              <Send className="w-3 h-3" /> 
+              {isSubmitting ? "[ WRITING ]" : "COMMIT PROPOSAL"}
             </Button>
           </div>
         </form>

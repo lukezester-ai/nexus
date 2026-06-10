@@ -6,6 +6,7 @@ import proposalsRouter from "./proposals";
 import contractsRouter from "./contracts";
 import projectsRouter from "./projects";
 import dashboardRouter from "./dashboard";
+import stripeRouter from "./stripe";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use(proposalsRouter);
 router.use(contractsRouter);
 router.use(projectsRouter);
 router.use(dashboardRouter);
+router.use(stripeRouter);
 
 export default router;

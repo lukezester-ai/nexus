@@ -2,8 +2,6 @@ import { useGetClient } from "@workspace/api-client-react";
 import { useParams, Link } from "wouter";
 import { ArrowLeft, Building, Mail, Phone, Globe, Briefcase, FileText, CheckCircle2, Search, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 
 export function ClientDetail() {
@@ -16,151 +14,136 @@ export function ClientDetail() {
 
   if (isLoading || !client) {
     return (
-      <div className="p-8 space-y-6 max-w-6xl mx-auto">
-        <Skeleton className="h-8 w-[200px]" />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Skeleton className="h-64 md:col-span-1" />
-          <Skeleton className="h-[400px] md:col-span-2" />
+      <div className="space-y-6 max-w-[1600px] mx-auto">
+        <div className="font-mono text-sm text-primary animate-pulse uppercase">
+          [ Fetching Entity... ]
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-8 space-y-6 max-w-6xl mx-auto">
+    <div className="space-y-6 max-w-[1600px] mx-auto">
       <div className="flex items-center justify-between mb-4">
-        <Link href="/clients" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Clients
+        <Link href="/clients" className="inline-flex items-center text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
+          <ArrowLeft className="w-3 h-3 mr-2" /> Return to Roster
         </Link>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">Edit Client</Button>
+          <Button variant="outline" size="sm" className="rounded-none font-mono text-[10px] uppercase font-bold border-border h-8">Modify Data</Button>
           <Link href={`/audits/new?clientName=${encodeURIComponent(client.name)}&clientEmail=${encodeURIComponent(client.email)}`}>
-            <Button size="sm" className="gap-2"><Search className="w-4 h-4" /> New Audit</Button>
+            <Button size="sm" className="rounded-none font-mono text-[10px] uppercase font-bold border border-primary gap-2 h-8">
+              <Search className="w-3 h-3" /> Init Scan
+            </Button>
           </Link>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 space-y-6">
-          <Card className="border-t-4 border-t-primary">
-            <CardContent className="p-6">
-              <div className="w-16 h-16 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl font-bold mb-4">
-                {client.name.charAt(0).toUpperCase()}
+          <div className="bg-card border border-border p-6 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-primary" />
+            <div className="w-16 h-16 bg-primary/10 text-primary flex items-center justify-center text-3xl font-mono font-bold mb-6 border border-primary/20">
+              {client.name.charAt(0).toUpperCase()}
+            </div>
+            <h1 className="text-xl font-bold uppercase tracking-widest text-foreground mb-1">{client.name}</h1>
+            <p className="font-mono text-xs text-muted-foreground flex items-center gap-2 mb-6 uppercase tracking-wider">
+              <Building className="w-3 h-3" /> {client.company || "Independent"}
+            </p>
+            
+            <div className="space-y-4 pt-4 border-t border-border font-mono text-xs">
+              <div className="flex items-center gap-3">
+                <Mail className="w-3 h-3 text-primary shrink-0" />
+                <a href={`mailto:${client.email}`} className="text-foreground hover:text-primary transition-colors truncate">{client.email}</a>
               </div>
-              <h1 className="text-2xl font-bold tracking-tight mb-1">{client.name}</h1>
-              <p className="text-muted-foreground flex items-center gap-2 mb-6">
-                <Building className="w-4 h-4" /> {client.company || "Independent"}
-              </p>
-              
-              <div className="space-y-4 pt-4 border-t border-border">
-                <div className="flex items-center gap-3 text-sm">
-                  <Mail className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <a href={`mailto:${client.email}`} className="hover:text-primary transition-colors truncate">{client.email}</a>
+              {client.phone && (
+                <div className="flex items-center gap-3">
+                  <Phone className="w-3 h-3 text-primary shrink-0" />
+                  <span className="text-foreground">{client.phone}</span>
                 </div>
-                {client.phone && (
-                  <div className="flex items-center gap-3 text-sm">
-                    <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
-                    <span>{client.phone}</span>
-                  </div>
-                )}
-                {client.website && (
-                  <div className="flex items-center gap-3 text-sm">
-                    <Globe className="w-4 h-4 text-muted-foreground shrink-0" />
-                    <a href={client.website.startsWith('http') ? client.website : `https://${client.website}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors truncate">
-                      {client.website}
-                    </a>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+              )}
+              {client.website && (
+                <div className="flex items-center gap-3">
+                  <Globe className="w-3 h-3 text-primary shrink-0" />
+                  <a href={client.website.startsWith('http') ? client.website : `https://${client.website}`} target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-primary transition-colors truncate">
+                    {client.website}
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
           
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Value</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <DollarSign className="w-5 h-5 text-green-500" /> Total Revenue
+          <div className="bg-card border border-border p-6">
+            <h2 className="font-mono text-[10px] uppercase tracking-widest text-primary mb-6 border-b border-border pb-2">Value Metrics</h2>
+            <div className="space-y-6">
+              <div>
+                <div className="font-mono text-[10px] text-muted-foreground uppercase flex items-center gap-2 mb-1">
+                  <DollarSign className="w-3 h-3 text-green-500" /> Cum. Revenue
                 </div>
-                <div className="text-xl font-bold">${client.totalRevenue?.toLocaleString() || 0}</div>
+                <div className="font-mono text-2xl font-bold text-foreground">${client.totalRevenue?.toLocaleString() || 0}</div>
               </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Briefcase className="w-5 h-5 text-blue-500" /> Projects
+              <div>
+                <div className="font-mono text-[10px] text-muted-foreground uppercase flex items-center gap-2 mb-1">
+                  <Briefcase className="w-3 h-3 text-blue-500" /> Projects Let
                 </div>
-                <div className="text-xl font-bold">{client.totalProjects}</div>
+                <div className="font-mono text-2xl font-bold text-foreground">{client.totalProjects.toString().padStart(2,'0')}</div>
               </div>
-              <div className="text-xs text-muted-foreground pt-4 border-t border-border">
-                Client since {format(new Date(client.createdAt), "MMMM yyyy")}
+              <div className="font-mono text-[10px] text-muted-foreground pt-4 border-t border-border uppercase">
+                Active since {format(new Date(client.createdAt), "yyyy-MM-dd")}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
         
         <div className="md:col-span-2 space-y-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Activity Feed</CardTitle>
-              <Button variant="ghost" size="sm">View All</Button>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-muted before:to-transparent">
+          <div className="bg-card border border-border flex flex-col h-full">
+            <div className="p-4 border-b border-border flex items-center justify-between bg-muted/10">
+              <h2 className="font-mono text-[10px] uppercase tracking-widest text-primary">System Log</h2>
+            </div>
+            <div className="p-6">
+              <div className="space-y-6 relative before:absolute before:inset-0 before:ml-[1.125rem] before:h-full before:w-px before:bg-border">
                 
-                <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-background bg-primary text-primary-foreground shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                <div className="relative flex items-start gap-6 group">
+                  <div className="flex items-center justify-center w-9 h-9 border border-primary bg-background text-primary shrink-0 z-10 mt-1">
                     <Search className="w-4 h-4" />
                   </div>
-                  <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-card border border-border shadow-sm">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-semibold text-sm">Audit Completed</span>
-                      <span className="text-xs text-muted-foreground">2 days ago</span>
+                  <div className="flex-1 p-4 bg-muted/5 border border-border">
+                    <div className="flex justify-between mb-2">
+                      <span className="font-mono text-xs font-bold uppercase text-primary">Scan Executed</span>
+                      <span className="font-mono text-[10px] text-muted-foreground">T-2d</span>
                     </div>
-                    <p className="text-sm text-muted-foreground">Initial SEO/GEO analysis for {client.website || "website"} finished with an overall score of 72.</p>
+                    <p className="font-mono text-xs text-foreground/80 leading-relaxed">System scan completed for primary vector. Aggr score: 72.</p>
                   </div>
                 </div>
 
-                <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-background bg-blue-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                <div className="relative flex items-start gap-6 group">
+                  <div className="flex items-center justify-center w-9 h-9 border border-blue-500 bg-background text-blue-500 shrink-0 z-10 mt-1">
                     <FileText className="w-4 h-4" />
                   </div>
-                  <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-card border border-border shadow-sm">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-semibold text-sm">Proposal Sent</span>
-                      <span className="text-xs text-muted-foreground">1 week ago</span>
+                  <div className="flex-1 p-4 bg-muted/5 border border-border">
+                    <div className="flex justify-between mb-2">
+                      <span className="font-mono text-xs font-bold uppercase text-blue-500">Proposal Transmitted</span>
+                      <span className="font-mono text-[10px] text-muted-foreground">T-1w</span>
                     </div>
-                    <p className="text-sm text-muted-foreground">Digital Strategy & Optimization proposal sent for $4,500.</p>
+                    <p className="font-mono text-xs text-foreground/80 leading-relaxed">Valuation: $4,500. Awaiting target response.</p>
                   </div>
                 </div>
 
-                <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-background bg-green-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                <div className="relative flex items-start gap-6 group">
+                  <div className="flex items-center justify-center w-9 h-9 border border-green-500 bg-background text-green-500 shrink-0 z-10 mt-1">
                     <CheckCircle2 className="w-4 h-4" />
                   </div>
-                  <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl bg-card border border-border shadow-sm">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-semibold text-sm">Client Added</span>
-                      <span className="text-xs text-muted-foreground">{format(new Date(client.createdAt), "MMM d")}</span>
+                  <div className="flex-1 p-4 bg-muted/5 border border-border">
+                    <div className="flex justify-between mb-2">
+                      <span className="font-mono text-xs font-bold uppercase text-green-500">Entity Created</span>
+                      <span className="font-mono text-[10px] text-muted-foreground">{format(new Date(client.createdAt), "yyyy-MM-dd")}</span>
                     </div>
-                    <p className="text-sm text-muted-foreground">Profile created in CRM.</p>
+                    <p className="font-mono text-xs text-foreground/80 leading-relaxed">Object initialized in DB.</p>
                   </div>
                 </div>
                 
               </div>
-            </CardContent>
-          </Card>
-
-          {client.notes && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm font-medium text-muted-foreground">Internal Notes</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm whitespace-pre-wrap">{client.notes}</p>
-              </CardContent>
-            </Card>
-          )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

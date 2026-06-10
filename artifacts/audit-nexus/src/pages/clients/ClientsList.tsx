@@ -1,9 +1,8 @@
 import { useListClients } from "@workspace/api-client-react";
 import { Link } from "wouter";
-import { Plus, Search, Filter, Users, Briefcase } from "lucide-react";
+import { Plus, Search, Filter, Users, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { format } from "date-fns";
 
@@ -11,83 +10,84 @@ export function ClientsList() {
   const { data: clients, isLoading } = useListClients();
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="space-y-6 max-w-[1600px] mx-auto">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Clients</h1>
-          <p className="text-muted-foreground mt-1">Manage client relationships and value</p>
+          <h1 className="text-xl font-bold uppercase tracking-widest text-primary mb-1 flex items-center gap-2">
+            <Users className="w-5 h-5" /> Client Roster
+          </h1>
+          <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider">Registered entities and cumulative metrics</p>
         </div>
       </div>
 
-      <Card>
-        <CardHeader className="py-4 border-b">
-          <div className="flex items-center gap-4">
-            <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search clients..."
-                className="pl-8 bg-background"
-              />
-            </div>
-            <Button variant="outline" size="icon" className="shrink-0">
-              <Filter className="w-4 h-4" />
-            </Button>
+      <div className="bg-card border border-border shadow-none rounded-none">
+        <div className="p-4 border-b border-border flex items-center gap-4 bg-muted/20">
+          <div className="relative flex-1 max-w-sm">
+            <Search className="absolute left-3 top-2.5 h-3 w-3 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="QUERY ENTITY..."
+              className="pl-8 bg-background border-border rounded-none h-8 text-xs font-mono uppercase focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+            />
           </div>
-        </CardHeader>
-        <CardContent className="p-0">
+          <Button variant="outline" size="icon" className="shrink-0 h-8 w-8 rounded-none border-border">
+            <Filter className="w-3 h-3 text-primary" />
+          </Button>
+        </div>
+        
+        <div className="p-0">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Client</TableHead>
-                <TableHead>Company</TableHead>
-                <TableHead>Projects</TableHead>
-                <TableHead>Total Revenue</TableHead>
-                <TableHead>Added</TableHead>
-                <TableHead className="text-right">Action</TableHead>
+              <TableRow className="border-border hover:bg-transparent">
+                <TableHead className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground h-10">Entity Name</TableHead>
+                <TableHead className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground h-10">Organization</TableHead>
+                <TableHead className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground h-10 text-center">Active PRJ</TableHead>
+                <TableHead className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground h-10 text-right">Cum. Revenue</TableHead>
+                <TableHead className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground h-10">Reg Date</TableHead>
+                <TableHead className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground h-10 text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8">
-                    Loading clients...
+                <TableRow className="border-border hover:bg-transparent">
+                  <TableCell colSpan={6} className="text-center py-8 font-mono text-sm text-primary animate-pulse uppercase">
+                    [ Fetching Entities... ]
                   </TableCell>
                 </TableRow>
               ) : !clients || clients.length === 0 ? (
-                <TableRow>
+                <TableRow className="border-border hover:bg-transparent">
                   <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
-                    <div className="flex flex-col items-center justify-center space-y-3">
-                      <Users className="w-10 h-10 text-muted-foreground/30" />
-                      <p>No clients found</p>
+                    <div className="flex flex-col items-center justify-center space-y-3 font-mono text-sm uppercase">
+                      <Users className="w-6 h-6 text-muted-foreground/50" />
+                      <p>No entities found.</p>
                     </div>
                   </TableCell>
                 </TableRow>
               ) : (
                 clients.map((client) => (
-                  <TableRow key={client.id} className="group cursor-pointer hover:bg-muted/50 transition-colors">
+                  <TableRow key={client.id} className="group cursor-pointer hover:bg-primary/5 transition-colors border-border">
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="font-medium">{client.name}</span>
-                        <span className="text-xs text-muted-foreground">{client.email}</span>
+                        <span className="text-xs font-bold uppercase tracking-wider text-foreground">{client.name}</span>
+                        <span className="font-mono text-[10px] text-muted-foreground truncate">{client.email}</span>
                       </div>
                     </TableCell>
-                    <TableCell>{client.company || "-"}</TableCell>
-                    <TableCell>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
-                        {client.totalProjects}
+                    <TableCell className="font-mono text-xs uppercase">{client.company || "---"}</TableCell>
+                    <TableCell className="text-center">
+                      <span className="font-mono text-xs text-primary border border-primary/30 bg-primary/10 px-2 py-0.5">
+                        {client.totalProjects.toString().padStart(2, '0')}
                       </span>
                     </TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className="font-mono text-sm text-foreground text-right font-bold">
                       ${client.totalRevenue?.toLocaleString() || 0}
                     </TableCell>
-                    <TableCell className="text-muted-foreground text-sm">
-                      {format(new Date(client.createdAt), "MMM d, yyyy")}
+                    <TableCell className="font-mono text-xs text-muted-foreground">
+                      {format(new Date(client.createdAt), "yyyy-MM-dd")}
                     </TableCell>
                     <TableCell className="text-right">
                       <Link href={`/clients/${client.id}`}>
-                        <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
-                          View Profile
+                        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-none opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:text-primary hover:bg-primary/20">
+                          <ArrowRight className="w-4 h-4" />
                         </Button>
                       </Link>
                     </TableCell>
@@ -96,8 +96,8 @@ export function ClientsList() {
               )}
             </TableBody>
           </Table>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

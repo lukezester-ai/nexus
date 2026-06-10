@@ -6,16 +6,15 @@ import { z } from "zod";
 import { useCreateAudit, useRunAudit } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Globe, User, Mail, Sparkles } from "lucide-react";
+import { ArrowLeft, Globe, User, Mail, Sparkles, Terminal } from "lucide-react";
 import { Link } from "wouter";
 
 const schema = z.object({
-  url: z.string().url("Please enter a valid URL (e.g., https://example.com)"),
-  clientName: z.string().min(1, "Client name is required"),
-  clientEmail: z.string().email("Please enter a valid email address"),
+  url: z.string().url("Valid URL required (e.g., https://example.com)"),
+  clientName: z.string().min(1, "Client name required"),
+  clientEmail: z.string().email("Valid email required"),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -39,22 +38,19 @@ export function NewAudit() {
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     try {
-      // 1. Create the audit record
       const audit = await createAudit.mutateAsync({ data });
-      
-      // 2. Trigger the audit run asynchronously
       runAudit.mutate({ id: audit.id });
       
       toast({
-        title: "Audit Started",
-        description: `Analysis for ${data.url} has begun.`,
+        title: "SEQUENCE INITIATED",
+        description: `Analysis protocol running for ${data.url}`,
       });
       
       setLocation(`/audits/${audit.id}`);
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to start the audit. Please try again.",
+        title: "SYSTEM ERROR",
+        description: "Failed to initialize protocol. Check logs.",
         variant: "destructive",
       });
       setIsSubmitting(false);
@@ -62,39 +58,41 @@ export function NewAudit() {
   };
 
   return (
-    <div className="p-8 max-w-3xl mx-auto space-y-6">
-      <Link href="/audits" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-        <ArrowLeft className="w-4 h-4 mr-2" /> Back to Audits
+    <div className="space-y-6 max-w-2xl mx-auto">
+      <Link href="/audits" className="inline-flex items-center text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors">
+        <ArrowLeft className="w-3 h-3 mr-2" /> Return to Database
       </Link>
 
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">New Audit</h1>
-        <p className="text-muted-foreground mt-1">Start a comprehensive SEO, GEO, and AEO analysis.</p>
+        <h1 className="text-xl font-bold uppercase tracking-widest text-primary mb-1 flex items-center gap-2">
+          <Terminal className="w-5 h-5" /> Initialize Scan Protocol
+        </h1>
+        <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider">Input target vector and client identifiers</p>
       </div>
 
-      <Card className="border-2 border-primary/10 shadow-lg relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="bg-card border border-border rounded-none shadow-none relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardHeader>
-              <CardTitle>Audit Target</CardTitle>
-              <CardDescription>Enter the target URL and client details to begin the scan.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6 relative z-10">
+            <div className="p-6 space-y-6 border-b border-border">
               <FormField
                 control={form.control}
                 name="url"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Target URL</FormLabel>
+                    <FormLabel className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Target URL</FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <Globe className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                        <Input placeholder="https://example.com" className="pl-10 h-12 text-lg" {...field} />
+                        <Globe className="absolute left-3 top-2.5 h-4 w-4 text-primary" />
+                        <Input 
+                          placeholder="https://target-domain.com" 
+                          className="pl-10 h-10 rounded-none border-border bg-background font-mono text-sm focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary" 
+                          {...field} 
+                        />
                       </div>
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="font-mono text-[10px] uppercase" />
                   </FormItem>
                 )}
               />
@@ -105,14 +103,18 @@ export function NewAudit() {
                   name="clientName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Client Name</FormLabel>
+                      <FormLabel className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Client Name</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                          <Input placeholder="Acme Corp" className="pl-9" {...field} />
+                          <User className="absolute left-3 top-2.5 h-4 w-4 text-primary" />
+                          <Input 
+                            placeholder="ENTITY NAME" 
+                            className="pl-10 h-10 rounded-none border-border bg-background font-mono text-sm uppercase focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary" 
+                            {...field} 
+                          />
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="font-mono text-[10px] uppercase" />
                     </FormItem>
                   )}
                 />
@@ -122,34 +124,44 @@ export function NewAudit() {
                   name="clientEmail"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Client Email</FormLabel>
+                      <FormLabel className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Client Comm Channel (Email)</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                          <Input placeholder="hello@example.com" type="email" className="pl-9" {...field} />
+                          <Mail className="absolute left-3 top-2.5 h-4 w-4 text-primary" />
+                          <Input 
+                            placeholder="COMM@DOMAIN.COM" 
+                            type="email" 
+                            className="pl-10 h-10 rounded-none border-border bg-background font-mono text-sm focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary" 
+                            {...field} 
+                          />
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="font-mono text-[10px] uppercase" />
                     </FormItem>
                   )}
                 />
               </div>
-            </CardContent>
-            <CardFooter className="bg-muted/30 border-t border-border px-6 py-4 mt-6">
-              <div className="flex items-center justify-between w-full">
-                <p className="text-sm text-muted-foreground">Analysis typically takes 30-60 seconds.</p>
-                <Button type="submit" size="lg" className="gap-2 px-8" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    <>Running Analysis...</>
-                  ) : (
-                    <><Sparkles className="w-4 h-4" /> Start Audit</>
-                  )}
-                </Button>
-              </div>
-            </CardFooter>
+            </div>
+            <div className="bg-muted/10 p-4 flex items-center justify-between">
+              <p className="font-mono text-[10px] uppercase text-muted-foreground tracking-widest flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse inline-block" />
+                Est. computation time: 30-60s
+              </p>
+              <Button 
+                type="submit" 
+                className="h-10 rounded-none uppercase tracking-widest font-bold border border-primary text-xs gap-2" 
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <span className="font-mono">[ EXECUTING ]</span>
+                ) : (
+                  <><Sparkles className="w-4 h-4" /> EXECUTE PROTOCOL</>
+                )}
+              </Button>
+            </div>
           </form>
         </Form>
-      </Card>
+      </div>
     </div>
   );
 }
