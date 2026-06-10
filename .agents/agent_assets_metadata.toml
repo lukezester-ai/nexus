@@ -1,0 +1,32 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "_VBo1eU3aoH0_isqzEode"
+uri = "file://artifacts/nexus/src/assets/images/hero.png"
+type = "image"
+title = "mission control holographic tech"
+
+[[generated]]
+id = "nz0vbzpj62aVlZEkpTAbe"
+uri = "file://artifacts/nexus/src/assets/images/terraiq.png"
+type = "image"
+title = "futuristic AI brain neural"
+
+[[generated]]
+id = "j4L9eLOSklg4JVFZf5-qx"
+uri = "file://artifacts/nexus/src/assets/images/agrinexus-law.png"
+type = "image"
+title = "digital scales of justice"
+
+[[generated]]
+id = "_XviBR2y9iHivLgfR7OAN"
+uri = "file://artifacts/nexus/src/assets/images/fieldlot.png"
+type = "image"
+title = "global supply chain network"
+
+[[generated]]
+id = "NgBaZ83SvuBZhzhfNSe9D"
+uri = "file://artifacts/nexus/src/assets/images/auditnexus.png"
+type = "image"
+title = "digital growth analytics holographic"
