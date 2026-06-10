@@ -36,29 +36,74 @@ router.get('/stripe/products', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/stripe/checkout
+ *
+ * Two modes:
+ * 1. Standard package: { priceId }
+ * 2. Contract checkout: { contractId, contractAmount (cents), contractTitle, clientEmail }
+ *    → creates a one-time price for the contract amount, then opens checkout
+ */
 router.post('/stripe/checkout', async (req, res) => {
-  const { priceId, clientEmail, contractId, successUrl, cancelUrl } = req.body;
-  if (!priceId || typeof priceId !== 'string') {
-    return res.status(400).json({ error: 'priceId is required' });
-  }
+  const { priceId, contractId, contractAmount, contractTitle, clientEmail, successUrl, cancelUrl } = req.body;
   const baseUrl = `https://${process.env.REPLIT_DOMAINS?.split(',')[0]}`;
+  const successRedirect = successUrl ?? `${baseUrl}/audit-nexus/payment/success?session_id={CHECKOUT_SESSION_ID}`;
+  const cancelRedirect = cancelUrl ?? `${baseUrl}/audit-nexus/payment/cancel`;
 
   try {
     const stripe = await getUncachableStripeClient();
 
-    const price = await stripeStorage.getPrice(priceId);
-    if (!price) {
-      return res.status(404).json({ error: 'Price not found' });
+    let resolvedPriceId: string;
+
+    if (priceId && typeof priceId === 'string') {
+      // Mode 1: use a pre-existing Stripe price
+      const price = await stripeStorage.getPrice(priceId);
+      if (!price) return res.status(404).json({ error: 'Price not found' });
+      resolvedPriceId = priceId;
+    } else if (contractAmount && typeof contractAmount === 'number' && contractAmount > 0) {
+      // Mode 2: create a one-time price for this specific contract
+      // First, find the "AuditNexus Custom Project" product (or any active product)
+      const products = await stripeStorage.listProductsWithPrices();
+      const customProduct = products.find((r: any) =>
+        r.product_metadata && r.product_metadata.tier === 'custom'
+      );
+
+      let productId: string;
+      if (customProduct) {
+        productId = customProduct.product_id as string;
+      } else {
+        // Fallback: create a minimal product on the fly
+        const p = await stripe.products.create({
+          name: 'AuditNexus Custom Project',
+          metadata: { tier: 'custom', category: 'custom' },
+        });
+        productId = p.id;
+      }
+
+      // Create a fresh one-time price for this contract's amount
+      const price = await stripe.prices.create({
+        product: productId,
+        unit_amount: contractAmount,
+        currency: 'usd',
+        metadata: contractId ? { contractId: String(contractId) } : {},
+      });
+      resolvedPriceId = price.id;
+    } else {
+      return res.status(400).json({ error: 'Provide either priceId or contractAmount' });
     }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [{ price: priceId, quantity: 1 }],
-      mode: (price.recurring ? 'subscription' : 'payment') as 'subscription' | 'payment',
+      line_items: [{ price: resolvedPriceId, quantity: 1 }],
+      mode: 'payment',
       customer_email: clientEmail,
       metadata: contractId ? { contractId: String(contractId) } : {},
-      success_url: successUrl ?? `${baseUrl}/audit-nexus/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: cancelUrl ?? `${baseUrl}/audit-nexus/payment/cancel`,
+      payment_intent_data: {
+        description: contractTitle ? `AuditNexus — ${contractTitle}` : 'AuditNexus Service',
+        metadata: contractId ? { contractId: String(contractId) } : {},
+      },
+      success_url: successRedirect,
+      cancel_url: cancelRedirect,
     });
 
     res.json({ url: session.url, sessionId: session.id });
