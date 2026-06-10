@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/audit-nexus/"
+title = "AuditNexus"
+version = "1.0.0"
+id = "artifacts/audit-nexus"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/audit-nexus/" ]
+localPort = 25792
+
+[services.development]
+run = "pnpm --filter @workspace/audit-nexus run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/audit-nexus", "run", "build" ]
+publicDir = "artifacts/audit-nexus/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25792"
+BASE_PATH = "/audit-nexus/"

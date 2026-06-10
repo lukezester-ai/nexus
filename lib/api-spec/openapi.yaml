@@ -3,20 +3,32 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: AuditNexus API — SEO/GEO/AEO audit pipeline
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: audits
+    description: Website audit operations
+  - name: proposals
+    description: Proposal management
+  - name: contracts
+    description: Contract management
+  - name: clients
+    description: Client management
+  - name: projects
+    description: Project management
+  - name: dashboard
+    description: Dashboard stats
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +36,353 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /audits:
+    get:
+      operationId: listAudits
+      tags: [audits]
+      summary: List all audits
+      responses:
+        "200":
+          description: List of audits
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Audit"
+    post:
+      operationId: createAudit
+      tags: [audits]
+      summary: Create a new audit job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuditInput"
+      responses:
+        "201":
+          description: Audit created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Audit"
+
+  /audits/{id}:
+    get:
+      operationId: getAudit
+      tags: [audits]
+      summary: Get audit by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Audit details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Audit"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /audits/{id}/run:
+    post:
+      operationId: runAudit
+      tags: [audits]
+      summary: Trigger audit analysis for a URL
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Audit results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Audit"
+
+  /proposals:
+    get:
+      operationId: listProposals
+      tags: [proposals]
+      summary: List all proposals
+      responses:
+        "200":
+          description: List of proposals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Proposal"
+    post:
+      operationId: createProposal
+      tags: [proposals]
+      summary: Create proposal from audit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProposalInput"
+      responses:
+        "201":
+          description: Proposal created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Proposal"
+
+  /proposals/{id}:
+    get:
+      operationId: getProposal
+      tags: [proposals]
+      summary: Get proposal by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Proposal
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Proposal"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateProposal
+      tags: [proposals]
+      summary: Update proposal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProposalUpdate"
+      responses:
+        "200":
+          description: Updated proposal
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Proposal"
+
+  /contracts:
+    get:
+      operationId: listContracts
+      tags: [contracts]
+      summary: List all contracts
+      responses:
+        "200":
+          description: List of contracts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Contract"
+    post:
+      operationId: createContract
+      tags: [contracts]
+      summary: Create contract from proposal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContractInput"
+      responses:
+        "201":
+          description: Contract created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+
+  /contracts/{id}:
+    get:
+      operationId: getContract
+      tags: [contracts]
+      summary: Get contract by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Contract
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateContract
+      tags: [contracts]
+      summary: Update contract status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContractUpdate"
+      responses:
+        "200":
+          description: Updated contract
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+
+  /clients:
+    get:
+      operationId: listClients
+      tags: [clients]
+      summary: List all clients
+      responses:
+        "200":
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Client"
+    post:
+      operationId: createClient
+      tags: [clients]
+      summary: Create a new client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientInput"
+      responses:
+        "201":
+          description: Client created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+
+  /clients/{id}:
+    get:
+      operationId: getClient
+      tags: [clients]
+      summary: Get client by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /projects:
+    get:
+      operationId: listProjects
+      tags: [projects]
+      summary: List all projects
+      responses:
+        "200":
+          description: List of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+
+  /projects/{id}:
+    get:
+      operationId: getProject
+      tags: [projects]
+      summary: Get project by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [dashboard]
+      summary: Get dashboard overview stats
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +393,464 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    SeoData:
+      type: object
+      properties:
+        titleScore:
+          type: ["integer", "null"]
+        metaDescriptionScore:
+          type: ["integer", "null"]
+        headingsScore:
+          type: ["integer", "null"]
+        canonicalScore:
+          type: ["integer", "null"]
+        pageSpeedScore:
+          type: ["integer", "null"]
+        mobileScore:
+          type: ["integer", "null"]
+        issues:
+          type: array
+          items:
+            type: string
+        recommendations:
+          type: array
+          items:
+            type: string
+
+    GeoData:
+      type: object
+      properties:
+        localPresenceScore:
+          type: ["integer", "null"]
+        citationsScore:
+          type: ["integer", "null"]
+        napConsistencyScore:
+          type: ["integer", "null"]
+        localKeywordsScore:
+          type: ["integer", "null"]
+        issues:
+          type: array
+          items:
+            type: string
+        recommendations:
+          type: array
+          items:
+            type: string
+
+    AeoData:
+      type: object
+      properties:
+        featuredSnippetScore:
+          type: ["integer", "null"]
+        structuredDataScore:
+          type: ["integer", "null"]
+        faqSchemaScore:
+          type: ["integer", "null"]
+        voiceSearchScore:
+          type: ["integer", "null"]
+        issues:
+          type: array
+          items:
+            type: string
+        recommendations:
+          type: array
+          items:
+            type: string
+
+    Audit:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        clientName:
+          type: ["string", "null"]
+        clientEmail:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [pending, running, completed, failed]
+        seoScore:
+          type: ["integer", "null"]
+        geoScore:
+          type: ["integer", "null"]
+        aeoScore:
+          type: ["integer", "null"]
+        overallScore:
+          type: ["integer", "null"]
+        seoData:
+          $ref: "#/components/schemas/SeoData"
+        geoData:
+          $ref: "#/components/schemas/GeoData"
+        aeoData:
+          $ref: "#/components/schemas/AeoData"
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - url
+        - status
+        - createdAt
+        - updatedAt
+
+    AuditInput:
+      type: object
+      properties:
+        url:
+          type: string
+          minLength: 1
+        clientName:
+          type: string
+        clientEmail:
+          type: string
+      required:
+        - url
+
+    ProposalService:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        duration:
+          type: string
+      required:
+        - name
+        - price
+
+    Proposal:
+      type: object
+      properties:
+        id:
+          type: integer
+        auditId:
+          type: ["integer", "null"]
+        clientId:
+          type: ["integer", "null"]
+        clientName:
+          type: string
+        clientEmail:
+          type: string
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        services:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProposalService"
+        totalPrice:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+          enum: [draft, sent, accepted, rejected]
+        validUntil:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - clientName
+        - clientEmail
+        - title
+        - totalPrice
+        - currency
+        - status
+        - createdAt
+        - updatedAt
+
+    ProposalInput:
+      type: object
+      properties:
+        auditId:
+          type: integer
+        clientId:
+          type: integer
+        clientName:
+          type: string
+          minLength: 1
+        clientEmail:
+          type: string
+          minLength: 1
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        services:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProposalService"
+        totalPrice:
+          type: number
+        currency:
+          type: string
+        validUntil:
+          type: string
+      required:
+        - clientName
+        - clientEmail
+        - title
+        - totalPrice
+
+    ProposalUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        services:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProposalService"
+        totalPrice:
+          type: number
+        status:
+          type: string
+          enum: [draft, sent, accepted, rejected]
+        validUntil:
+          type: string
+
+    Contract:
+      type: object
+      properties:
+        id:
+          type: integer
+        proposalId:
+          type: ["integer", "null"]
+        clientId:
+          type: ["integer", "null"]
+        clientName:
+          type: string
+        clientEmail:
+          type: string
+        title:
+          type: string
+        content:
+          type: ["string", "null"]
+        totalAmount:
+          type: ["number", "null"]
+        currency:
+          type: string
+        status:
+          type: string
+          enum: [draft, sent, signed, active, completed, cancelled]
+        signedAt:
+          type: ["string", "null"]
+        startDate:
+          type: ["string", "null"]
+        endDate:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - clientName
+        - clientEmail
+        - title
+        - currency
+        - status
+        - createdAt
+        - updatedAt
+
+    ContractInput:
+      type: object
+      properties:
+        proposalId:
+          type: integer
+        clientId:
+          type: integer
+        clientName:
+          type: string
+          minLength: 1
+        clientEmail:
+          type: string
+          minLength: 1
+        title:
+          type: string
+          minLength: 1
+        content:
+          type: string
+        totalAmount:
+          type: number
+        currency:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+      required:
+        - clientName
+        - clientEmail
+        - title
+
+    ContractUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [draft, sent, signed, active, completed, cancelled]
+        signedAt:
+          type: string
+        content:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+
+    Client:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        company:
+          type: ["string", "null"]
+        phone:
+          type: ["string", "null"]
+        website:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        totalProjects:
+          type: integer
+        totalRevenue:
+          type: number
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - email
+        - totalProjects
+        - totalRevenue
+        - createdAt
+
+    ClientInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 1
+        company:
+          type: string
+        phone:
+          type: string
+        website:
+          type: string
+        notes:
+          type: string
+      required:
+        - name
+        - email
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        contractId:
+          type: ["integer", "null"]
+        clientId:
+          type: ["integer", "null"]
+        clientName:
+          type: string
+        name:
+          type: string
+        description:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [active, paused, completed, cancelled]
+        progress:
+          type: integer
+        totalAmount:
+          type: ["number", "null"]
+        currency:
+          type: string
+        startDate:
+          type: ["string", "null"]
+        endDate:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - clientName
+        - name
+        - status
+        - progress
+        - currency
+        - createdAt
+        - updatedAt
+
+    DashboardStats:
+      type: object
+      properties:
+        totalAudits:
+          type: integer
+        auditsThisMonth:
+          type: integer
+        avgSeoScore:
+          type: number
+        avgGeoScore:
+          type: number
+        avgAeoScore:
+          type: number
+        totalProposals:
+          type: integer
+        proposalAcceptanceRate:
+          type: number
+        activeContracts:
+          type: integer
+        totalRevenue:
+          type: number
+        revenueThisMonth:
+          type: number
+        totalClients:
+          type: integer
+        activeProjects:
+          type: integer
+      required:
+        - totalAudits
+        - auditsThisMonth
+        - avgSeoScore
+        - avgGeoScore
+        - avgAeoScore
+        - totalProposals
+        - proposalAcceptanceRate
+        - activeContracts
+        - totalRevenue
+        - revenueThisMonth
+        - totalClients
+        - activeProjects
