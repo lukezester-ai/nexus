@@ -10,18 +10,19 @@ import {
   Bell,
   PanelLeftClose,
   PanelLeftOpen,
-  Activity
+  Activity,
+  TerminalSquare
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [collapsed, setCollapsed] = useState(false);
 
   const navItems = [
-    { name: "Dashboard", href: "/", icon: BarChart3 },
+    { name: "Terminal", href: "/", icon: TerminalSquare },
     { name: "Audits", href: "/audits", icon: Search },
     { name: "Proposals", href: "/proposals", icon: FileText },
     { name: "Contracts", href: "/contracts", icon: FileSignature },
@@ -30,34 +31,32 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className="flex h-screen w-full bg-background overflow-hidden">
+    <div className="flex h-screen w-full bg-background overflow-hidden text-sm font-mono text-foreground">
       {/* Sidebar */}
       <aside 
         className={`bg-sidebar border-r border-sidebar-border transition-all duration-300 flex flex-col z-20 ${
-          collapsed ? "w-16" : "w-64"
+          collapsed ? "w-14" : "w-56"
         }`}
       >
-        <div className="h-14 flex items-center px-4 border-b border-sidebar-border gap-3 shrink-0">
-          <div className="w-8 h-8 rounded bg-primary flex items-center justify-center shrink-0">
-            <Activity className="w-5 h-5 text-primary-foreground" />
-          </div>
-          {!collapsed && <span className="font-semibold text-sidebar-foreground tracking-tight text-lg">AuditNexus</span>}
+        <div className="h-12 flex items-center px-4 border-b border-sidebar-border gap-3 shrink-0 bg-sidebar/50">
+          <Activity className="w-4 h-4 text-primary" />
+          {!collapsed && <span className="font-bold tracking-widest text-primary uppercase text-xs">AuditNexus</span>}
         </div>
         
-        <div className="flex-1 overflow-y-auto py-4 px-2 flex flex-col gap-1">
+        <div className="flex-1 overflow-y-auto py-2 flex flex-col">
           {navItems.map((item) => {
             const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
             return (
               <Link key={item.name} href={item.href}>
                 <div 
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-md cursor-pointer transition-all duration-200 group ${
+                  className={`flex items-center gap-3 px-4 py-2 cursor-pointer group uppercase text-xs tracking-wider ${
                     isActive 
-                      ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" 
-                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-                  } ${collapsed ? "justify-center" : ""}`}
+                      ? "bg-primary/10 text-primary border-l-2 border-primary" 
+                      : "text-muted-foreground hover:bg-sidebar-accent hover:text-foreground border-l-2 border-transparent"
+                  } ${collapsed ? "justify-center px-0" : ""}`}
                   title={collapsed ? item.name : undefined}
                 >
-                  <item.icon className={`shrink-0 ${isActive ? "text-primary" : "text-sidebar-foreground/50 group-hover:text-sidebar-foreground/80"} ${collapsed ? "w-5 h-5" : "w-4 h-4"}`} />
+                  <item.icon className={`shrink-0 w-4 h-4 ${isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`} />
                   {!collapsed && <span>{item.name}</span>}
                 </div>
               </Link>
@@ -65,18 +64,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           })}
         </div>
 
-        <div className="p-4 border-t border-sidebar-border shrink-0">
-          <div 
-            className="flex items-center gap-3 cursor-pointer group"
-            title={collapsed ? "Settings" : undefined}
-          >
-            <Avatar className="h-8 w-8 rounded shrink-0 border border-sidebar-border group-hover:border-sidebar-accent transition-colors">
-              <AvatarFallback className="bg-sidebar-accent text-xs">AN</AvatarFallback>
+        <div className="p-4 border-t border-sidebar-border shrink-0 bg-sidebar/50">
+          <div className="flex items-center gap-3">
+            <Avatar className="h-6 w-6 rounded-none border border-sidebar-border shrink-0">
+              <AvatarFallback className="bg-transparent text-[10px] text-muted-foreground font-mono">AN</AvatarFallback>
             </Avatar>
             {!collapsed && (
               <div className="flex flex-col flex-1 overflow-hidden">
-                <span className="text-sm font-medium text-sidebar-foreground truncate">Admin User</span>
-                <span className="text-xs text-sidebar-foreground/50 truncate">admin@auditnexus.com</span>
+                <span className="text-[10px] text-muted-foreground uppercase tracking-wider truncate">SYS.ADMIN</span>
               </div>
             )}
           </div>
@@ -85,30 +80,33 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 bg-background overflow-hidden relative">
-        <header className="h-14 border-b border-border bg-card flex items-center justify-between px-4 shrink-0 z-10">
-          <div className="flex items-center gap-2">
+        <header className="h-12 border-b border-border bg-card/50 flex items-center justify-between px-4 shrink-0 z-10 backdrop-blur-sm">
+          <div className="flex items-center gap-4">
             <Button 
               variant="ghost" 
               size="icon" 
-              className="h-8 w-8"
+              className="h-6 w-6 rounded-none hover:bg-accent hover:text-accent-foreground"
               onClick={() => setCollapsed(!collapsed)}
             >
-              {collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
+              {collapsed ? <PanelLeftOpen className="h-3 w-3" /> : <PanelLeftClose className="h-3 w-3" />}
             </Button>
+            <div className="text-xs text-muted-foreground">
+              [ {new Date().toISOString().split('T')[0]} ] {location.toUpperCase()}
+            </div>
           </div>
           
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="h-8 w-8 relative text-muted-foreground hover:text-foreground">
-              <Bell className="h-4 w-4" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary border-2 border-card" />
+            <Button variant="ghost" size="icon" className="h-6 w-6 rounded-none hover:bg-accent text-muted-foreground hover:text-accent-foreground relative">
+              <Bell className="h-3 w-3" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
-              <Settings className="h-4 w-4" />
+            <Button variant="ghost" size="icon" className="h-6 w-6 rounded-none hover:bg-accent text-muted-foreground hover:text-accent-foreground">
+              <Settings className="h-3 w-3" />
             </Button>
           </div>
         </header>
 
-        <div className="flex-1 overflow-auto bg-muted/20 relative">
+        <div className="flex-1 overflow-auto relative p-4">
+          <div className="absolute inset-0 pointer-events-none opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle at center, #ffffff 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
           {children}
         </div>
       </main>
