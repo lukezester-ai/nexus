@@ -6,30 +6,28 @@ const router: IRouter = Router();
 
 router.get('/stripe/products', async (req, res) => {
   try {
-    const rows = await stripeStorage.listProductsWithPrices();
-    const productsMap = new Map<string, any>();
-    for (const row of rows) {
-      if (!productsMap.has(row.product_id as string)) {
-        productsMap.set(row.product_id as string, {
-          id: row.product_id,
-          name: row.product_name,
-          description: row.product_description,
-          active: row.product_active,
-          metadata: row.product_metadata,
-          prices: [],
-        });
-      }
-      if (row.price_id) {
-        productsMap.get(row.product_id as string).prices.push({
-          id: row.price_id,
-          unitAmount: row.unit_amount,
-          currency: row.currency,
-          recurring: row.recurring,
-          active: row.price_active,
-        });
-      }
-    }
-    res.json({ data: Array.from(productsMap.values()) });
+    const stripe = await getUncachableStripeClient();
+    const stripeProducts = await stripe.products.list({ active: true, limit: 20 });
+    const result = await Promise.all(
+      stripeProducts.data.map(async (product) => {
+        const prices = await stripe.prices.list({ product: product.id, active: true, limit: 10 });
+        return {
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          active: product.active,
+          metadata: product.metadata,
+          prices: prices.data.map((p) => ({
+            id: p.id,
+            unitAmount: p.unit_amount,
+            currency: p.currency,
+            recurring: p.recurring,
+            active: p.active,
+          })),
+        };
+      })
+    );
+    res.json({ data: result });
   } catch (err) {
     req.log.error({ err }, 'Failed to list Stripe products');
     res.status(500).json({ error: 'Failed to fetch products' });
@@ -62,15 +60,15 @@ router.post('/stripe/checkout', async (req, res) => {
       resolvedPriceId = priceId;
     } else if (contractAmount && typeof contractAmount === 'number' && contractAmount > 0) {
       // Mode 2: create a one-time price for this specific contract
-      // First, find the "AuditNexus Custom Project" product (or any active product)
-      const products = await stripeStorage.listProductsWithPrices();
-      const customProduct = products.find((r: any) =>
-        r.product_metadata && r.product_metadata.tier === 'custom'
+      // Find the "AuditNexus Custom Project" product directly from Stripe API
+      const stripeProducts = await stripe.products.list({ active: true, limit: 20 });
+      const customProduct = stripeProducts.data.find(
+        (p) => p.metadata?.tier === 'custom'
       );
 
       let productId: string;
       if (customProduct) {
-        productId = customProduct.product_id as string;
+        productId = customProduct.id;
       } else {
         // Fallback: create a minimal product on the fly
         const p = await stripe.products.create({

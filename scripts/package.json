@@ -6,7 +6,8 @@
   "scripts": {
     "hello": "tsx ./src/hello.ts",
     "seed-stripe": "tsx ./src/seed-stripe-products.ts",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "list-stripe": "tsx ./src/list-stripe-products.ts"
   },
   "dependencies": {
     "stripe": "catalog:"

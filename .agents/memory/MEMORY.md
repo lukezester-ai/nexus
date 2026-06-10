@@ -1,0 +1,2 @@
+- [Stripe connector credentials key](stripe-connector-key.md) — Replit Stripe connector stores the secret as `settings.secret`, not `settings.secret_key`.
+- [Stripe products sync strategy](stripe-products-sync.md) — stripe-replit-sync backfill is unreliable for products; always query Stripe API directly in routes.
