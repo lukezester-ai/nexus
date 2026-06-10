@@ -6,6 +6,7 @@ import {
   FileSignature, 
   Users, 
   Briefcase,
+  Package,
   Settings,
   Bell,
   PanelLeftClose,
@@ -28,6 +29,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     { name: "Contracts", href: "/contracts", icon: FileSignature },
     { name: "Clients", href: "/clients", icon: Users },
     { name: "Projects", href: "/projects", icon: Briefcase },
+    { name: "Packages", href: "/packages", icon: Package },
   ];
 
   return (

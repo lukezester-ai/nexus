@@ -54,9 +54,7 @@ router.post('/stripe/checkout', async (req, res) => {
     let resolvedPriceId: string;
 
     if (priceId && typeof priceId === 'string') {
-      // Mode 1: use a pre-existing Stripe price
-      const price = await stripeStorage.getPrice(priceId);
-      if (!price) return res.status(404).json({ error: 'Price not found' });
+      // Mode 1: use a pre-existing Stripe price directly (Stripe validates on session create)
       resolvedPriceId = priceId;
     } else if (contractAmount && typeof contractAmount === 'number' && contractAmount > 0) {
       // Mode 2: create a one-time price for this specific contract

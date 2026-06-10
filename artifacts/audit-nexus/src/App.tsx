@@ -17,6 +17,7 @@ import { ContractDetail } from "@/pages/contracts/ContractDetail";
 import { ClientsList } from "@/pages/clients/ClientsList";
 import { ClientDetail } from "@/pages/clients/ClientDetail";
 import { ProjectsList } from "@/pages/projects/ProjectsList";
+import { PackagesList } from "@/pages/packages/PackagesList";
 import { PaymentSuccess } from "@/pages/payment/PaymentSuccess";
 import { PaymentCancel } from "@/pages/payment/PaymentCancel";
 
@@ -50,6 +51,7 @@ function Router() {
         <Route path="/clients/:id" component={ClientDetail} />
         
         <Route path="/projects" component={ProjectsList} />
+        <Route path="/packages" component={PackagesList} />
 
         <Route path="/payment/success" component={PaymentSuccess} />
         <Route path="/payment/cancel" component={PaymentCancel} />
