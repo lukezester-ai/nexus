@@ -1,6 +1,7 @@
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execSync } from "node:child_process";
 import { build as esbuild } from "esbuild";
 import esbuildPluginPino from "esbuild-plugin-pino";
 import { rm } from "node:fs/promises";
@@ -9,8 +10,18 @@ import { rm } from "node:fs/promises";
 globalThis.require = createRequire(import.meta.url);
 
 const artifactDir = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(artifactDir, "../..");
 
 async function buildAll() {
+  // Build audit-nexus static files first so the API server can serve them
+  console.log("Building audit-nexus...");
+  execSync("node_modules/.bin/vite build --config vite.config.ts", {
+    cwd: path.resolve(repoRoot, "artifacts/audit-nexus"),
+    stdio: "inherit",
+    env: { ...process.env, NODE_ENV: "production" },
+  });
+  console.log("audit-nexus built.");
+
   const distDir = path.resolve(artifactDir, "dist");
   await rm(distDir, { recursive: true, force: true });
 
