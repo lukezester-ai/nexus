@@ -1,0 +1,14 @@
+{
+  "name": "@workspace/shared",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "amqplib": "^2.0.1",
+    "uuid": "^11.0.3"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.8",
+    "@types/uuid": "^11.0.0"
+  }
+}

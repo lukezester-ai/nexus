@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: nexus-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: nexus
+      RABBITMQ_DEFAULT_PASS: nexus123
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - nexus-net
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres:
+    image: postgres:15
+    container_name: nexus-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: nexus
+      POSTGRES_USER: nexus
+      POSTGRES_PASSWORD: nexus123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - nexus-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nexus"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: nexus-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - nexus-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  rabbitmq_data:
+  postgres_data:
+  redis_data:
+
+networks:
+  nexus-net:
+    driver: bridge

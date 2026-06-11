@@ -1,0 +1,62 @@
+name: Deploy to AWS ECS
+
+on:
+  push:
+    branches: [ main, production ]
+  workflow_dispatch:
+
+env:
+  AWS_REGION: eu-central-1
+  ECR_REPOSITORY: nexus
+  ECS_SERVICE: nexus-service
+  ECS_CLUSTER: nexus-cluster
+  ECS_TASK_DEFINITION: task-definition.json
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push images to ECR
+        run: |
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:decision-${{ github.sha }} ./artifacts/decision-engine
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:decision-${{ github.sha }}
+          
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:audit-${{ github.sha }} ./artifacts/audit-engine
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:audit-${{ github.sha }}
+          
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:strategy-${{ github.sha }} ./artifacts/strategy-engine
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:strategy-${{ github.sha }}
+
+      - name: Fill in the new image ID in the ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: decision-container
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:decision-${{ github.sha }}
+          container-name: audit-container
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:audit-${{ github.sha }}
+          container-name: strategy-container
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:strategy-${{ github.sha }}
+
+      - name: Deploy to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true

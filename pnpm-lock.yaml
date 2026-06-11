@@ -166,6 +166,15 @@ importers:
       '@rollup/rollup-win32-x64-msvc':
         specifier: ^4.61.1
         version: 4.61.1
+      '@types/amqplib':
+        specifier: ^0.10.8
+        version: 0.10.8
+      '@types/uuid':
+        specifier: ^11.0.0
+        version: 11.0.0
+      amqplib:
+        specifier: ^2.0.1
+        version: 2.0.1
       lightningcss-win32-x64-msvc:
         specifier: ^1.32.0
         version: 1.32.0
@@ -175,6 +184,9 @@ importers:
       stripe-replit-sync:
         specifier: ^1.0.0
         version: 1.0.0(stripe@22.2.0(@types/node@25.9.2))
+      uuid:
+        specifier: ^14.0.0
+        version: 14.0.0
     devDependencies:
       prettier:
         specifier: ^3.8.3
@@ -183,7 +195,7 @@ importers:
         specifier: ~5.9.3
         version: 5.9.3
 
-  artifacts/api-server:
+  artifacts/audit-engine:
     dependencies:
       '@ai-sdk/openai':
         specifier: ^0.0.66
@@ -197,6 +209,9 @@ importers:
       '@workspace/db':
         specifier: workspace:*
         version: link:../../lib/db
+      '@workspace/shared':
+        specifier: workspace:*
+        version: link:../shared
       ai:
         specifier: ^4.1.43
         version: 4.3.19(react@19.1.0)(zod@3.25.76)
@@ -447,6 +462,85 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 3.25.76
+
+  artifacts/decision-engine:
+    dependencies:
+      '@ai-sdk/openai':
+        specifier: ^0.0.66
+        version: 0.0.66(zod@3.25.76)
+      '@opentelemetry/api':
+        specifier: ^1.9.1
+        version: 1.9.1
+      '@replit/vite-plugin-runtime-error-modal':
+        specifier: ^0.0.6
+        version: 0.0.6
+      '@workspace/api-zod':
+        specifier: workspace:*
+        version: link:../../lib/api-zod
+      '@workspace/db':
+        specifier: workspace:*
+        version: link:../../lib/db
+      '@workspace/shared':
+        specifier: workspace:*
+        version: link:../shared
+      ai:
+        specifier: ^4.1.43
+        version: 4.3.19(react@19.1.0)(zod@3.25.76)
+      axios:
+        specifier: ^1.17.0
+        version: 1.17.0
+      cheerio:
+        specifier: ^1.2.0
+        version: 1.2.0
+      cookie-parser:
+        specifier: ^1.4.7
+        version: 1.4.7
+      cors:
+        specifier: ^2.8.6
+        version: 2.8.6
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.6.1
+      drizzle-orm:
+        specifier: 'catalog:'
+        version: 0.45.2(@opentelemetry/api@1.9.1)(@types/pg@8.20.0)(pg@8.21.0)
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
+      pino:
+        specifier: ^9.14.0
+        version: 9.14.0
+      pino-http:
+        specifier: ^10.5.0
+        version: 10.5.0
+      zod:
+        specifier: 'catalog:'
+        version: 3.25.76
+    devDependencies:
+      '@types/cookie-parser':
+        specifier: ^1.4.10
+        version: 1.4.10(@types/express@5.0.6)
+      '@types/cors':
+        specifier: ^2.8.19
+        version: 2.8.19
+      '@types/express':
+        specifier: ^5.0.6
+        version: 5.0.6
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.9.2
+      esbuild:
+        specifier: 0.27.3
+        version: 0.27.3
+      esbuild-plugin-pino:
+        specifier: ^2.3.3
+        version: 2.3.3(esbuild@0.27.3)(pino-pretty@13.1.3)(pino@9.14.0)(thread-stream@3.1.0)
+      pino-pretty:
+        specifier: ^13.1.3
+        version: 13.1.3
+      thread-stream:
+        specifier: 3.1.0
+        version: 3.1.0
 
   artifacts/mockup-sandbox:
     devDependencies:
@@ -822,6 +916,98 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 3.25.76
+
+  artifacts/shared:
+    dependencies:
+      amqplib:
+        specifier: ^2.0.1
+        version: 2.0.1
+      uuid:
+        specifier: ^11.0.3
+        version: 11.1.1
+    devDependencies:
+      '@types/amqplib':
+        specifier: ^0.10.8
+        version: 0.10.8
+      '@types/uuid':
+        specifier: ^11.0.0
+        version: 11.0.0
+
+  artifacts/strategy-engine:
+    dependencies:
+      '@ai-sdk/openai':
+        specifier: ^0.0.66
+        version: 0.0.66(zod@3.25.76)
+      '@opentelemetry/api':
+        specifier: ^1.9.1
+        version: 1.9.1
+      '@workspace/api-zod':
+        specifier: workspace:*
+        version: link:../../lib/api-zod
+      '@workspace/db':
+        specifier: workspace:*
+        version: link:../../lib/db
+      '@workspace/shared':
+        specifier: workspace:*
+        version: link:../shared
+      ai:
+        specifier: ^4.1.43
+        version: 4.3.19(react@19.1.0)(zod@3.25.76)
+      axios:
+        specifier: ^1.17.0
+        version: 1.17.0
+      cheerio:
+        specifier: ^1.2.0
+        version: 1.2.0
+      cookie-parser:
+        specifier: ^1.4.7
+        version: 1.4.7
+      cors:
+        specifier: ^2.8.6
+        version: 2.8.6
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.6.1
+      drizzle-orm:
+        specifier: 'catalog:'
+        version: 0.45.2(@opentelemetry/api@1.9.1)(@types/pg@8.20.0)(pg@8.21.0)
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
+      pino:
+        specifier: ^9.14.0
+        version: 9.14.0
+      pino-http:
+        specifier: ^10.5.0
+        version: 10.5.0
+      zod:
+        specifier: 'catalog:'
+        version: 3.25.76
+    devDependencies:
+      '@types/cookie-parser':
+        specifier: ^1.4.10
+        version: 1.4.10(@types/express@5.0.6)
+      '@types/cors':
+        specifier: ^2.8.19
+        version: 2.8.19
+      '@types/express':
+        specifier: ^5.0.6
+        version: 5.0.6
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.9.2
+      esbuild:
+        specifier: 0.27.3
+        version: 0.27.3
+      esbuild-plugin-pino:
+        specifier: ^2.3.3
+        version: 2.3.3(esbuild@0.27.3)(pino-pretty@13.1.3)(pino@9.14.0)(thread-stream@3.1.0)
+      pino-pretty:
+        specifier: ^13.1.3
+        version: 13.1.3
+      thread-stream:
+        specifier: 3.1.0
+        version: 3.1.0
 
   lib/api-client-react:
     dependencies:
@@ -1886,6 +2072,9 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
+  '@types/amqplib@0.10.8':
+    resolution: {integrity: sha512-vtDp8Pk1wsE/AuQ8/Rgtm6KUZYqcnTgNvEHwzCkX8rL7AGsC6zqAfKAAJhUZXFhM/Pp++tbnUHiam/8vVpPztA==}
+
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
 
@@ -1986,6 +2175,10 @@ packages:
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
+  '@types/uuid@11.0.0':
+    resolution: {integrity: sha512-HVyk8nj2m+jcFRNazzqyVKiZezyhDKrGUA3jlEcg/nZ6Ms+qHwocba1Y/AaVaznJTAM9xpdFSh+ptbNrhOGvZA==}
+    deprecated: This is a stub types definition. uuid provides its own type definitions, so you do not need this installed.
+
   '@vitejs/plugin-react@5.2.0':
     resolution: {integrity: sha512-YmKkfhOAi3wsB1PhJq5Scj3GXMn3WvtQ/JC0xoopuHoXSdmtdStOpFrYaT1kie2YgFBcIe64ROzMYRjCrYOdYw==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -2028,6 +2221,10 @@ packages:
 
   ajv@8.20.0:
     resolution: {integrity: sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA==}
+
+  amqplib@2.0.1:
+    resolution: {integrity: sha512-a3P2MgfCf9nzVis12VxWEn0dS6hcqve7dlEAhXDtIWR27BlhtMkILOc+H9aeHjDi6i6r94dYKc2Kx2OFe3avvg==}
+    engines: {node: '>=18'}
 
   ansi-colors@4.1.3:
     resolution: {integrity: sha512-/6w/C21Pm1A7aZitlI5Ni/2J6FFQN8i1Cvz3kHABAAbw93v/NlvKdVOqz7CCWz/3iv/JplRSEEZ83XION15ovw==}
@@ -3531,6 +3728,14 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  uuid@11.1.1:
+    resolution: {integrity: sha512-vIYxrBCC/N/K+Js3qSN88go7kIfNPssr/hHCesKCQNAjmgvYS2oqr69kIufEG+O4+PfezOH4EbIeHCfFov8ZgQ==}
+    hasBin: true
+
+  uuid@14.0.0:
+    resolution: {integrity: sha512-Qo+uWgilfSmAhXCMav1uYFynlQO7fMFiMVZsQqZRMIXp0O7rR7qjkj+cPvBHLgBqi960QCoo/PH2/6ZtVqKvrg==}
+    hasBin: true
+
   vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
@@ -4799,6 +5004,10 @@ snapshots:
       '@tanstack/query-core': 5.101.0
       react: 19.1.0
 
+  '@types/amqplib@0.10.8':
+    dependencies:
+      '@types/node': 25.9.2
+
   '@types/babel__core@7.20.5':
     dependencies:
       '@babel/parser': 7.29.7
@@ -4917,6 +5126,10 @@ snapshots:
 
   '@types/unist@3.0.3': {}
 
+  '@types/uuid@11.0.0':
+    dependencies:
+      uuid: 14.0.0
+
   '@vitejs/plugin-react@5.2.0(vite@7.3.5(@types/node@25.9.2)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.22.4)(yaml@2.9.0))':
     dependencies:
       '@babel/core': 7.29.7
@@ -4968,6 +5181,8 @@ snapshots:
       fast-uri: 3.1.2
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
+
+  amqplib@2.0.1: {}
 
   ansi-colors@4.1.3: {}
 
@@ -6343,6 +6558,10 @@ snapshots:
       react: 19.1.0
 
   util-deprecate@1.0.2: {}
+
+  uuid@11.1.1: {}
+
+  uuid@14.0.0: {}
 
   vary@1.1.2: {}
 
