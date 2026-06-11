@@ -8,6 +8,7 @@ import projectsRouter from "./projects";
 import dashboardRouter from "./dashboard";
 import stripeRouter from "./stripe";
 import agentsRouter from "./agents";
+import auditRouter from "./audit";
 
 const router: IRouter = Router();
 
@@ -20,5 +21,6 @@ router.use(projectsRouter);
 router.use(dashboardRouter);
 router.use(stripeRouter);
 router.use(agentsRouter);
+router.use(auditRouter);
 
 export default router;
