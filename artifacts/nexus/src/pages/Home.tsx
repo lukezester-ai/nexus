@@ -2,7 +2,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight, Box, BarChart2, Scale, Truck, Activity, Cpu, Network, Zap, Target } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Box, BarChart2, Scale, Truck, Activity, Cpu, Network, Zap, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/images/hero.png";
 import terraIqImg from "@/assets/images/terraiq.png";
@@ -84,10 +84,10 @@ export default function Home() {
             </motion.p>
             
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-4">
-              <Button size="lg" className="h-14 px-8 font-mono text-sm tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_30px_-5px_hsl(var(--primary))] w-full sm:w-auto">
+              <Button size="lg" onClick={() => document.getElementById('terraiq')?.scrollIntoView({ behavior: 'smooth' })} className="h-14 px-8 font-mono text-sm tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_30px_-5px_hsl(var(--primary))] w-full sm:w-auto">
                 Initialize Nexus <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
-              <Button size="lg" variant="outline" className="h-14 px-8 font-mono text-sm tracking-widest uppercase border-border hover:bg-card w-full sm:w-auto">
+              <Button size="lg" variant="outline" onClick={() => document.getElementById('auditnexus')?.scrollIntoView({ behavior: 'smooth' })} className="h-14 px-8 font-mono text-sm tracking-widest uppercase border-border hover:bg-card w-full sm:w-auto">
                 Explore Architecture
               </Button>
             </motion.div>
@@ -174,8 +174,8 @@ export default function Home() {
                   <span className="text-muted-foreground">Predictive modeling for market movements</span>
                 </li>
               </ul>
-              <Button variant="outline" className="font-mono text-xs uppercase tracking-widest border-[hsl(var(--chart-1))]/50 text-[hsl(var(--chart-1))] hover:bg-[hsl(var(--chart-1))]/10">
-                Access TerraIQ
+              <Button variant="outline" onClick={() => window.open('https://terraiq.me', '_blank')} className="font-mono text-xs uppercase tracking-widest border-[hsl(var(--chart-1))]/50 text-[hsl(var(--chart-1))] hover:bg-[hsl(var(--chart-1))]/10">
+                Access TerraIQ <ArrowUpRight className="w-3 h-3 ml-2" />
               </Button>
             </motion.div>
             
@@ -245,8 +245,8 @@ export default function Home() {
                   <span className="text-muted-foreground">AI-assisted legal precedent analysis</span>
                 </li>
               </ul>
-              <Button variant="outline" className="font-mono text-xs uppercase tracking-widest border-[hsl(var(--chart-2))]/50 text-[hsl(var(--chart-2))] hover:bg-[hsl(var(--chart-2))]/10">
-                Access AgriNexus
+              <Button variant="outline" onClick={() => window.open('https://agrinexuslaw.com', '_blank')} className="font-mono text-xs uppercase tracking-widest border-[hsl(var(--chart-2))]/50 text-[hsl(var(--chart-2))] hover:bg-[hsl(var(--chart-2))]/10">
+                Access AgriNexus <ArrowUpRight className="w-3 h-3 ml-2" />
               </Button>
             </motion.div>
           </div>
@@ -285,8 +285,8 @@ export default function Home() {
                   <span className="text-muted-foreground">Integrated secure payment & escrow</span>
                 </li>
               </ul>
-              <Button variant="outline" className="font-mono text-xs uppercase tracking-widest border-[hsl(var(--chart-3))]/50 text-[hsl(var(--chart-3))] hover:bg-[hsl(var(--chart-3))]/10">
-                Access FieldLot
+              <Button variant="outline" onClick={() => window.open('https://fieldlot.io', '_blank')} className="font-mono text-xs uppercase tracking-widest border-[hsl(var(--chart-3))]/50 text-[hsl(var(--chart-3))] hover:bg-[hsl(var(--chart-3))]/10">
+                Access FieldLot <ArrowUpRight className="w-3 h-3 ml-2" />
               </Button>
             </motion.div>
             
@@ -365,8 +365,8 @@ export default function Home() {
                   <span className="text-muted-foreground">Predictive lead scoring</span>
                 </li>
               </ul>
-              <Button variant="outline" className="font-mono text-xs uppercase tracking-widest border-[hsl(var(--chart-4))]/50 text-[hsl(var(--chart-4))] hover:bg-[hsl(var(--chart-4))]/10">
-                Access AuditNexus
+              <Button variant="outline" onClick={() => window.location.href = '/audit-nexus/'} className="font-mono text-xs uppercase tracking-widest border-[hsl(var(--chart-4))]/50 text-[hsl(var(--chart-4))] hover:bg-[hsl(var(--chart-4))]/10">
+                Access AuditNexus <ArrowUpRight className="w-3 h-3 ml-2" />
               </Button>
             </motion.div>
           </div>
@@ -484,11 +484,11 @@ export default function Home() {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="h-14 px-8 font-mono text-sm tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 w-full sm:w-auto shadow-[0_0_20px_-5px_hsl(var(--primary))]">
-                Request Clearance
+              <Button size="lg" onClick={() => window.location.href = '/audit-nexus/'} className="h-14 px-8 font-mono text-sm tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 w-full sm:w-auto shadow-[0_0_20px_-5px_hsl(var(--primary))]">
+                Request Clearance <ArrowUpRight className="w-4 h-4 ml-2" />
               </Button>
-              <Button size="lg" variant="outline" className="h-14 px-8 font-mono text-sm tracking-widest uppercase border-border hover:bg-background w-full sm:w-auto">
-                View Documentation
+              <Button size="lg" variant="outline" onClick={() => document.getElementById('terraiq')?.scrollIntoView({ behavior: 'smooth' })} className="h-14 px-8 font-mono text-sm tracking-widest uppercase border-border hover:bg-background w-full sm:w-auto">
+                View Products
               </Button>
             </div>
             
