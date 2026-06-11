@@ -1,11 +1,10 @@
 import { Router, type IRouter } from "express";
 import { eq, desc } from "drizzle-orm";
-import { db, decisionsTable, validationsTable, trustScoresTable } from "@workspace/db";
+import { db, decisionsTable, validationsTable, trustScoresTable, contractsTable } from "@workspace/db";
 import { z } from "zod/v4";
 
 import { runAuditModule } from "../services/ai-evaluator";
 import { draftLegalContract } from "../services/legal-agent";
-import { contractsTable } from "@workspace/db/src/schema/contracts";
 
 const router: IRouter = Router();
 
