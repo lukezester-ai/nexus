@@ -11,10 +11,12 @@ REMOTE_URL="https://${GITHUB_PERSONAL_ACCESS_TOKEN}@github.com/lukezester-ai/nex
 git config user.email "agent@replit.com" 2>/dev/null || true
 git config user.name "Replit Agent" 2>/dev/null || true
 
+TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+
 if ! git diff --quiet || ! git diff --cached --quiet; then
   echo "Staging and committing local changes..."
   git add -A
-  git commit -m "Update: sync latest changes"
+  git commit -m "Update: sync latest changes [$TIMESTAMP]"
 fi
 
 git remote remove github 2>/dev/null || true
