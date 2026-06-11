@@ -50,6 +50,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+import path from "path";
+
 app.use("/api", router);
 
+// Serve frontend static files automatically
+const frontendPath = path.join(process.cwd(), "../nexus/dist");
+app.use(express.static(frontendPath));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
+
 export default app;
+
