@@ -64,12 +64,12 @@ export default function Hub() {
       id: "auditnexus",
       name: "AuditNexus",
       tagline: "SEO Audit, GEO Audit, AEO Audit, Proposal Engine, Lead Generation",
-      url: "#",
-      status: "IN DEVELOPMENT",
+      url: "/dashboard",
+      status: "ONLINE",
       color: "#8b5cf6", // purple-500
       icon: Target,
       features: ["SEO/GEO/AEO", "Proposals", "Lead Scoring"],
-      metrics: "Development Phase",
+      metrics: "Live Analysis",
     }
   ];
 
