@@ -25,6 +25,11 @@ const fadeUp = {
   },
 };
 
+import terraIqImg from "@/assets/images/terraiq.png";
+import agriNexusImg from "@/assets/images/agrinexus-law.png";
+import fieldLotImg from "@/assets/images/fieldlot.png";
+import auditNexusImg from "@/assets/images/auditnexus.png";
+
 export default function Hub() {
   const products = [
     {
@@ -35,6 +40,7 @@ export default function Hub() {
       status: "ONLINE",
       color: "hsl(var(--primary))",
       icon: Cpu,
+      image: terraIqImg,
       features: ["Predictive Modeling", "Autonomous Agents", "Data Analysis"],
       metrics: "128 Core Functions",
     },
@@ -46,6 +52,7 @@ export default function Hub() {
       status: "ONLINE",
       color: "#10b981", // emerald-500
       icon: Scale,
+      image: agriNexusImg,
       features: ["Contract Gen", "Compliance", "Legal Research"],
       metrics: "64 Core Functions",
     },
@@ -57,6 +64,7 @@ export default function Hub() {
       status: "ONLINE",
       color: "#f59e0b", // amber-500
       icon: Truck,
+      image: fieldLotImg,
       features: ["Live Bidding", "Supply Chain", "Escrow"],
       metrics: "92 Core Functions",
     },
@@ -68,6 +76,7 @@ export default function Hub() {
       status: "ONLINE",
       color: "#8b5cf6", // purple-500
       icon: Target,
+      image: auditNexusImg,
       features: ["SEO/GEO/AEO", "Proposals", "Lead Scoring"],
       metrics: "Live Analysis",
     }
@@ -132,16 +141,26 @@ export default function Hub() {
                   {isDev && <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px] z-10 pointer-events-none" />}
 
                   <div className="relative z-20 flex flex-col h-full">
-                    <div className="flex justify-between items-start mb-6">
-                      <div className="w-12 h-12 rounded-lg bg-background border border-border flex items-center justify-center shadow-lg">
-                        <product.icon className="w-6 h-6" style={{ color: product.color }} />
+                    {/* Beautiful Image Header */}
+                    {product.image && (
+                      <div className="w-full h-48 mb-6 rounded-lg overflow-hidden border border-border/50 relative group-hover:border-[var(--card-accent)]/50 transition-colors duration-500 shadow-xl">
+                        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent z-10" />
+                        <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100" />
+                      </div>
+                    )}
+
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-background border border-border flex items-center justify-center shadow-lg">
+                          <product.icon className="w-5 h-5" style={{ color: product.color }} />
+                        </div>
+                        <h3 className="text-2xl font-serif font-bold group-hover:text-[var(--card-accent)] transition-colors">{product.name}</h3>
                       </div>
                       <div className={`text-xs font-mono px-3 py-1 rounded border ${isDev ? 'border-purple-500/30 text-purple-400 bg-purple-500/10' : 'border-primary/30 text-primary bg-primary/10'}`}>
                         {product.status}
                       </div>
                     </div>
 
-                    <h3 className="text-2xl font-serif font-bold mb-2 group-hover:text-[var(--card-accent)] transition-colors">{product.name}</h3>
                     <p className="text-sm text-muted-foreground font-sans mb-6 h-10">{product.tagline}</p>
 
                     <div className="flex flex-wrap gap-2 mb-8">
