@@ -1,7 +1,8 @@
 {
   "version": 2,
   "framework": "vite",
-  "buildCommand": "cd artifacts/nexus && pnpm install && pnpm run build",
+  "installCommand": "npm install -g pnpm@9.15.4 && pnpm install --ignore-scripts",
+  "buildCommand": "cd artifacts/nexus && pnpm run build",
   "outputDirectory": "artifacts/nexus/dist",
   "rewrites": [
     {
