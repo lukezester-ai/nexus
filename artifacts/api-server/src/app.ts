@@ -55,7 +55,7 @@ import path from "path";
 app.use("/api", router);
 
 // Serve frontend static files automatically
-const frontendPath = path.join(process.cwd(), "../nexus/dist");
+const frontendPath = path.join(process.cwd(), "../nexus/dist/public");
 app.use(express.static(frontendPath));
 app.get("*", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
