@@ -23,6 +23,10 @@ publicDir = "artifacts/nexus/dist/public"
 serve = "static"
 
 [[services.production.rewrites]]
+from = "/audit-nexus/*"
+to = "/audit-nexus/index.html"
+
+[[services.production.rewrites]]
 from = "/*"
 to = "/index.html"
 
