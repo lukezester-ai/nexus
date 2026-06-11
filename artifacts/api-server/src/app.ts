@@ -1,6 +1,7 @@
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
+import path from "path";
 import router from "./routes";
 import { logger } from "./lib/logger";
 import { WebhookHandlers } from "./webhookHandlers";
@@ -51,5 +52,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
+
+const auditNexusDist = path.resolve(process.cwd(), "artifacts/audit-nexus/dist/public");
+app.use("/audit-nexus", express.static(auditNexusDist));
+app.get("/audit-nexus/*", (_req, res) => {
+  res.sendFile(path.join(auditNexusDist, "index.html"));
+});
 
 export default app;
