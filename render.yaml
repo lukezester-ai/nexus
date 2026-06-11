@@ -3,7 +3,7 @@ services:
     name: nexus-api
     env: node
     plan: free
-    buildCommand: pnpm install && cd artifacts/api-server && pnpm build
+    buildCommand: npm install -g pnpm && pnpm install && cd artifacts/api-server && pnpm build
     startCommand: cd artifacts/api-server && pnpm start
     envVars:
       - key: NODE_VERSION
