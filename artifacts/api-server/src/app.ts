@@ -53,9 +53,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
 
-const auditNexusDist = path.resolve(process.cwd(), "artifacts/audit-nexus/dist/public");
+const auditNexusDist = path.resolve(import.meta.dirname, "../../../artifacts/audit-nexus/dist/public");
 app.use("/audit-nexus", express.static(auditNexusDist));
-app.get("/audit-nexus/*", (_req, res) => {
+app.get("/audit-nexus/*splat", (_req, res) => {
   res.sendFile(path.join(auditNexusDist, "index.html"));
 });
 
