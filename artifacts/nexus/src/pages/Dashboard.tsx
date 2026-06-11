@@ -3,13 +3,17 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Navbar } from "@/components/Navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Loader2, Send, ShieldCheck, Activity, Cpu, CheckCircle, XCircle, FileSignature, X } from "lucide-react";
+import { Loader2, Send, ShieldCheck, Activity, Cpu, CheckCircle, XCircle, FileSignature, X, Search } from "lucide-react";
+import { AuditForm } from "@/components/audit/AuditForm";
+import { AuditResult } from "@/components/audit/AuditResult";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
   const [prompt, setPrompt] = useState("");
   const [selectedDecisionId, setSelectedDecisionId] = useState<number | null>(null);
   const [contractModalData, setContractModalData] = useState<any>(null);
+  const [auditId, setAuditId] = useState<string | null>(null);
+  const [auditData, setAuditData] = useState<any>(null);
 
   const { data: decisions, isLoading: loadingDecisions } = useQuery({
     queryKey: ["decisions"],
@@ -78,9 +82,10 @@ export default function Dashboard() {
         <h1 className="text-4xl font-serif font-bold mb-8">TerraIQ Executive Dashboard</h1>
 
         <Tabs defaultValue="inbox" className="w-full">
-          <TabsList className="mb-8 grid grid-cols-2 w-[400px]">
+          <TabsList className="mb-8 grid grid-cols-3 w-[600px]">
             <TabsTrigger value="inbox" className="font-mono text-xs uppercase tracking-widest"><ShieldCheck className="w-4 h-4 mr-2" /> Executive Inbox</TabsTrigger>
             <TabsTrigger value="agent" className="font-mono text-xs uppercase tracking-widest"><Activity className="w-4 h-4 mr-2" /> Agent Control</TabsTrigger>
+            <TabsTrigger value="audit" className="font-mono text-xs uppercase tracking-widest text-purple-400"><Search className="w-4 h-4 mr-2" /> AuditNexus</TabsTrigger>
           </TabsList>
 
           <TabsContent value="agent">
@@ -252,6 +257,15 @@ export default function Dashboard() {
                   </div>
                 )}
               </div>
+            </div>
+          </TabsContent>
+          <TabsContent value="audit">
+            <div className="flex flex-col items-center">
+              {!auditData ? (
+                <AuditForm onAuditComplete={(id, data) => { setAuditId(id); setAuditData(data); }} />
+              ) : (
+                <AuditResult auditId={auditId!} data={auditData} />
+              )}
             </div>
           </TabsContent>
         </Tabs>
