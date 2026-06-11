@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import { eq, count, avg, sql } from "drizzle-orm";
-import { db, auditsTable, proposalsTable, contractsTable, clientsTable, projectsTable } from "@workspace/db";
+import { db, decisionsTable, proposalsTable, contractsTable, clientsTable, projectsTable } from "@workspace/db";
 import { GetDashboardStatsResponse } from "@workspace/api-zod";
 
 const router: IRouter = Router();
@@ -10,15 +10,12 @@ router.get("/dashboard/stats", async (_req, res): Promise<void> => {
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
   const [auditStats] = await db.select({
-    total: count(),
-    avgSeo: avg(auditsTable.seoScore),
-    avgGeo: avg(auditsTable.geoScore),
-    avgAeo: avg(auditsTable.aeoScore),
-  }).from(auditsTable);
+    total: count()
+  }).from(decisionsTable);
 
   const [auditsThisMonthResult] = await db.select({ cnt: count() })
-    .from(auditsTable)
-    .where(sql`${auditsTable.createdAt} >= ${startOfMonth}`);
+    .from(decisionsTable)
+    .where(sql`${decisionsTable.createdAt} >= ${startOfMonth}`);
 
   const [proposalStats] = await db.select({ total: count() }).from(proposalsTable);
 
@@ -55,9 +52,9 @@ router.get("/dashboard/stats", async (_req, res): Promise<void> => {
   const stats = {
     totalAudits: Number(auditStats.total),
     auditsThisMonth: Number(auditsThisMonthResult.cnt),
-    avgSeoScore: Math.round(Number(auditStats.avgSeo ?? 0)),
-    avgGeoScore: Math.round(Number(auditStats.avgGeo ?? 0)),
-    avgAeoScore: Math.round(Number(auditStats.avgAeo ?? 0)),
+    avgSeoScore: 0,
+    avgGeoScore: 0,
+    avgAeoScore: 0,
     totalProposals,
     proposalAcceptanceRate: acceptanceRate,
     activeContracts: Number(activeContracts.cnt),
