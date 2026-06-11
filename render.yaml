@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: nexus-api
+    env: node
+    plan: free
+    buildCommand: pnpm install && cd artifacts/api-server && pnpm build
+    startCommand: cd artifacts/api-server && pnpm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: DATABASE_URL
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
