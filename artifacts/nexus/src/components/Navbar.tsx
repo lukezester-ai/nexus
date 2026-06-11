@@ -46,7 +46,7 @@ export function Navbar() {
             <Link href="/hub">Sign In</Link>
           </Button>
           <Button asChild className="font-mono text-xs tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_-5px_hsl(var(--primary))]">
-            <a href="/audit-nexus/">Initialize <ChevronRight className="w-4 h-4 ml-2" /></a>
+            <Link href="/dashboard">Executive Dashboard <ChevronRight className="w-4 h-4 ml-2" /></Link>
           </Button>
         </div>
 
@@ -71,7 +71,7 @@ export function Navbar() {
           <a href="#auditnexus" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">04.AuditNexus</a>
           <Link href="/hub" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-primary py-2 border-b border-border/50 tracking-widest uppercase">Hub</Link>
           <Button asChild className="mt-4 font-mono text-xs uppercase w-full bg-primary text-primary-foreground">
-            <a href="/audit-nexus/">Initialize System</a>
+            <Link href="/dashboard">Executive Dashboard</Link>
           </Button>
         </motion.div>
       )}

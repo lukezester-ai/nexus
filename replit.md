@@ -1,45 +1,30 @@
-# [Project name]
+# Nexus Intelligence Group
+Enterprise Intelligence Operating System
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+## Architecture (The Palantir Approach)
+
+### 1. Nexus Core (The Internal Foundation)
+The central intelligence and data infrastructure powering all applications.
+- **Data Cloud**: The central data layer (Neo4j, Postgres, Qdrant).
+- **Decision Engine**: The reasoning layer that proposes actions.
+- **Audit Engine**: The trust layer that validates decisions (Risk, Compliance, Source).
+- **Strategy Engine**: The forecasting and ROI layer (future Nexus Capital core).
+
+### 2. Applications (The Client-Facing Layer)
+Built on top of Nexus Core.
+- **TerraIQ**: Operations / Intelligence. The operational brain.
+- **Agrinexus Law**: Legal Layer. Contract intelligence and compliance.
+- **FieldLot**: Marketplace / Execution. Trading and procurement.
+
+### 3. Future SaaS Spin-offs
+Once the ecosystem matures and acquires clients, internal Core components can be spun off as independent products:
+- **Nexus Capital** (from Strategy Engine/Core)
+- **Nexus Data Cloud** (from Data Cloud/Core)
 
 ## Run & Operate
-
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
+- `pnpm --filter @workspace/api-server run dev` — run the API server
+- `pnpm --filter @workspace/nexus run dev` — run the Frontend server
 - Required env: `DATABASE_URL` — Postgres connection string
 
-## Stack
-
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
-
-## Where things live
-
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
-
-## Architecture decisions
-
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
-
-## Product
-
-_Describe the high-level user-facing capabilities of this app once they exist._
-
-## User preferences
-
-_Populate as you build — explicit user instructions worth remembering across sessions._
-
-## Gotchas
-
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+## Decision Workflow
+`Agent (App)` -> `Decision Engine (Core)` -> `Audit Engine (Core)` -> `Executive Approval`
