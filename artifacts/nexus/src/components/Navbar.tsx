@@ -42,9 +42,11 @@ export function Navbar() {
 
         <div className="hidden md:flex items-center gap-4">
           <Link href="/hub" className="text-sm font-mono text-primary hover:text-foreground transition-colors tracking-widest uppercase">Hub</Link>
-          <Button variant="ghost" className="font-mono text-xs tracking-widest uppercase">Sign In</Button>
-          <Button className="font-mono text-xs tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_-5px_hsl(var(--primary))]">
-            Initialize <ChevronRight className="w-4 h-4 ml-2" />
+          <Button asChild variant="ghost" className="font-mono text-xs tracking-widest uppercase">
+            <Link href="/hub">Sign In</Link>
+          </Button>
+          <Button asChild className="font-mono text-xs tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_-5px_hsl(var(--primary))]">
+            <a href="/audit-nexus/">Initialize <ChevronRight className="w-4 h-4 ml-2" /></a>
           </Button>
         </div>
 
@@ -68,8 +70,8 @@ export function Navbar() {
           <a href="#fieldlot" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">03.FieldLot</a>
           <a href="#auditnexus" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">04.AuditNexus</a>
           <Link href="/hub" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-primary py-2 border-b border-border/50 tracking-widest uppercase">Hub</Link>
-          <Button className="mt-4 font-mono text-xs uppercase w-full bg-primary text-primary-foreground">
-            Initialize System
+          <Button asChild className="mt-4 font-mono text-xs uppercase w-full bg-primary text-primary-foreground">
+            <a href="/audit-nexus/">Initialize System</a>
           </Button>
         </motion.div>
       )}
