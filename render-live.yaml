@@ -1,6 +1,6 @@
 databases:
   - name: nexus-db
-    plan: starter
+    plan: free
     databaseName: nexus
     user: nexus
 
