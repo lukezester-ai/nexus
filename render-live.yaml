@@ -19,6 +19,7 @@ services:
   - type: redis
     name: nexus-redis
     plan: free
+    ipAllowList: []
 
   - type: web
     name: nexus-ui
