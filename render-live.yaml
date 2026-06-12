@@ -25,7 +25,7 @@ services:
     name: nexus-ui
     env: node
     plan: starter
-    buildCommand: npm install -g pnpm@8.15.8 && pnpm install --frozen-lockfile && pnpm --filter @workspace/nexus run build
+    buildCommand: npm install -g pnpm@8.15.8 && pnpm install --no-frozen-lockfile && pnpm --filter @workspace/nexus run build
     startCommand: cd artifacts/nexus && pnpm run serve
     envVars:
       - key: NODE_VERSION
@@ -35,7 +35,7 @@ services:
     name: audit-engine
     env: node
     plan: starter
-    buildCommand: npm install -g pnpm@8.15.8 && pnpm install --frozen-lockfile && pnpm --filter @workspace/audit-engine run build
+    buildCommand: npm install -g pnpm@8.15.8 && pnpm install --no-frozen-lockfile && pnpm --filter @workspace/audit-engine run build
     startCommand: node --enable-source-maps artifacts/audit-engine/dist/index.mjs
     envVars:
       - key: NODE_VERSION
@@ -53,7 +53,7 @@ services:
     name: strategy-engine
     env: node
     plan: starter
-    buildCommand: npm install -g pnpm@8.15.8 && pnpm install --frozen-lockfile && pnpm --filter @workspace/strategy-engine run build
+    buildCommand: npm install -g pnpm@8.15.8 && pnpm install --no-frozen-lockfile && pnpm --filter @workspace/strategy-engine run build
     startCommand: node --enable-source-maps artifacts/strategy-engine/dist/index.mjs
     envVars:
       - key: NODE_VERSION
@@ -71,7 +71,7 @@ services:
     name: decision-engine
     env: node
     plan: starter
-    buildCommand: npm install -g pnpm@8.15.8 && pnpm install --frozen-lockfile && pnpm --filter @workspace/decision-engine run build
+    buildCommand: npm install -g pnpm@8.15.8 && pnpm install --no-frozen-lockfile && pnpm --filter @workspace/decision-engine run build
     startCommand: node --enable-source-maps artifacts/decision-engine/dist/index.mjs
     envVars:
       - key: NODE_VERSION
