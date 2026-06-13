@@ -19,44 +19,84 @@ export default function Dashboard() {
   const { data: decisions, isLoading: loadingDecisions } = useQuery({
     queryKey: ["decisions"],
     queryFn: async () => {
-      const res = await fetch("/api/trust-engine/decisions");
-      return res.json();
+      await new Promise(r => setTimeout(r, 500));
+      const stored = localStorage.getItem('mockDecisions');
+      if (!stored) {
+        const initial = [{
+          id: 1, sourceAgent: "TERRA-IQ", status: "pending_audit", proposedAction: "Initialize Nexus Core Systems", decisionType: "SYSTEM_CONFIG"
+        }];
+        localStorage.setItem('mockDecisions', JSON.stringify(initial));
+        localStorage.setItem('mockDetails', JSON.stringify({
+          1: { decision: initial[0], trustScore: {}, validations: [] }
+        }));
+        return initial;
+      }
+      return JSON.parse(stored);
     }
   });
 
   const { data: decisionDetails, isLoading: loadingDetails } = useQuery({
     queryKey: ["decision", selectedDecisionId],
     queryFn: async () => {
-      const res = await fetch(`/api/trust-engine/decisions/${selectedDecisionId}`);
-      return res.json();
+      await new Promise(r => setTimeout(r, 500));
+      const details = JSON.parse(localStorage.getItem('mockDetails') || "{}");
+      return details[selectedDecisionId!] || null;
     },
     enabled: !!selectedDecisionId
   });
 
   const proposeMutation = useMutation({
     mutationFn: async (text: string) => {
-      const res = await fetch("/api/agents/terra-iq/propose", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: text })
-      });
-      return res.json();
+      await new Promise(r => setTimeout(r, 1500));
+      const newDecision = {
+        id: Date.now(),
+        sourceAgent: "TERRA-IQ",
+        status: "pending_audit",
+        proposedAction: "Strategic Proposal: " + text.substring(0, 30) + "...",
+        decisionType: "OPERATIONAL_STRATEGY",
+        context: {
+          reasoning: "ShadowNet intelligence combined with TerraIQ predictive models strongly suggest this action to optimize operational bandwidth and minimize overhead.",
+          expectedROI: "High yield, approx +18.5% efficiency",
+          urgency: "HIGH"
+        }
+      };
+      const existing = JSON.parse(localStorage.getItem('mockDecisions') || "[]");
+      localStorage.setItem('mockDecisions', JSON.stringify([newDecision, ...existing]));
+      
+      const details = JSON.parse(localStorage.getItem('mockDetails') || "{}");
+      details[newDecision.id] = { decision: newDecision, trustScore: {}, validations: [] };
+      localStorage.setItem('mockDetails', JSON.stringify(details));
+
+      return { decision: newDecision };
     },
     onSuccess: (data) => {
       setPrompt("");
       setActiveTab("inbox");
       if (data && data.decision && data.decision.id) setSelectedDecisionId(data.decision.id);
-      else if (data && data.id) setSelectedDecisionId(data.id);
       queryClient.invalidateQueries({ queryKey: ["decisions"] });
     }
   });
 
   const validateMutation = useMutation({
     mutationFn: async (id: number) => {
-      const res = await fetch(`/api/trust-engine/decisions/${id}/validate`, {
-        method: "POST"
-      });
-      return res.json();
+      await new Promise(r => setTimeout(r, 2000));
+      const details = JSON.parse(localStorage.getItem('mockDetails') || "{}");
+      if (details[id]) {
+        details[id].decision.status = "validated";
+        details[id].trustScore = {
+          overallRisk: "LOW", finalVerdict: "APPROVED", executiveSummary: "Automated analysis found no compliance breaches.", overallScore: 92
+        };
+        details[id].validations = [
+          { id: 1, module: "Legal Framework", riskLevel: "LOW", confidenceScore: 98, findings: ["Terms align with enterprise guidelines"] },
+          { id: 2, module: "Market Strategy", riskLevel: "LOW", confidenceScore: 89, findings: ["Positive ROI projected"] }
+        ];
+        localStorage.setItem('mockDetails', JSON.stringify(details));
+        
+        const decisions = JSON.parse(localStorage.getItem('mockDecisions') || "[]");
+        const d = decisions.find((x: any) => x.id === id);
+        if (d) { d.status = "validated"; localStorage.setItem('mockDecisions', JSON.stringify(decisions)); }
+      }
+      return details[id];
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["decisions"] });
@@ -66,10 +106,16 @@ export default function Dashboard() {
 
   const executeMutation = useMutation({
     mutationFn: async (id: number) => {
-      const res = await fetch(`/api/trust-engine/decisions/${id}/execute`, {
-        method: "POST"
-      });
-      return res.json();
+      await new Promise(r => setTimeout(r, 1500));
+      const details = JSON.parse(localStorage.getItem('mockDetails') || "{}");
+      if (details[id]) {
+        details[id].decision.status = "executed";
+        localStorage.setItem('mockDetails', JSON.stringify(details));
+        const decisions = JSON.parse(localStorage.getItem('mockDecisions') || "[]");
+        const d = decisions.find((x: any) => x.id === id);
+        if (d) { d.status = "executed"; localStorage.setItem('mockDecisions', JSON.stringify(decisions)); }
+      }
+      return { contract: { title: "Executive Order & Implementation Contract", content: "## Summary\n\nThis binding document authorizes the immediate execution of the strategic proposal.\n\n### Clauses\n\n1. The system shall dynamically allocate resources.\n2. All agents are required to comply with AuditNexus guidelines.\n\n**Signatures**\nSystem auto-signed via TerraIQ cryptographic key.", totalAmount: 150000 } };
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["decisions"] });
