@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 let connection: amqp.Connection | null = null;
 let channel: amqp.Channel | null = null;
 
-const RABBIT_URL = process.env.RABBIT_URL || 'amqp://nexus:nexus123@localhost:5672';
+const host = process.env.RABBITMQ_HOST || 'localhost';
+const RABBIT_URL = process.env.RABBIT_URL || `amqp://nexus:nexus123@${host}:5672`;
 const EXCHANGE = 'nexus.events';
 const QUEUE_PREFIX = 'nexus.';
 
