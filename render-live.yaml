@@ -25,4 +25,52 @@ services:
     name: audit-engine
     env: node
     plan: starter
-    buildCommand: npm install -g pnpm@9.15.4 && pnpm install --no-frozen-lockfile &&
+    buildCommand: npm install -g pnpm@9.15.4 && pnpm install --no-frozen-lockfile && pnpm --filter @workspace/audit-engine run build
+    startCommand: node --enable-source-maps artifacts/audit-engine/dist/index.mjs
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nexus-db
+          property: connectionString
+      - key: RABBITMQ_URL
+        value: amqp://nexus:nexus123@rabbitmq:5672
+      - key: OPENAI_API_KEY
+        sync: false
+
+  - type: worker
+    name: strategy-engine
+    env: node
+    plan: starter
+    buildCommand: npm install -g pnpm@9.15.4 && pnpm install --no-frozen-lockfile && pnpm --filter @workspace/strategy-engine run build
+    startCommand: node --enable-source-maps artifacts/strategy-engine/dist/index.mjs
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nexus-db
+          property: connectionString
+      - key: RABBITMQ_URL
+        value: amqp://nexus:nexus123@rabbitmq:5672
+      - key: OPENAI_API_KEY
+        sync: false
+
+  - type: web
+    name: decision-engine
+    env: node
+    plan: starter
+    buildCommand: npm install -g pnpm@9.15.4 && pnpm install --no-frozen-lockfile && pnpm --filter @workspace/nexus run build && pnpm --filter @workspace/decision-engine run build
+    startCommand: node --enable-source-maps artifacts/decision-engine/dist/index.mjs
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nexus-db
+          property: connectionString
+      - key: RABBITMQ_URL
+        value: amqp://nexus:nexus123@rabbitmq:5672
+      - key: OPENAI_API_KEY
+        sync: false
