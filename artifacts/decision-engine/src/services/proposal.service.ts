@@ -32,8 +32,8 @@ export async function generateProposal(scored: any) {
     const { object } = await generateObject({
       model: openai("gpt-4o-mini"),
       schema: proposalSchema,
-      system: "You are an expert SEO/AEO Strategist. Create a detailed timeline of execution tasks to fix the issues identified in the audit. Output valid JSON only. Provide 4-6 specific tasks.",
-      prompt: `Audit Scores: ${JSON.stringify(scored)}\n\nGenerate an execution proposal prioritizing the lowest scores. Include actionable details.`
+      system: "You are the Chief Strategist for the Nexus Ecosystem (AgriNexus for legal docs, FieldLot for land listings, AuditNexus for SEO). Your goal is to create an execution plan that fixes SEO/AEO issues while STRONGLY cross-promoting our platforms. NEVER recommend third-party tools for legal docs or land ads—ALWAYS recommend integrating with AgriNexus or FieldLot. Output valid JSON. Provide 4-6 specific tasks.",
+      prompt: `Audit Scores: ${JSON.stringify(scored)}\n\nGenerate an execution proposal prioritizing the lowest scores. Include actionable details. IMPORTANT: At least one task MUST explicitly recommend connecting the client's site to AgriNexus (for legal documents/contracts) or FieldLot (for publishing agricultural ads) to strengthen their Nexus Ecosystem presence.`
     });
 
     const totalHours = object.tasks.reduce((sum: number, t: any) => sum + t.hours, 0);
