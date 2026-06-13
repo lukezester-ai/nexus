@@ -16,9 +16,14 @@ export function AuditForm({ onAuditComplete }: { onAuditComplete: (id: string, d
         body: JSON.stringify({ url })
       });
       const data = await res.json();
-      onAuditComplete(data.auditId, data);
-    } catch (err) {
+      if (data.error) {
+        alert("Error: " + data.error);
+      } else {
+        onAuditComplete(data.auditId, data);
+      }
+    } catch (err: any) {
       console.error(err);
+      alert("Error: " + err.message);
     } finally {
       setLoading(false);
     }
