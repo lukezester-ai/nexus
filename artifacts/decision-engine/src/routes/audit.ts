@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
-import { auditsTable, auditTasksTable, sagaStateTable } from "@workspace/db/src/schema";
+import { auditsTable, auditTasksTable, sagaStateTable } from "@workspace/db/schema";
 import { eq } from "drizzle-orm";
 import { publishEvent, subscribeEvent } from "@workspace/shared/event-bus";
 import { v4 as uuidv4 } from "uuid";
