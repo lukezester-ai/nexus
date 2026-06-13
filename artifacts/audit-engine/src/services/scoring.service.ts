@@ -32,7 +32,7 @@ export class ScoringService {
 
     try {
       const { object } = await generateObject({
-        model: openai("gpt-4o"),
+        model: openai("gpt-4o-mini"),
         schema: auditScoringSchema,
         system: "You are an AI SEO/AEO Audit evaluator. Calculate scores (0-100) and potential (remaining points to 100) based on the scraped technical data.",
         prompt: `Evaluate this website data:\n${JSON.stringify(rawData, null, 2)}`

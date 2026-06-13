@@ -43,8 +43,8 @@ router.post("/audit", async (req, res) => {
     const result = await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         pendingAuditRequests.delete(correlationId);
-        reject(new Error("Audit timeout after 60s"));
-      }, 60000);
+        reject(new Error("Audit timeout after 90s"));
+      }, 90000);
       
       pendingAuditRequests.set(correlationId, { resolve, reject, timeout });
       

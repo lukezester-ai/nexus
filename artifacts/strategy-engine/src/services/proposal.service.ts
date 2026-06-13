@@ -30,7 +30,7 @@ export async function generateProposal(scored: any) {
 
   try {
     const { object } = await generateObject({
-      model: openai("gpt-4o"),
+      model: openai("gpt-4o-mini"),
       schema: proposalSchema,
       system: "You are an expert SEO/AEO Strategist. Create a detailed timeline of execution tasks to fix the issues identified in the audit. Output valid JSON only. Provide 4-6 specific tasks.",
       prompt: `Audit Scores: ${JSON.stringify(scored)}\n\nGenerate an execution proposal prioritizing the lowest scores. Include actionable details.`
