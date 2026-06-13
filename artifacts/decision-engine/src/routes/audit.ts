@@ -4,6 +4,7 @@ import { auditsTable, auditTasksTable, sagaStateTable } from "@workspace/db/sche
 import { eq } from "drizzle-orm";
 import { publishEvent, subscribeEvent } from "@workspace/shared/event-bus";
 import { v4 as uuidv4 } from "uuid";
+import { AuditService } from "../services/audit.service";
 
 const router = Router();
 
@@ -30,9 +31,8 @@ router.post("/audit", async (req, res) => {
       return res.status(400).json({ error: "URL is required" });
     }
     
+    // Create saga state just for tracking
     const correlationId = uuidv4();
-    
-    // Create saga state
     await db.insert(sagaStateTable).values({
       correlationId,
       step: 'audit_started',
@@ -40,20 +40,11 @@ router.post("/audit", async (req, res) => {
       data: { url }
     });
 
-    const result = await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        pendingAuditRequests.delete(correlationId);
-        reject(new Error("Audit timeout after 90s"));
-      }, 90000);
-      
-      pendingAuditRequests.set(correlationId, { resolve, reject, timeout });
-      
-      publishEvent('audit.requested', { url }, correlationId).catch(err => {
-        clearTimeout(timeout);
-        pendingAuditRequests.delete(correlationId);
-        reject(err);
-      });
-    });
+    // Run audit completely synchronously inline!
+    const auditService = new AuditService();
+    const result = await auditService.runAudit(url);
+    
+    await db.update(sagaStateTable).set({ step: 'audit_completed', status: 'completed' }).where(eq(sagaStateTable.correlationId, correlationId));
 
     res.json(result);
   } catch (error: any) {
