@@ -25,10 +25,14 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "@workspace/db"
+      "@workspace/db",
+      "puppeteer",
+      "esbuild"
     ],
     "approvedBuilds": [
-      "esbuild"
+      "esbuild",
+      "puppeteer",
+      "@workspace/db"
     ]
   }
 }
