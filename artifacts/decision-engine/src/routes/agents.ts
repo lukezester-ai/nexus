@@ -53,11 +53,35 @@ You must output a highly specific, formal proposed corporate action that solves 
 `.trim();
 
   try {
+    // 1. Fetch real recommendation from TerraIQ
+    let recommendation = "";
+    try {
+      const terraiqUrl = process.env.TERRAIQ_API_URL || "http://localhost:8000";
+      const res = await fetch(`${terraiqUrl}/orchestrate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: parsed.data.prompt, farm_id: "farm_1" })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        recommendation = data.recommendation;
+      } else {
+        console.warn("TerraIQ API returned error, falling back to LLM", await res.text());
+      }
+    } catch (err) {
+      console.warn("Could not reach TerraIQ API, falling back to LLM", err);
+    }
+
+    // 2. Format the response for the Dashboard
+    const finalPrompt = recommendation 
+      ? `The TerraIQ backend has analyzed the request and produced this detailed strategic recommendation:\n\n"${recommendation}"\n\nBased ONLY on the above recommendation, generate a formal corporate proposed action.` 
+      : `Operational Directive: ${parsed.data.prompt}`;
+
     const { object } = await generateObject({
       model: openai("gpt-4o"),
       schema: proposalSchema,
       system: systemPrompt,
-      prompt: `Operational Directive: ${parsed.data.prompt}`,
+      prompt: finalPrompt,
     });
 
     const [decision] = await db.insert(decisionsTable).values({
