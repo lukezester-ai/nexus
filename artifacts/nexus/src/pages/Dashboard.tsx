@@ -92,10 +92,14 @@ export default function Dashboard() {
             <div className="max-w-2xl bg-card border border-border rounded-xl p-6 shadow-lg">
               <h2 className="text-2xl font-serif font-bold mb-4 flex items-center">
                 <Cpu className="w-6 h-6 mr-3 text-primary" />
-                TerraIQ Operations Agent
+                TerraIQ Intelligence Hub
               </h2>
+              <div className="flex items-center gap-2 mb-6">
+                <span className="bg-purple-500/20 text-purple-400 text-[10px] font-mono px-2 py-1 rounded border border-purple-500/30">🧠 POWERED BY TERRAIQ</span>
+                <span className="bg-red-500/20 text-red-400 text-[10px] font-mono px-2 py-1 rounded border border-red-500/30">🕵️ SHADOWNET PROXIES ACTIVE</span>
+              </div>
               <p className="text-muted-foreground font-mono text-sm mb-6">
-                Instruct the AI agent to optimize an operational goal. It will analyze the request and generate a formal corporate proposal for executive review.
+                Ask a question. The request will be securely routed to the TerraIQ backend. If market data is needed, ShadowNet will stealthily gather intelligence.
               </p>
 
               <div className="flex gap-4">
