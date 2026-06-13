@@ -11,6 +11,8 @@ services:
     image:
       url: rabbitmq:3.12-management
     envVars:
+      - key: PORT
+        value: 5672
       - key: RABBITMQ_DEFAULT_USER
         value: nexus
       - key: RABBITMQ_DEFAULT_PASS
@@ -34,8 +36,11 @@ services:
         fromDatabase:
           name: nexus-db
           property: connectionString
-      - key: RABBIT_URL
-        value: amqp://nexus:nexus123@rabbitmq:5672
+      - key: RABBITMQ_HOST
+        fromService:
+          type: pserv
+          name: rabbitmq
+          envVarKey: RENDER_INTERNAL_HOSTNAME
       - key: OPENAI_API_KEY
         sync: false
 
@@ -52,8 +57,11 @@ services:
         fromDatabase:
           name: nexus-db
           property: connectionString
-      - key: RABBIT_URL
-        value: amqp://nexus:nexus123@rabbitmq:5672
+      - key: RABBITMQ_HOST
+        fromService:
+          type: pserv
+          name: rabbitmq
+          envVarKey: RENDER_INTERNAL_HOSTNAME
       - key: OPENAI_API_KEY
         sync: false
 
@@ -70,7 +78,10 @@ services:
         fromDatabase:
           name: nexus-db
           property: connectionString
-      - key: RABBIT_URL
-        value: amqp://nexus:nexus123@rabbitmq:5672
+      - key: RABBITMQ_HOST
+        fromService:
+          type: pserv
+          name: rabbitmq
+          envVarKey: RENDER_INTERNAL_HOSTNAME
       - key: OPENAI_API_KEY
         sync: false
