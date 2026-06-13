@@ -66,7 +66,7 @@ services:
         sync: false
 
   - type: web
-    name: decision-engine
+    name: nexus-gateway
     env: node
     plan: starter
     buildCommand: npm install -g pnpm@9.15.4 && pnpm install --no-frozen-lockfile && pnpm --filter @workspace/nexus run build && pnpm --filter @workspace/decision-engine run build
