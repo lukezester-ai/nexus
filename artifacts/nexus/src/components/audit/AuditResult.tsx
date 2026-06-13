@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Loader2, FileDown } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Loader2, FileDown, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function AuditResult({ auditId, data }: { auditId: string, data: any }) {
   const [proposal, setProposal] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [expandedRow, setExpandedRow] = useState<number | null>(null);
 
   useEffect(() => {
     // Re-fetch the full audit from DB to get the saved tasks/proposal
@@ -29,7 +30,7 @@ export function AuditResult({ auditId, data }: { auditId: string, data: any }) {
           <span className="text-xs font-mono tracking-widest text-muted-foreground uppercase">Audit Results for</span>
           <h2 className="text-3xl font-serif font-bold text-purple-400">{data.url}</h2>
         </div>
-        <Button variant="outline" className="border-purple-500/30 text-purple-400">
+        <Button variant="outline" className="border-purple-500/30 text-purple-400" onClick={() => window.print()}>
           <FileDown className="w-4 h-4 mr-2" />
           Export PDF
         </Button>
@@ -79,22 +80,42 @@ export function AuditResult({ auditId, data }: { auditId: string, data: any }) {
               </thead>
               <tbody className="divide-y divide-border/50">
                 {proposal.map((t: any, i: number) => (
-                  <tr key={i} className="group hover:bg-muted/30 transition-colors">
-                    <td className="py-4">
-                      <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded text-xs">{t.phase}</span>
-                    </td>
-                    <td className="py-4 font-sans text-base">{t.name}</td>
-                    <td className="py-4">
-                      <span className={`px-2 py-1 rounded text-xs uppercase tracking-widest ${
-                        t.priority === 'DONE' ? 'bg-green-500/20 text-green-400' : 
-                        t.priority === 'HIGH' ? 'bg-red-500/20 text-red-400' : 
-                        'bg-yellow-500/20 text-yellow-400'
-                      }`}>
-                        {t.priority}
-                      </span>
-                    </td>
-                    <td className="py-4 text-right text-muted-foreground">{t.hours}h</td>
-                  </tr>
+                  <React.Fragment key={i}>
+                    <tr 
+                      className="group hover:bg-muted/30 transition-colors cursor-pointer"
+                      onClick={() => setExpandedRow(expandedRow === i ? null : i)}
+                    >
+                      <td className="py-4">
+                        <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded text-xs">{t.phase}</span>
+                      </td>
+                      <td className="py-4 font-sans text-base font-semibold flex items-center gap-2">
+                        {t.name}
+                        {expandedRow === i ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
+                      </td>
+                      <td className="py-4">
+                        <span className={`px-2 py-1 rounded text-xs uppercase tracking-widest ${
+                          t.priority === 'DONE' ? 'bg-green-500/20 text-green-400' : 
+                          t.priority === 'HIGH' ? 'bg-red-500/20 text-red-400' : 
+                          'bg-yellow-500/20 text-yellow-400'
+                        }`}>
+                          {t.priority}
+                        </span>
+                      </td>
+                      <td className="py-4 text-right text-muted-foreground">{t.hours}h</td>
+                    </tr>
+                    {expandedRow === i && (
+                      <tr className="bg-muted/10">
+                        <td colSpan={4} className="p-4 border-b border-border/50">
+                          <div className="bg-card border border-border p-4 rounded-lg">
+                            <h4 className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2">Detailed Instructions</h4>
+                            <p className="text-sm font-sans text-card-foreground leading-relaxed">
+                              {t.details || "No details provided for this task."}
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>

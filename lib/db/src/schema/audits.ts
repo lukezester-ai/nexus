@@ -34,4 +34,5 @@ export const auditTasksTable = pgTable("audit_tasks", {
   priority: text("priority").notNull(), // DONE, HIGH, MEDIUM, LOW
   hours: integer("hours").notNull().default(0),
   phase: text("phase").notNull(), // M1, M2, M3, M4, M5, M6
+  details: text("details"),
 });

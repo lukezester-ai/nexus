@@ -21,12 +21,7 @@ export class AuditService {
     const trust = await trustAuthorityAnalyze(url);
     const platform = await platformCheck(url);
     
-    const scored = {
-      readability: this.scoring.scoreReadability(readability),
-      answerReady: this.scoring.scoreAnswerReady(answerReady),
-      trust: this.scoring.scoreTrust(trust),
-      platform: this.scoring.scorePlatform(platform)
-    };
+    const scored = await this.scoring.generateScores({ readability, answerReady, trust, platform });
     
     // Save to database
     const [insertedAudit] = await db.insert(auditsTable).values({

@@ -19,7 +19,7 @@ async function startStrategyWorker() {
         .set({ step: 'strategy_processing' })
         .where(eq(sagaStateTable.correlationId, correlationId));
 
-      const proposal = generateProposal(scored);
+      const proposal = await generateProposal(scored);
       
       // Save timeline to audit table
       await db.update(auditsTable)
@@ -34,7 +34,8 @@ async function startStrategyWorker() {
             name: t.name,
             priority: t.priority,
             hours: t.hours,
-            phase: t.phase
+            phase: t.phase,
+            details: t.details
           }))
         );
       }

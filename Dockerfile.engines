@@ -1,0 +1,29 @@
+FROM node:22-alpine
+
+# Install pnpm and necessary build tools
+RUN apk add --no-cache python3 make g++ 
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+WORKDIR /app
+
+# Copy package configurations
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY artifacts/nexus/package.json artifacts/nexus/
+COPY artifacts/audit-engine/package.json artifacts/audit-engine/
+COPY artifacts/strategy-engine/package.json artifacts/strategy-engine/
+COPY artifacts/decision-engine/package.json artifacts/decision-engine/
+COPY lib/db/package.json lib/db/
+COPY lib/shared/package.json lib/shared/
+COPY lib/integrations/rabbitmq/package.json lib/integrations/rabbitmq/
+
+# Install dependencies (ignoring missing scripts for now)
+RUN pnpm install --frozen-lockfile --ignore-scripts || true
+
+# Copy rest of the code
+COPY . .
+
+# Build all packages
+RUN pnpm run build
+
+# Default to one of the engines (can be overridden)
+CMD ["node", "--enable-source-maps", "artifacts/audit-engine/dist/index.mjs"]
