@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Loader2, FileDown, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 export function AuditResult({ auditId, data }: { auditId: string, data: any }) {
   const [proposal, setProposal] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
+  const [showPricing, setShowPricing] = useState(false);
+
+  const totalHours = proposal ? proposal.reduce((sum: number, t: any) => sum + (Number(t.hours) || 0), 0) : 0;
+  const hourlyRate = 49;
+  const fullPrice = totalHours * hourlyRate;
 
   useEffect(() => {
     // Re-fetch the full audit from DB to get the saved tasks/proposal
@@ -123,7 +134,7 @@ export function AuditResult({ auditId, data }: { auditId: string, data: any }) {
             <div className="mt-8 flex justify-end">
               <Button 
                 className="bg-green-600 hover:bg-green-700 text-white font-bold h-12 px-8"
-                onClick={() => alert("Предложението е одобрено успешно! Скоро ще добавим възможност за плащане и стартиране на задачите.")}
+                onClick={() => setShowPricing(true)}
               >
                 Approve Proposal
               </Button>
@@ -133,6 +144,73 @@ export function AuditResult({ auditId, data }: { auditId: string, data: any }) {
            <p className="text-muted-foreground font-mono text-sm">No tasks generated.</p>
         )}
       </div>
+
+      <Dialog open={showPricing} onOpenChange={setShowPricing}>
+        <DialogContent className="max-w-3xl bg-card border-border">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-serif text-foreground">Изберете план за изпълнение</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Изкуственият интелект изчисли, че за пълното изпълнение на задачите са необходими <strong>{totalHours} часа</strong> (по 49 EUR/час). 
+              Изберете най-удобния за вас модел:
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            {/* Option 1: One-time payment */}
+            <div className="border border-purple-500/30 bg-purple-500/5 p-6 rounded-xl flex flex-col justify-between">
+              <div>
+                <h3 className="text-xl font-bold text-foreground mb-2">Пълно Изпълнение</h3>
+                <p className="text-sm text-muted-foreground mb-4">Екипът ни започва работа веднага по всички задачи от плана.</p>
+                <div className="text-3xl font-bold text-purple-400 mb-6">
+                  €{fullPrice} <span className="text-sm text-muted-foreground font-normal">еднократно</span>
+                </div>
+                <ul className="text-sm space-y-2 mb-8">
+                  <li className="flex items-center gap-2">✓ Приоритетно изпълнение</li>
+                  <li className="flex items-center gap-2">✓ {totalHours} часа експертен труд</li>
+                  <li className="flex items-center gap-2">✓ Всички задачи наведнъж</li>
+                </ul>
+              </div>
+              <Button 
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                  onClick={async () => {
+                    const res = await fetch('/api/stripe/checkout', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        contractAmount: fullPrice * 100, // cents
+                        contractTitle: `Nexus Execution Plan (${totalHours}h)`
+                      })
+                    });
+                    const data = await res.json();
+                    if (data.url) window.location.href = data.url;
+                  }}
+              >Продължи към Плащане</Button>
+            </div>
+
+            {/* Option 2: Subscription */}
+            <div className="border border-green-500/30 bg-green-500/5 p-6 rounded-xl flex flex-col justify-between relative overflow-hidden">
+              <div className="absolute top-4 right-[-30px] bg-green-500 text-white text-xs font-bold px-8 py-1 rotate-45">ХИТ</div>
+              <div>
+                <h3 className="text-xl font-bold text-foreground mb-2">AuditNexus Pro</h3>
+                <p className="text-sm text-muted-foreground mb-4">Разсрочено дългосрочно изпълнение + постоянен мониторинг.</p>
+                <div className="text-3xl font-bold text-green-400 mb-6">
+                  €199 <span className="text-sm text-muted-foreground font-normal">/ месец</span>
+                </div>
+                <ul className="text-sm space-y-2 mb-8">
+                  <li className="flex items-center gap-2">✓ 5 часа гарантирана работа/месец</li>
+                  <li className="flex items-center gap-2">✓ Постоянен 24/7 SEO мониторинг</li>
+                  <li className="flex items-center gap-2">✓ Премиум достъп до FieldLot</li>
+                </ul>
+              </div>
+              <Button 
+                  className="w-full bg-green-600 hover:bg-green-700 text-white"
+                  onClick={() => alert('Месечните абонаменти ще бъдат активни скоро!')}
+              >Абонирай ме (Pro)</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
     </div>
   );
 }
