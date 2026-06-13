@@ -2,7 +2,7 @@ import { logger } from "./lib/logger";
 import { subscribeEvent, publishEvent } from "@workspace/shared/event-bus";
 import { generateProposal } from "./services/proposal.service";
 import { db } from "@workspace/db";
-import { sagaStateTable, auditTasksTable, auditsTable } from "@workspace/db/src/schema";
+import { sagaStateTable, auditsTable, auditTasksTable } from "@workspace/db/schema";
 import { eq } from "drizzle-orm";
 
 async function startStrategyWorker() {
