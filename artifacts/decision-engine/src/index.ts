@@ -41,7 +41,18 @@ if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
+import { db } from '@workspace/db';
+import { sql } from 'drizzle-orm';
+
 await initStripe();
+
+try {
+  logger.info('Running auto-migrations for audit_tasks...');
+  await db.execute(sql`ALTER TABLE "audit_tasks" ADD COLUMN IF NOT EXISTS "details" text;`);
+  logger.info('Auto-migrations complete.');
+} catch (err) {
+  logger.error({ err }, 'Failed to auto-migrate audit_tasks');
+}
 
 app.listen(port, (err) => {
   if (err) {

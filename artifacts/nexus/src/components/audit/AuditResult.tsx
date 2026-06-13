@@ -121,7 +121,10 @@ export function AuditResult({ auditId, data }: { auditId: string, data: any }) {
             </table>
             
             <div className="mt-8 flex justify-end">
-              <Button className="bg-green-600 hover:bg-green-700 text-white font-bold h-12 px-8">
+              <Button 
+                className="bg-green-600 hover:bg-green-700 text-white font-bold h-12 px-8"
+                onClick={() => alert("Предложението е одобрено успешно! Скоро ще добавим възможност за плащане и стартиране на задачите.")}
+              >
                 Approve Proposal
               </Button>
             </div>
