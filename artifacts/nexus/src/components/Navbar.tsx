@@ -34,10 +34,10 @@ export function Navbar() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
-          <a href="#terraiq" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">01.TerraIQ</a>
-          <a href="#agrinexus" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">02.AgriNexus</a>
-          <a href="#fieldlot" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">03.FieldLot</a>
-          <a href="#auditnexus" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">04.AuditNexus</a>
+          <a href="https://www.terraiq.me" target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">01.TerraIQ</a>
+          <a href="https://www.agrinexuslaw.com" target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">02.AgriNexus</a>
+          <a href="https://www.fieldlot.io" target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">03.FieldLot</a>
+          <Link href="/dashboard" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">04.AuditNexus</Link>
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
@@ -65,10 +65,10 @@ export function Navbar() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <a href="#terraiq" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">01.TerraIQ</a>
-          <a href="#agrinexus" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">02.AgriNexus</a>
-          <a href="#fieldlot" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">03.FieldLot</a>
-          <a href="#auditnexus" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">04.AuditNexus</a>
+          <a href="https://www.terraiq.me" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">01.TerraIQ</a>
+          <a href="https://www.agrinexuslaw.com" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">02.AgriNexus</a>
+          <a href="https://www.fieldlot.io" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">03.FieldLot</a>
+          <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">04.AuditNexus</Link>
           <Link href="/hub" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-primary py-2 border-b border-border/50 tracking-widest uppercase">Hub</Link>
           <Button asChild className="mt-4 font-mono text-xs uppercase w-full bg-primary text-primary-foreground">
             <Link href="/dashboard">Executive Dashboard</Link>
