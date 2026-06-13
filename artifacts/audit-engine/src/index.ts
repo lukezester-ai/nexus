@@ -2,7 +2,7 @@ import { logger } from "./lib/logger";
 import { subscribeEvent, publishEvent } from "@workspace/shared/event-bus";
 import { AuditService } from "./services/audit.service";
 import { db } from "@workspace/db";
-import { sagaStateTable } from "@workspace/db/src/schema";
+import { sagaStateTable } from "@workspace/db/schema";
 import { eq } from "drizzle-orm";
 
 const auditService = new AuditService();
