@@ -34,7 +34,7 @@ services:
         fromDatabase:
           name: nexus-db
           property: connectionString
-      - key: RABBITMQ_URL
+      - key: RABBIT_URL
         value: amqp://nexus:nexus123@rabbitmq:5672
       - key: OPENAI_API_KEY
         sync: false
@@ -52,7 +52,7 @@ services:
         fromDatabase:
           name: nexus-db
           property: connectionString
-      - key: RABBITMQ_URL
+      - key: RABBIT_URL
         value: amqp://nexus:nexus123@rabbitmq:5672
       - key: OPENAI_API_KEY
         sync: false
@@ -70,7 +70,7 @@ services:
         fromDatabase:
           name: nexus-db
           property: connectionString
-      - key: RABBITMQ_URL
+      - key: RABBIT_URL
         value: amqp://nexus:nexus123@rabbitmq:5672
       - key: OPENAI_API_KEY
         sync: false
