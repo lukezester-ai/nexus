@@ -10,6 +10,7 @@ import { AuditResult } from "@/components/audit/AuditResult";
 export default function Dashboard() {
   const queryClient = useQueryClient();
   const [prompt, setPrompt] = useState("");
+  const [activeTab, setActiveTab] = useState("agent");
   const [selectedDecisionId, setSelectedDecisionId] = useState<number | null>(null);
   const [contractModalData, setContractModalData] = useState<any>(null);
   const [auditId, setAuditId] = useState<string | null>(null);
@@ -41,8 +42,11 @@ export default function Dashboard() {
       });
       return res.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       setPrompt("");
+      setActiveTab("inbox");
+      if (data && data.decision && data.decision.id) setSelectedDecisionId(data.decision.id);
+      else if (data && data.id) setSelectedDecisionId(data.id);
       queryClient.invalidateQueries({ queryKey: ["decisions"] });
     }
   });
@@ -81,7 +85,7 @@ export default function Dashboard() {
       <div className="container mx-auto px-6 pt-24 pb-12">
         <h1 className="text-4xl font-serif font-bold mb-8">TerraIQ Executive Dashboard</h1>
 
-        <Tabs defaultValue="inbox" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="mb-8 grid grid-cols-3 w-[600px]">
             <TabsTrigger value="inbox" className="font-mono text-xs uppercase tracking-widest"><ShieldCheck className="w-4 h-4 mr-2" /> Executive Inbox</TabsTrigger>
             <TabsTrigger value="agent" className="font-mono text-xs uppercase tracking-widest"><Activity className="w-4 h-4 mr-2" /> Agent Control</TabsTrigger>
