@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Loader2, Search } from "lucide-react";
+import { Loader2, Search, Zap } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-export function AuditForm({ onAuditComplete }: { onAuditComplete: (id: string, data: any) => void }) {
+interface AuditFormProps {
+  onAuditComplete: (id: string, data: any) => void;
+}
+
+export function AuditForm({ onAuditComplete }: AuditFormProps) {
+  const { t } = useTranslation();
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   
@@ -36,22 +42,22 @@ export function AuditForm({ onAuditComplete }: { onAuditComplete: (id: string, d
   
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl bg-card border border-border p-8 rounded-xl shadow-lg">
-      <h2 className="text-2xl font-serif font-bold mb-4 flex items-center">
-        <Search className="w-6 h-6 mr-3 text-purple-500" />
-        New SEO/AEO Audit
+      <h2 className="text-3xl font-serif font-bold mb-4 flex items-center justify-center">
+        <Search className="w-8 h-8 mr-3 text-primary" />
+        {t('audit.new_audit')}
       </h2>
-      <p className="text-muted-foreground font-mono text-sm mb-6">
-        Enter a target URL. The AuditNexus Engine will launch 4 concurrent agents to analyze Readability, Answer-Ready Content, Trust, and LLM Platform Presence.
+      <p className="text-muted-foreground font-mono text-sm mb-8 text-center">
+        {t('audit.audit_desc')}
       </p>
 
       <div className="flex gap-4">
         <input
           type="url"
           required
-          placeholder="https://example.com"
+          placeholder={t('audit.input_placeholder')}
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          className="flex-1 bg-background border border-border rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:border-purple-500 transition-colors"
+          className="flex-1 bg-background border border-border rounded-lg px-4 py-4 font-mono text-sm focus:outline-none focus:border-primary transition-colors text-center text-lg"
           disabled={loading}
         />
         <Button 
@@ -59,8 +65,8 @@ export function AuditForm({ onAuditComplete }: { onAuditComplete: (id: string, d
           disabled={loading || !url} 
           className="bg-purple-600 text-white hover:bg-purple-700 h-auto px-8"
         >
-          {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-          {loading ? 'Auditing...' : 'Run Audit'}
+          {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Zap className="w-5 h-5 mr-2" />}
+          {loading ? t('audit.btn_auditing') : t('audit.btn_run_audit')}
         </Button>
       </div>
     </form>

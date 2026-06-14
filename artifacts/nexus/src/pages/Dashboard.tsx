@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Send, ShieldCheck, Activity, Cpu, CheckCircle, XCircle, FileSignature, X, Search } from "lucide-react";
 import { AuditForm } from "@/components/audit/AuditForm";
 import { AuditResult } from "@/components/audit/AuditResult";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [prompt, setPrompt] = useState("");
   const [activeTab, setActiveTab] = useState("agent");
@@ -129,12 +131,12 @@ export default function Dashboard() {
       <Navbar />
       
       <div className="container mx-auto px-6 pt-24 pb-12">
-        <h1 className="text-4xl font-serif font-bold mb-8">TerraIQ Executive Dashboard</h1>
+        <h1 className="text-4xl font-serif font-bold mb-8">{t('dashboard.title')}</h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="mb-8 grid grid-cols-3 w-[600px]">
-            <TabsTrigger value="inbox" className="font-mono text-xs uppercase tracking-widest"><ShieldCheck className="w-4 h-4 mr-2" /> Executive Inbox</TabsTrigger>
-            <TabsTrigger value="agent" className="font-mono text-xs uppercase tracking-widest"><Activity className="w-4 h-4 mr-2" /> Agent Control</TabsTrigger>
+            <TabsTrigger value="inbox" className="font-mono text-xs uppercase tracking-widest"><ShieldCheck className="w-4 h-4 mr-2" /> {t('dashboard.tab_inbox')}</TabsTrigger>
+            <TabsTrigger value="agent" className="font-mono text-xs uppercase tracking-widest"><Activity className="w-4 h-4 mr-2" /> {t('dashboard.tab_agent')}</TabsTrigger>
             <TabsTrigger value="audit" className="font-mono text-xs uppercase tracking-widest text-purple-400"><Search className="w-4 h-4 mr-2" /> AuditNexus</TabsTrigger>
           </TabsList>
 
@@ -142,14 +144,14 @@ export default function Dashboard() {
             <div className="max-w-2xl bg-card border border-border rounded-xl p-6 shadow-lg">
               <h2 className="text-2xl font-serif font-bold mb-4 flex items-center">
                 <Cpu className="w-6 h-6 mr-3 text-primary" />
-                TerraIQ Intelligence Hub
+                {t('dashboard.hub_title')}
               </h2>
               <div className="flex items-center gap-2 mb-6">
-                <span className="bg-purple-500/20 text-purple-400 text-[10px] font-mono px-2 py-1 rounded border border-purple-500/30">🧠 POWERED BY TERRAIQ</span>
-                <span className="bg-red-500/20 text-red-400 text-[10px] font-mono px-2 py-1 rounded border border-red-500/30">🕵️ SHADOWNET PROXIES ACTIVE</span>
+                <span className="bg-purple-500/20 text-purple-400 text-[10px] font-mono px-2 py-1 rounded border border-purple-500/30">{t('dashboard.powered_by')}</span>
+                <span className="bg-red-500/20 text-red-400 text-[10px] font-mono px-2 py-1 rounded border border-red-500/30">{t('dashboard.proxies_active')}</span>
               </div>
               <p className="text-muted-foreground font-mono text-sm mb-6">
-                Ask a question. The request will be securely routed to the TerraIQ backend. If market data is needed, ShadowNet will stealthily gather intelligence.
+                {t('dashboard.hub_desc')}
               </p>
 
               <div className="flex gap-4">
@@ -157,7 +159,7 @@ export default function Dashboard() {
                   type="text" 
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
-                  placeholder="e.g. Find a way to reduce harvesting fuel costs by 15%..."
+                  placeholder={t('dashboard.input_placeholder')}
                   className="flex-1 bg-background border border-border rounded-lg px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary transition-colors"
                   disabled={proposeMutation.isPending}
                 />
@@ -167,7 +169,7 @@ export default function Dashboard() {
                   className="bg-primary text-primary-foreground h-auto px-6"
                 >
                   {proposeMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 mr-2" />}
-                  {proposeMutation.isPending ? "Generating..." : "Propose"}
+                  {proposeMutation.isPending ? t('dashboard.btn_generating') : t('dashboard.btn_propose')}
                 </Button>
               </div>
 
@@ -175,8 +177,8 @@ export default function Dashboard() {
                 <div className="mt-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg flex items-start text-green-400">
                   <CheckCircle className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold font-mono text-sm mb-1">Proposal Submitted</h4>
-                    <p className="text-xs opacity-80">The agent has generated a formal decision proposal. It is now waiting in the Executive Inbox for the Trust Engine audit.</p>
+                    <h4 className="font-bold font-mono text-sm mb-1">{t('dashboard.proposal_submitted')}</h4>
+                    <p className="text-xs opacity-80">{t('dashboard.proposal_desc')}</p>
                   </div>
                 </div>
               )}
@@ -187,7 +189,7 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Inbox List */}
               <div className="lg:col-span-1 space-y-4">
-                <h3 className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-4">Pending & Audited Decisions</h3>
+                <h3 className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-4">{t('dashboard.inbox_list_title')}</h3>
                 {loadingDecisions ? (
                   <div className="flex items-center justify-center p-8"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
                 ) : decisions?.map((d: any) => (
@@ -199,7 +201,7 @@ export default function Dashboard() {
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-[10px] font-mono tracking-widest uppercase text-muted-foreground">{d.sourceAgent}</span>
                       <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${d.status === 'executed' ? 'bg-purple-500/20 text-purple-400' : d.status === 'validated' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'}`}>
-                        {d.status === 'executed' ? 'EXECUTED' : d.status === 'validated' ? 'AUDITED' : 'PENDING'}
+                        {d.status === 'executed' ? t('dashboard.status_executed') : d.status === 'validated' ? t('dashboard.status_audited') : t('dashboard.status_pending')}
                       </span>
                     </div>
                     <h4 className="font-bold text-sm truncate">{d.proposedAction}</h4>
@@ -218,17 +220,17 @@ export default function Dashboard() {
                         <span className="text-xs font-mono tracking-widest text-primary uppercase mb-2 block">{decisionDetails.decision.decisionType}</span>
                         <h2 className="text-3xl font-serif font-bold mb-4">{decisionDetails.decision.proposedAction}</h2>
                         <div className="bg-background border border-border p-4 rounded-lg font-mono text-sm text-muted-foreground">
-                          <p><strong className="text-foreground">Reasoning:</strong> {decisionDetails.decision.context?.reasoning}</p>
-                          <p className="mt-2"><strong className="text-foreground">Expected ROI:</strong> {decisionDetails.decision.context?.expectedROI}</p>
-                          <p className="mt-2"><strong className="text-foreground">Urgency:</strong> {decisionDetails.decision.context?.urgency}</p>
+                          <p><strong className="text-foreground">{t('dashboard.reasoning')}</strong> {decisionDetails.decision.context?.reasoning}</p>
+                          <p className="mt-2"><strong className="text-foreground">{t('dashboard.expected_roi')}</strong> {decisionDetails.decision.context?.expectedROI}</p>
+                          <p className="mt-2"><strong className="text-foreground">{t('dashboard.urgency')}</strong> {decisionDetails.decision.context?.urgency}</p>
                         </div>
                       </div>
 
                       {decisionDetails.decision.status === 'pending_audit' ? (
                         <div className="text-center p-12 border border-dashed border-border rounded-xl bg-background/50">
                           <ShieldCheck className="w-16 h-16 text-muted-foreground/30 mx-auto mb-6" />
-                          <h3 className="text-xl font-bold mb-2">Awaiting Trust Engine Audit</h3>
-                          <p className="text-muted-foreground font-mono text-sm mb-6 max-w-md mx-auto">This proposal has not been validated. Run the Nexus Trust Engine to analyze risks using GPT-4o before approving.</p>
+                          <h3 className="text-xl font-bold mb-2">{t('dashboard.awaiting_audit')}</h3>
+                          <p className="text-muted-foreground font-mono text-sm mb-6 max-w-md mx-auto">{t('dashboard.awaiting_audit_desc')}</p>
                           <Button 
                             size="lg" 
                             onClick={() => validateMutation.mutate(decisionDetails.decision.id)}
@@ -236,24 +238,24 @@ export default function Dashboard() {
                             className="bg-[hsl(var(--chart-4))] text-primary-foreground hover:bg-[hsl(var(--chart-4))]/90"
                           >
                             {validateMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ShieldCheck className="w-4 h-4 mr-2" />}
-                            {validateMutation.isPending ? "Auditing (GPT-4o running...)" : "Run Nexus Audit"}
+                            {validateMutation.isPending ? t('dashboard.btn_auditing') : t('dashboard.btn_run_audit')}
                           </Button>
                         </div>
                       ) : (
                         <div>
                           <div className={`p-6 rounded-xl border mb-8 flex items-center justify-between ${decisionDetails.trustScore.overallRisk === 'HIGH' ? 'bg-red-500/10 border-red-500/30' : decisionDetails.trustScore.overallRisk === 'MEDIUM' ? 'bg-yellow-500/10 border-yellow-500/30' : 'bg-green-500/10 border-green-500/30'}`}>
                             <div>
-                              <span className="text-xs font-mono tracking-widest uppercase opacity-70 block mb-1">Executive Verdict</span>
+                              <span className="text-xs font-mono tracking-widest uppercase opacity-70 block mb-1">{t('dashboard.executive_verdict')}</span>
                               <h3 className="text-2xl font-bold font-serif">{decisionDetails.trustScore.finalVerdict}</h3>
                               <p className="text-sm font-mono mt-2 opacity-80">{decisionDetails.trustScore.executiveSummary}</p>
                             </div>
                             <div className="text-right">
                               <div className="text-5xl font-bold font-serif">{decisionDetails.trustScore.overallScore}<span className="text-xl opacity-50">/100</span></div>
-                              <span className="text-xs font-mono tracking-widest uppercase opacity-70 block mt-1">Trust Score</span>
+                              <span className="text-xs font-mono tracking-widest uppercase opacity-70 block mt-1">{t('dashboard.trust_score')}</span>
                             </div>
                           </div>
 
-                          <h3 className="font-mono text-xs tracking-widest uppercase text-muted-foreground mb-4">Detailed Validation Findings</h3>
+                          <h3 className="font-mono text-xs tracking-widest uppercase text-muted-foreground mb-4">{t('dashboard.validation_findings')}</h3>
                           <div className="space-y-4 mb-8">
                             {decisionDetails.validations.map((v: any) => (
                               <div key={v.id} className="bg-background border border-border p-4 rounded-lg flex gap-4">
@@ -264,9 +266,9 @@ export default function Dashboard() {
                                   <div className="flex items-center gap-3 mb-2">
                                     <h4 className="font-bold text-sm">{v.module}</h4>
                                     <span className={`text-[9px] px-2 py-0.5 rounded uppercase font-mono tracking-widest ${v.riskLevel === 'HIGH' ? 'bg-red-500/20 text-red-400' : v.riskLevel === 'MEDIUM' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-green-500/20 text-green-400'}`}>
-                                      RISK: {v.riskLevel}
+                                      {t('dashboard.risk')} {v.riskLevel}
                                     </span>
-                                    <span className="text-[10px] font-mono text-muted-foreground ml-auto">CONFIDENCE: {v.confidenceScore}%</span>
+                                    <span className="text-[10px] font-mono text-muted-foreground ml-auto">{t('dashboard.confidence')} {v.confidenceScore}%</span>
                                   </div>
                                   <ul className="list-disc list-inside text-xs font-mono text-muted-foreground space-y-1">
                                     {v.findings.map((f: string, i: number) => <li key={i}>{f}</li>)}
@@ -285,7 +287,7 @@ export default function Dashboard() {
                                 onClick={() => executeMutation.mutate(decisionDetails.decision.id)}
                               >
                                 {executeMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <FileSignature className="w-4 h-4 mr-2" />}
-                                {executeMutation.isPending ? "Agrinexus Law Drafting..." : "APPROVE & DRAFT CONTRACT"}
+                                {executeMutation.isPending ? t('dashboard.btn_drafting') : t('dashboard.btn_approve_contract')}
                               </Button>
                             </div>
                           )}
@@ -295,9 +297,9 @@ export default function Dashboard() {
                               <div className="bg-purple-500/10 border border-purple-500/30 text-purple-400 p-4 rounded-lg flex items-center justify-between">
                                 <div className="flex items-center">
                                   <FileSignature className="w-5 h-5 mr-3" />
-                                  <span className="font-bold text-sm font-mono uppercase tracking-widest">Execution Complete</span>
+                                  <span className="font-bold text-sm font-mono uppercase tracking-widest">{t('dashboard.execution_complete')}</span>
                                 </div>
-                                <span className="text-xs">Contract stored in Agrinexus Law</span>
+                                <span className="text-xs">{t('dashboard.execution_desc')}</span>
                               </div>
                             </div>
                           )}
@@ -307,7 +309,7 @@ export default function Dashboard() {
                   )
                 ) : (
                   <div className="flex items-center justify-center h-[400px] border border-dashed border-border rounded-xl bg-background/50 text-muted-foreground font-mono text-sm">
-                    Select a decision from the inbox to review.
+                    {t('dashboard.select_decision')}
                   </div>
                 )}
               </div>

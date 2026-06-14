@@ -30,7 +30,10 @@ const fadeUp = {
   },
 };
 
+import { useTranslation } from 'react-i18next';
+
 export default function Home() {
+  const { t } = useTranslation();
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
   
@@ -69,20 +72,20 @@ export default function Home() {
           >
             <motion.div variants={fadeUp} className="mb-6 inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-mono tracking-widest text-primary uppercase">Core Systems Online</span>
+              <span className="text-xs font-mono tracking-widest text-primary uppercase">{t('home.core_online')}</span>
             </motion.div>
             
             <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight mb-8 leading-[1.1]">
-              ENTERPRISE INTELLIGENCE <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[hsl(var(--chart-4))]">OPERATING SYSTEM.</span>
+              {t('home.title_enterprise')} <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[hsl(var(--chart-4))]">{t('home.title_os')}</span>
             </motion.h1>
             
             <motion.p variants={fadeUp} className="text-lg md:text-xl text-muted-foreground font-mono max-w-3xl mx-auto mb-10 leading-relaxed">
-              A unified core powering independent applications. One central intelligence engine orchestrating operations, legal compliance, and market execution.
+              {t('home.subtitle')}
             </motion.p>
             
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-4">
               <Button size="lg" onClick={() => document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' })} className="h-14 px-8 font-mono text-sm tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_30px_-5px_hsl(var(--primary))] w-full sm:w-auto">
-                Explore Architecture <ArrowRight className="w-4 h-4 ml-2" />
+                {t('home.explore_architecture')} <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </motion.div>
           </motion.div>
@@ -99,18 +102,18 @@ export default function Home() {
             transition={{ duration: 0.7 }}
             className="text-center max-w-4xl mx-auto mb-20"
           >
-            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6">THE NEXUS CORE</h2>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6">{t('home.nexus_core')}</h2>
             <p className="text-muted-foreground font-mono text-lg">
-              The internal foundation. All data, logic, and validation happens here. It is the operating system upon which all our client applications are built.
+              {t('home.nexus_core_desc')}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24 max-w-6xl mx-auto">
             {[
-              { id: "DATA", name: "Data Cloud", desc: "Centralized graph and relational data.", icon: Database, color: "var(--chart-1)" },
-              { id: "LOGIC", name: "Decision Engine", desc: "AI models analyzing and proposing actions.", icon: Cpu, color: "var(--chart-5)" },
-              { id: "TRUST", name: "Audit Engine", desc: "Risk scoring and decision validation.", icon: ShieldCheck, color: "var(--chart-4)" },
-              { id: "FINANCE", name: "Strategy Engine", desc: "Forecasting and ROI calculations.", icon: Landmark, color: "var(--chart-2)" }
+              { id: "DATA", name: t('home.data_cloud'), desc: t('home.data_cloud_desc'), icon: Database, color: "var(--chart-1)" },
+              { id: "LOGIC", name: t('home.decision_engine'), desc: t('home.decision_engine_desc'), icon: Cpu, color: "var(--chart-5)" },
+              { id: "TRUST", name: t('home.audit_engine'), desc: t('home.audit_engine_desc'), icon: ShieldCheck, color: "var(--chart-4)" },
+              { id: "FINANCE", name: t('home.strategy_engine'), desc: t('home.strategy_engine_desc'), icon: Landmark, color: "var(--chart-2)" }
             ].map((module, i) => (
               <motion.div 
                 key={module.id}
@@ -125,7 +128,7 @@ export default function Home() {
                   <module.icon className="w-24 h-24" style={{ color: "hsl(var(--accent-color))" }} />
                 </div>
                 <div className="relative z-10">
-                  <span className="text-xs font-mono tracking-widest text-muted-foreground mb-4 block">{module.id} // INTERNAL LAYER</span>
+                  <span className="text-xs font-mono tracking-widest text-muted-foreground mb-4 block">{module.id} // {t('home.internal_layer')}</span>
                   <h3 className="text-xl font-bold font-serif mb-2 text-foreground">{module.name}</h3>
                   <p className="text-sm text-muted-foreground font-mono leading-relaxed">{module.desc}</p>
                 </div>
@@ -141,17 +144,17 @@ export default function Home() {
             className="text-center max-w-4xl mx-auto mb-16"
           >
             <Layers className="w-12 h-12 text-muted-foreground/30 mx-auto mb-6" />
-            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6">THE APPLICATIONS</h2>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6">{t('home.applications')}</h2>
             <p className="text-muted-foreground font-mono text-lg">
-              The client-facing SaaS products. Powered by Nexus Core.
+              {t('home.applications_desc')}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
              {[
-              { id: "APP 01", name: "TerraIQ", desc: "Operations & Intelligence portal. Full visibility over physical and digital assets.", icon: Activity, color: "var(--chart-1)", url: "https://www.terraiq.me" },
-              { id: "APP 02", name: "Agrinexus Law", desc: "Legal Intelligence. Automated contract drafting and regulatory compliance.", icon: Scale, color: "var(--chart-2)", url: "https://www.agrinexuslaw.com" },
-              { id: "APP 03", name: "FieldLot", desc: "Marketplace Execution. Dynamic trading, pricing, and procurement.", icon: Truck, color: "var(--chart-3)", url: "https://www.fieldlot.io" },
+              { id: "APP 01", name: "TerraIQ", desc: t('home.app_terraiq'), icon: Activity, color: "var(--chart-1)", url: "https://www.terraiq.me" },
+              { id: "APP 02", name: "Agrinexus Law", desc: t('home.app_agrinexus'), icon: Scale, color: "var(--chart-2)", url: "https://www.agrinexuslaw.com" },
+              { id: "APP 03", name: "FieldLot", desc: t('home.app_fieldlot'), icon: Truck, color: "var(--chart-3)", url: "https://www.fieldlot.io" },
             ].map((module, i) => (
               <motion.div 
                 key={module.id}
@@ -171,7 +174,7 @@ export default function Home() {
                   <p className="text-sm text-muted-foreground font-mono mb-8 leading-relaxed">{module.desc}</p>
                   <Button asChild variant="outline" className="font-mono text-xs tracking-widest uppercase border-[hsl(var(--accent-color))]/30 hover:bg-[hsl(var(--accent-color))]/10 text-foreground">
                     <a href={module.url} target="_blank" rel="noopener noreferrer">
-                      Access Portal <ArrowRight className="w-3 h-3 ml-2" />
+                      {t('home.access_portal')} <ArrowRight className="w-3 h-3 ml-2" />
                     </a>
                   </Button>
                 </div>
@@ -190,31 +193,31 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto mb-20"
           >
-            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6">THE VALIDATION LOOP</h2>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6">{t('home.validation_loop')}</h2>
             <p className="text-muted-foreground font-mono">
-              How a client application communicates with the internal core to execute a safe transaction.
+              {t('home.validation_loop_desc')}
             </p>
           </motion.div>
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-sm uppercase tracking-widest max-w-5xl mx-auto">
              <motion.div initial={{opacity:0, y:20}} whileInView={{opacity:1, y:0}} className="bg-card border border-border p-6 rounded-lg text-center flex-1 w-full">
-                <span className="text-[hsl(var(--chart-1))] block mb-2 font-bold">1. App</span>
-                <span className="text-xs text-muted-foreground">TerraIQ requests action</span>
+                <span className="text-[hsl(var(--chart-1))] block mb-2 font-bold">{t('home.step_1')}</span>
+                <span className="text-xs text-muted-foreground">{t('home.step_1_desc')}</span>
              </motion.div>
              <ArrowRight className="w-6 h-6 text-muted-foreground rotate-90 md:rotate-0" />
              <motion.div initial={{opacity:0, y:20}} whileInView={{opacity:1, y:0}} transition={{delay: 0.1}} className="bg-card border border-border p-6 rounded-lg text-center flex-1 w-full border-[hsl(var(--chart-5))]/50">
-                <span className="text-[hsl(var(--chart-5))] block mb-2 font-bold">2. Core</span>
-                <span className="text-xs text-muted-foreground">Decision Engine models</span>
+                <span className="text-[hsl(var(--chart-5))] block mb-2 font-bold">{t('home.step_2')}</span>
+                <span className="text-xs text-muted-foreground">{t('home.step_2_desc')}</span>
              </motion.div>
              <ArrowRight className="w-6 h-6 text-muted-foreground rotate-90 md:rotate-0" />
              <motion.div initial={{opacity:0, y:20}} whileInView={{opacity:1, y:0}} transition={{delay: 0.2}} className="bg-card border border-border p-6 rounded-lg text-center flex-1 w-full border-[hsl(var(--chart-4))]/50 shadow-[0_0_15px_hsl(var(--chart-4))/20]">
-                <span className="text-[hsl(var(--chart-4))] block mb-2 font-bold">3. Audit</span>
-                <span className="text-xs text-muted-foreground">Trust Engine validates risk</span>
+                <span className="text-[hsl(var(--chart-4))] block mb-2 font-bold">{t('home.step_3')}</span>
+                <span className="text-xs text-muted-foreground">{t('home.step_3_desc')}</span>
              </motion.div>
              <ArrowRight className="w-6 h-6 text-muted-foreground rotate-90 md:rotate-0" />
              <motion.div initial={{opacity:0, y:20}} whileInView={{opacity:1, y:0}} transition={{delay: 0.3}} className="bg-card border border-border p-6 rounded-lg text-center flex-1 w-full">
-                <span className="text-[hsl(var(--chart-3))] block mb-2 font-bold">4. Execution</span>
-                <span className="text-xs text-muted-foreground">App returns result</span>
+                <span className="text-[hsl(var(--chart-3))] block mb-2 font-bold">{t('home.step_4')}</span>
+                <span className="text-xs text-muted-foreground">{t('home.step_4_desc')}</span>
              </motion.div>
           </div>
         </div>

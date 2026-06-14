@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { Menu, X, ChevronRight, Activity } from "lucide-react";
+import { Menu, X, ChevronRight, Activity, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 export function Navbar() {
+  const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -41,12 +43,21 @@ export function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => i18n.changeLanguage(i18n.language === 'bg' ? 'en' : 'bg')}
+            className="font-mono text-xs tracking-widest uppercase border border-border/50 text-muted-foreground hover:text-foreground"
+          >
+            <Globe className="w-3 h-3 mr-2" />
+            {i18n.language === 'bg' ? 'EN' : 'BG'}
+          </Button>
           <Link href="/hub" className="text-sm font-mono text-primary hover:text-foreground transition-colors tracking-widest uppercase">Hub</Link>
           <Button asChild variant="ghost" className="font-mono text-xs tracking-widest uppercase">
             <Link href="/hub">Sign In</Link>
           </Button>
           <Button asChild className="font-mono text-xs tracking-widest uppercase bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_-5px_hsl(var(--primary))]">
-            <Link href="/dashboard">Executive Dashboard <ChevronRight className="w-4 h-4 ml-2" /></Link>
+            <Link href="/dashboard">{t('nav.dashboard')} <ChevronRight className="w-4 h-4 ml-2" /></Link>
           </Button>
         </div>
 
