@@ -149,9 +149,9 @@ export default function Home() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
              {[
-              { id: "APP 01", name: "TerraIQ", desc: "Operations & Intelligence portal. Full visibility over physical and digital assets.", icon: Activity, color: "var(--chart-1)" },
-              { id: "APP 02", name: "Agrinexus Law", desc: "Legal Intelligence. Automated contract drafting and regulatory compliance.", icon: Scale, color: "var(--chart-2)" },
-              { id: "APP 03", name: "FieldLot", desc: "Marketplace Execution. Dynamic trading, pricing, and procurement.", icon: Truck, color: "var(--chart-3)" },
+              { id: "APP 01", name: "TerraIQ", desc: "Operations & Intelligence portal. Full visibility over physical and digital assets.", icon: Activity, color: "var(--chart-1)", url: "https://www.terraiq.me" },
+              { id: "APP 02", name: "Agrinexus Law", desc: "Legal Intelligence. Automated contract drafting and regulatory compliance.", icon: Scale, color: "var(--chart-2)", url: "https://www.agrinexuslaw.com" },
+              { id: "APP 03", name: "FieldLot", desc: "Marketplace Execution. Dynamic trading, pricing, and procurement.", icon: Truck, color: "var(--chart-3)", url: "https://www.fieldlot.io" },
             ].map((module, i) => (
               <motion.div 
                 key={module.id}
@@ -169,8 +169,10 @@ export default function Home() {
                   <span className="text-xs font-mono tracking-widest text-muted-foreground mb-4 block">{module.id}</span>
                   <h3 className="text-3xl font-bold font-serif mb-4 group-hover:text-[hsl(var(--accent-color))] transition-colors">{module.name}</h3>
                   <p className="text-sm text-muted-foreground font-mono mb-8 leading-relaxed">{module.desc}</p>
-                  <Button variant="outline" className="font-mono text-xs tracking-widest uppercase border-[hsl(var(--accent-color))]/30 hover:bg-[hsl(var(--accent-color))]/10">
-                    Access Portal <ArrowRight className="w-3 h-3 ml-2" />
+                  <Button asChild variant="outline" className="font-mono text-xs tracking-widest uppercase border-[hsl(var(--accent-color))]/30 hover:bg-[hsl(var(--accent-color))]/10 text-foreground">
+                    <a href={module.url} target="_blank" rel="noopener noreferrer">
+                      Access Portal <ArrowRight className="w-3 h-3 ml-2" />
+                    </a>
                   </Button>
                 </div>
               </motion.div>
