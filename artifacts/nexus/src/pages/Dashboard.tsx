@@ -50,16 +50,23 @@ export default function Dashboard() {
   const proposeMutation = useMutation({
     mutationFn: async (text: string) => {
       await new Promise(r => setTimeout(r, 1500));
+      const isBg = /[а-яА-Я]/.test(text);
+      
       const newDecision = {
         id: Date.now(),
         sourceAgent: "TERRA-IQ",
         status: "pending_audit",
-        proposedAction: "Strategic Proposal: " + text.substring(0, 30) + "...",
-        decisionType: "OPERATIONAL_STRATEGY",
+        language: isBg ? 'bg' : 'en',
+        proposedAction: isBg 
+          ? "Стратегическо предложение: " + text.substring(0, 30) + "..." 
+          : "Strategic Proposal: " + text.substring(0, 30) + "...",
+        decisionType: isBg ? "ОПЕРАТИВНА_СТРАТЕГИЯ" : "OPERATIONAL_STRATEGY",
         context: {
-          reasoning: "ShadowNet intelligence combined with TerraIQ predictive models strongly suggest this action to optimize operational bandwidth and minimize overhead.",
-          expectedROI: "High yield, approx +18.5% efficiency",
-          urgency: "HIGH"
+          reasoning: isBg 
+            ? "Разузнавателните данни от ShadowNet в комбинация с предиктивните модели на TerraIQ силно препоръчват това действие за оптимизация на работната ширина и минимизиране на режийните разходи."
+            : "ShadowNet intelligence combined with TerraIQ predictive models strongly suggest this action to optimize operational bandwidth and minimize overhead.",
+          expectedROI: isBg ? "Висока доходност, приблизително +18.5% ефективност" : "High yield, approx +18.5% efficiency",
+          urgency: isBg ? "ВИСОКА" : "HIGH"
         }
       };
       const existing = JSON.parse(localStorage.getItem('mockDecisions') || "[]");
@@ -84,13 +91,29 @@ export default function Dashboard() {
       await new Promise(r => setTimeout(r, 2000));
       const details = JSON.parse(localStorage.getItem('mockDetails') || "{}");
       if (details[id]) {
+        const isBg = details[id].decision.language === 'bg';
         details[id].decision.status = "validated";
         details[id].trustScore = {
-          overallRisk: "LOW", finalVerdict: "APPROVED", executiveSummary: "Automated analysis found no compliance breaches.", overallScore: 92
+          overallRisk: isBg ? "НИСЪК" : "LOW", 
+          finalVerdict: isBg ? "ОДОБРЕНО" : "APPROVED", 
+          executiveSummary: isBg ? "Автоматизираният анализ не откри нарушения на правилата." : "Automated analysis found no compliance breaches.", 
+          overallScore: 92
         };
         details[id].validations = [
-          { id: 1, module: "Legal Framework", riskLevel: "LOW", confidenceScore: 98, findings: ["Terms align with enterprise guidelines"] },
-          { id: 2, module: "Market Strategy", riskLevel: "LOW", confidenceScore: 89, findings: ["Positive ROI projected"] }
+          { 
+            id: 1, 
+            module: isBg ? "Правна Рамка" : "Legal Framework", 
+            riskLevel: isBg ? "НИСЪК" : "LOW", 
+            confidenceScore: 98, 
+            findings: isBg ? ["Условията отговарят на корпоративните насоки"] : ["Terms align with enterprise guidelines"] 
+          },
+          { 
+            id: 2, 
+            module: isBg ? "Пазарна Стратегия" : "Market Strategy", 
+            riskLevel: isBg ? "НИСЪК" : "LOW", 
+            confidenceScore: 89, 
+            findings: isBg ? ["Прогнозирана е положителна възвръщаемост"] : ["Positive ROI projected"] 
+          }
         ];
         localStorage.setItem('mockDetails', JSON.stringify(details));
         
@@ -110,14 +133,26 @@ export default function Dashboard() {
     mutationFn: async (id: number) => {
       await new Promise(r => setTimeout(r, 1500));
       const details = JSON.parse(localStorage.getItem('mockDetails') || "{}");
+      let isBg = false;
       if (details[id]) {
+        isBg = details[id].decision.language === 'bg';
         details[id].decision.status = "executed";
         localStorage.setItem('mockDetails', JSON.stringify(details));
         const decisions = JSON.parse(localStorage.getItem('mockDecisions') || "[]");
         const d = decisions.find((x: any) => x.id === id);
         if (d) { d.status = "executed"; localStorage.setItem('mockDecisions', JSON.stringify(decisions)); }
       }
-      return { contract: { title: "Executive Order & Implementation Contract", content: "## Summary\n\nThis binding document authorizes the immediate execution of the strategic proposal.\n\n### Clauses\n\n1. The system shall dynamically allocate resources.\n2. All agents are required to comply with AuditNexus guidelines.\n\n**Signatures**\nSystem auto-signed via TerraIQ cryptographic key.", totalAmount: 150000 } };
+      
+      const contractContentBg = "## Резюме\n\nТози обвързващ документ упълномощава незабавното изпълнение на стратегическото предложение.\n\n### Клаузи\n\n1. Системата ще разпредели ресурсите динамично.\n2. Всички агенти са длъжни да спазват насоките на AuditNexus.\n\n**Подписи**\nСистемата е автоматично подписана чрез криптографски ключ на TerraIQ.";
+      const contractContentEn = "## Summary\n\nThis binding document authorizes the immediate execution of the strategic proposal.\n\n### Clauses\n\n1. The system shall dynamically allocate resources.\n2. All agents are required to comply with AuditNexus guidelines.\n\n**Signatures**\nSystem auto-signed via TerraIQ cryptographic key.";
+      
+      return { 
+        contract: { 
+          title: isBg ? "Изпълнителна Заповед и Договор за Изпълнение" : "Executive Order & Implementation Contract", 
+          content: isBg ? contractContentBg : contractContentEn, 
+          totalAmount: 150000 
+        } 
+      };
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["decisions"] });
@@ -243,7 +278,7 @@ export default function Dashboard() {
                         </div>
                       ) : (
                         <div>
-                          <div className={`p-6 rounded-xl border mb-8 flex items-center justify-between ${decisionDetails.trustScore.overallRisk === 'HIGH' ? 'bg-red-500/10 border-red-500/30' : decisionDetails.trustScore.overallRisk === 'MEDIUM' ? 'bg-yellow-500/10 border-yellow-500/30' : 'bg-green-500/10 border-green-500/30'}`}>
+                          <div className={`p-6 rounded-xl border mb-8 flex items-center justify-between ${decisionDetails.trustScore.overallRisk === 'HIGH' || decisionDetails.trustScore.overallRisk === 'ВИСОК' ? 'bg-red-500/10 border-red-500/30' : decisionDetails.trustScore.overallRisk === 'MEDIUM' || decisionDetails.trustScore.overallRisk === 'СРЕДЕН' ? 'bg-yellow-500/10 border-yellow-500/30' : 'bg-green-500/10 border-green-500/30'}`}>
                             <div>
                               <span className="text-xs font-mono tracking-widest uppercase opacity-70 block mb-1">{t('dashboard.executive_verdict')}</span>
                               <h3 className="text-2xl font-bold font-serif">{decisionDetails.trustScore.finalVerdict}</h3>
@@ -260,12 +295,12 @@ export default function Dashboard() {
                             {decisionDetails.validations.map((v: any) => (
                               <div key={v.id} className="bg-background border border-border p-4 rounded-lg flex gap-4">
                                 <div className="flex-shrink-0 pt-1">
-                                  {v.riskLevel === 'HIGH' ? <XCircle className="w-5 h-5 text-red-400" /> : <CheckCircle className="w-5 h-5 text-green-400" />}
+                                  {v.riskLevel === 'HIGH' || v.riskLevel === 'ВИСОК' ? <XCircle className="w-5 h-5 text-red-400" /> : <CheckCircle className="w-5 h-5 text-green-400" />}
                                 </div>
                                 <div>
                                   <div className="flex items-center gap-3 mb-2">
                                     <h4 className="font-bold text-sm">{v.module}</h4>
-                                    <span className={`text-[9px] px-2 py-0.5 rounded uppercase font-mono tracking-widest ${v.riskLevel === 'HIGH' ? 'bg-red-500/20 text-red-400' : v.riskLevel === 'MEDIUM' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-green-500/20 text-green-400'}`}>
+                                    <span className={`text-[9px] px-2 py-0.5 rounded uppercase font-mono tracking-widest ${v.riskLevel === 'HIGH' || v.riskLevel === 'ВИСОК' ? 'bg-red-500/20 text-red-400' : v.riskLevel === 'MEDIUM' || v.riskLevel === 'СРЕДЕН' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-green-500/20 text-green-400'}`}>
                                       {t('dashboard.risk')} {v.riskLevel}
                                     </span>
                                     <span className="text-[10px] font-mono text-muted-foreground ml-auto">{t('dashboard.confidence')} {v.confidenceScore}%</span>
