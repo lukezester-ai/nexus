@@ -3,7 +3,7 @@ import { useLocation, useSearch } from "wouter";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useCreateProposal, useGetAudit } from "@workspace/api-client-react";
+import { useCreateProposal, useGetAudit, getGetAuditQueryKey } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -45,7 +45,7 @@ export function NewProposal() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { data: audit } = useGetAudit(parsedAuditId as number, {
-    query: { enabled: !!parsedAuditId }
+    query: { queryKey: getGetAuditQueryKey(parsedAuditId as number), enabled: !!parsedAuditId }
   });
 
   const form = useForm<FormValues>({

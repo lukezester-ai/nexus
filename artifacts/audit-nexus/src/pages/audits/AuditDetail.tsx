@@ -1,4 +1,4 @@
-import { useGetAudit } from "@workspace/api-client-react";
+import { useGetAudit, getGetAuditQueryKey } from "@workspace/api-client-react";
 import { useParams, Link } from "wouter";
 import { ArrowLeft, RefreshCw, FileText, CheckCircle2, AlertTriangle, ExternalLink, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ export function AuditDetail() {
   const auditId = Number(id);
   const { data: audit, isLoading, refetch } = useGetAudit(auditId, {
     query: {
+      queryKey: getGetAuditQueryKey(auditId),
       enabled: !!auditId,
       refetchInterval: (data) => 
         (data?.state?.data?.status === 'pending' || data?.state?.data?.status === 'running') ? 2000 : false,

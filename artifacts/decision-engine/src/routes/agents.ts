@@ -2,7 +2,7 @@ import { Router, type IRouter } from "express";
 import { db, decisionsTable } from "@workspace/db";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 const router: IRouter = Router();
 
@@ -63,8 +63,8 @@ You must output a highly specific, formal proposed corporate action that solves 
         body: JSON.stringify({ query: parsed.data.prompt, farm_id: "farm_1" })
       });
       if (res.ok) {
-        const data = await res.json();
-        recommendation = data.recommendation;
+        const data = (await res.json()) as { recommendation?: string };
+        recommendation = data.recommendation ?? "";
       } else {
         console.warn("TerraIQ API returned error, falling back to LLM", await res.text());
       }

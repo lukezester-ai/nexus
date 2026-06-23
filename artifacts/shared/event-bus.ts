@@ -1,7 +1,7 @@
 import amqp from 'amqplib';
 import { v4 as uuidv4 } from 'uuid';
 
-let connection: amqp.Connection | null = null;
+let connection: amqp.ChannelModel | null = null;
 let channel: amqp.Channel | null = null;
 
 const host = process.env.RABBITMQ_HOST || 'localhost:5672';
