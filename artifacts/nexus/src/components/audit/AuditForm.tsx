@@ -41,7 +41,7 @@ export function AuditForm({ onAuditComplete }: AuditFormProps) {
   };
   
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl bg-card border border-border p-8 rounded-xl shadow-lg">
+    <form onSubmit={handleSubmit} className="w-full max-w-2xl bg-card border border-border p-6 rounded-xl shadow-lg sm:p-8">
       <h2 className="text-3xl font-serif font-bold mb-4 flex items-center justify-center">
         <Search className="w-8 h-8 mr-3 text-primary" />
         {t('audit.new_audit')}
@@ -50,20 +50,20 @@ export function AuditForm({ onAuditComplete }: AuditFormProps) {
         {t('audit.audit_desc')}
       </p>
 
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row">
         <input
           type="url"
           required
           placeholder={t('audit.input_placeholder')}
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          className="flex-1 bg-background border border-border rounded-lg px-4 py-4 font-mono text-sm focus:outline-none focus:border-primary transition-colors text-center text-lg"
+          className="min-w-0 flex-1 bg-background border border-border rounded-lg px-4 py-4 font-mono text-sm focus:outline-none focus:border-primary transition-colors text-center sm:text-lg"
           disabled={loading}
         />
         <Button 
           type="submit" 
           disabled={loading || !url} 
-          className="bg-purple-600 text-white hover:bg-purple-700 h-auto px-8"
+          className="h-auto bg-purple-600 px-8 text-white hover:bg-purple-700"
         >
           {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Zap className="w-5 h-5 mr-2" />}
           {loading ? t('audit.btn_auditing') : t('audit.btn_run_audit')}
