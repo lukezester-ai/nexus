@@ -169,10 +169,10 @@ export default function Dashboard() {
         <h1 className="text-4xl font-serif font-bold mb-8">{t('dashboard.title')}</h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="mb-8 grid grid-cols-3 w-[600px]">
-            <TabsTrigger value="inbox" className="font-mono text-xs uppercase tracking-widest"><ShieldCheck className="w-4 h-4 mr-2" /> {t('dashboard.tab_inbox')}</TabsTrigger>
-            <TabsTrigger value="agent" className="font-mono text-xs uppercase tracking-widest"><Activity className="w-4 h-4 mr-2" /> {t('dashboard.tab_agent')}</TabsTrigger>
-            <TabsTrigger value="audit" className="font-mono text-xs uppercase tracking-widest text-purple-400"><Search className="w-4 h-4 mr-2" /> AuditNexus</TabsTrigger>
+          <TabsList className="mb-8 grid w-full max-w-2xl grid-cols-3">
+            <TabsTrigger value="inbox" className="min-w-0 font-mono text-[10px] uppercase tracking-widest sm:text-xs"><ShieldCheck className="mr-1 h-4 w-4 shrink-0 sm:mr-2" /> <span className="truncate">{t('dashboard.tab_inbox')}</span></TabsTrigger>
+            <TabsTrigger value="agent" className="min-w-0 font-mono text-[10px] uppercase tracking-widest sm:text-xs"><Activity className="mr-1 h-4 w-4 shrink-0 sm:mr-2" /> <span className="truncate">{t('dashboard.tab_agent')}</span></TabsTrigger>
+            <TabsTrigger value="audit" className="min-w-0 font-mono text-[10px] uppercase tracking-widest text-purple-400 sm:text-xs"><Search className="mr-1 h-4 w-4 shrink-0 sm:mr-2" /> <span className="truncate">AuditNexus</span></TabsTrigger>
           </TabsList>
 
           <TabsContent value="agent">
