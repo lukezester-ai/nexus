@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, ArrowUpRight, Cpu, Scale, Truck, Target, Landmark, Database, Zap, Activity, Network, ShieldCheck, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import agriNexusImg from "@/assets/images/agrinexus-law.png";
 import fieldLotImg from "@/assets/images/fieldlot.png";
 import auditNexusImg from "@/assets/images/auditnexus.png";
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -21,7 +21,7 @@ const staggerContainer = {
   },
 };
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 

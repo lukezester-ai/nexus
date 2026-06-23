@@ -2,7 +2,7 @@ import { Router, type IRouter } from "express";
 import { db, decisionsTable } from "@workspace/db";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 const router: IRouter = Router();
 

@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import { eq, desc } from "drizzle-orm";
 import { db, decisionsTable, validationsTable, trustScoresTable, contractsTable } from "@workspace/db";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 import { runAuditModule } from "../services/ai-evaluator";
 import { draftLegalContract } from "../services/legal-agent";

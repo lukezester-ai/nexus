@@ -1,4 +1,4 @@
-import { useGetClient } from "@workspace/api-client-react";
+import { useGetClient, getGetClientQueryKey } from "@workspace/api-client-react";
 import { useParams, Link } from "wouter";
 import { ArrowLeft, Building, Mail, Phone, Globe, Briefcase, FileText, CheckCircle2, Search, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ export function ClientDetail() {
   const clientId = Number(id);
   
   const { data: client, isLoading } = useGetClient(clientId, {
-    query: { enabled: !!clientId }
+    query: { queryKey: getGetClientQueryKey(clientId), enabled: !!clientId }
   });
 
   if (isLoading || !client) {

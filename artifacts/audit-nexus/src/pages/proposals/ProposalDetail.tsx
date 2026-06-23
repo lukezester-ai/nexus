@@ -1,4 +1,4 @@
-import { useGetProposal, useUpdateProposal, useCreateContract } from "@workspace/api-client-react";
+import { useGetProposal, useUpdateProposal, useCreateContract, getGetProposalQueryKey } from "@workspace/api-client-react";
 import { useParams, Link, useLocation } from "wouter";
 import { ArrowLeft, FileSignature, CheckCircle, XCircle, Send, Calendar, User, FileText, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ export function ProposalDetail() {
   const { toast } = useToast();
   
   const { data: proposal, isLoading, refetch } = useGetProposal(proposalId, {
-    query: { enabled: !!proposalId }
+    query: { queryKey: getGetProposalQueryKey(proposalId), enabled: !!proposalId }
   });
   
   const updateProposal = useUpdateProposal();

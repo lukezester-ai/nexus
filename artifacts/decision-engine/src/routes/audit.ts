@@ -28,7 +28,8 @@ router.post("/audit", async (req, res) => {
   try {
     const { url } = req.body;
     if (!url) {
-      return res.status(400).json({ error: "URL is required" });
+      res.status(400).json({ error: "URL is required" });
+      return;
     }
     
     // Create saga state just for tracking
@@ -58,7 +59,8 @@ router.get("/audit/:id", async (req, res) => {
     const { id } = req.params;
     const [audit] = await db.select().from(auditsTable).where(eq(auditsTable.id, id as string));
     if (!audit) {
-      return res.status(404).json({ error: "Audit not found" });
+      res.status(404).json({ error: "Audit not found" });
+      return;
     }
     
     const tasks = await db.select().from(auditTasksTable).where(eq(auditTasksTable.auditId, id as string));

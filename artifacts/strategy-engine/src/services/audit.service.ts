@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { db } from '@workspace/db';
-import { auditsTable, auditTasksTable } from '@workspace/db/src/schema/audits';
+import { auditsTable, auditTasksTable } from '@workspace/db/schema';
 import { readabilityScan } from './audit-engine/readability.scanner';
 import { answerReadyParse } from './audit-engine/answer-ready.parser';
 import { trustAuthorityAnalyze } from './audit-engine/trust-authority.analyzer';
@@ -28,7 +28,7 @@ export class AuditService {
       platform: this.scoring.scorePlatform(platform)
     };
     
-    const proposal = generateProposal(scored);
+    const proposal = await generateProposal(scored);
 
     // Save to database
     const [insertedAudit] = await db.insert(auditsTable).values({

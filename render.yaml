@@ -3,11 +3,11 @@ services:
     name: nexus-api
     env: node
     plan: free
-    buildCommand: npm install -g pnpm && pnpm install && cd artifacts/nexus && pnpm build && cd ../api-server && pnpm build
-    startCommand: cd artifacts/api-server && pnpm start
+    buildCommand: npm install -g pnpm@9.15.4 && pnpm install --no-frozen-lockfile && pnpm --filter @workspace/nexus run build && pnpm --filter @workspace/decision-engine run build
+    startCommand: node --enable-source-maps artifacts/decision-engine/dist/index.mjs
     envVars:
       - key: NODE_VERSION
-        value: 20
+        value: 22
       - key: DATABASE_URL
         sync: false
       - key: OPENAI_API_KEY

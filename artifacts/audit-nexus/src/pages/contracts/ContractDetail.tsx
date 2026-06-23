@@ -1,4 +1,4 @@
-import { useGetContract, useUpdateContract } from "@workspace/api-client-react";
+import { useGetContract, useUpdateContract, getGetContractQueryKey } from "@workspace/api-client-react";
 import { useParams, Link } from "wouter";
 import { ArrowLeft, FileSignature, Download, Building, Calendar, DollarSign, CheckCircle2, PlayCircle, Terminal, CreditCard, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ export function ContractDetail() {
   const [checkingOut, setCheckingOut] = useState(false);
 
   const { data: contract, isLoading, refetch } = useGetContract(contractId, {
-    query: { enabled: !!contractId }
+    query: { queryKey: getGetContractQueryKey(contractId), enabled: !!contractId }
   });
 
   const updateContract = useUpdateContract();

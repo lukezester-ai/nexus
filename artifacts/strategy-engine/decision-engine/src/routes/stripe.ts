@@ -85,7 +85,8 @@ router.post('/stripe/checkout', async (req, res) => {
       });
       resolvedPriceId = price.id;
     } else {
-      return res.status(400).json({ error: 'Provide either priceId or contractAmount' });
+      res.status(400).json({ error: 'Provide either priceId or contractAmount' });
+      return;
     }
 
     const session = await stripe.checkout.sessions.create({
