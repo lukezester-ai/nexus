@@ -483,11 +483,11 @@ const AppCard = ({
 
         {/* CTA Button */}
         <div>
-          <button className={['group/btn flex items-center gap-2.5 h-9 px-5 border rounded-lg text-[11px] font-bold font-mono tracking-widest uppercase', 'transition-all duration-200 ease-out outline-none', ACCENT_BUTTON[accentColor]].join(' ')}>
+          <a href="/hub" className={['group/btn flex items-center gap-2.5 h-9 px-5 border rounded-lg text-[11px] font-bold font-mono tracking-widest uppercase', 'transition-all duration-200 ease-out outline-none', ACCENT_BUTTON[accentColor]].join(' ')}>
             
             <span>Access Portal</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 ease-out group-hover/btn:translate-x-1" />
-          </button>
+          </a>
         </div>
       </div>
 

@@ -27,13 +27,13 @@ export default function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#0a0c10] text-white">
       <NexusHero />
-      <LiveMetricsStrip />
-      <AppPreviewsSection />
-      <ValidationLoopSection />
-      <NexusEcoSocialProof />
-      <NexusPricing />
-      <Roadmap />
-      <NexusFooter />
+      <section id="metrics"><LiveMetricsStrip /></section>
+      <section id="apps"><AppPreviewsSection /></section>
+      <section id="validation"><ValidationLoopSection /></section>
+      <section id="proof"><NexusEcoSocialProof /></section>
+      <section id="pricing"><NexusPricing /></section>
+      <section id="roadmap"><Roadmap /></section>
+      <section id="contact"><NexusFooter /></section>
     </main>
   );
 }

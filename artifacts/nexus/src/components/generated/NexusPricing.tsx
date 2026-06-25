@@ -203,11 +203,11 @@ export const NexusPricing: React.FC = () => {
               </ul>
 
               {/* CTA */}
-              <button className={cn('w-full py-3.5 px-6 rounded-xl font-black text-xs uppercase tracking-[0.18em] flex items-center justify-center gap-2 transition-all ease-out', 'duration-150', tier.accentColor === 'cyan' ? 'bg-cyan-400 text-[#080b12] hover:bg-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.25)] active:scale-[0.98]' : tier.accentColor === 'purple' ? 'bg-transparent border border-purple-500/50 text-purple-400 hover:bg-purple-500/10 hover:border-purple-400 active:scale-[0.98]' : 'bg-transparent border border-[#2a3448] text-[#c4cdd8] hover:bg-[#151c2a] hover:border-[#3a4560] hover:text-white active:scale-[0.98]')}>
+              <a href="mailto:contact@nexuseco.io?subject=NexusECO%20Plan" className={cn('w-full py-3.5 px-6 rounded-xl font-black text-xs uppercase tracking-[0.18em] flex items-center justify-center gap-2 transition-all ease-out', 'duration-150', tier.accentColor === 'cyan' ? 'bg-cyan-400 text-[#080b12] hover:bg-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.25)] active:scale-[0.98]' : tier.accentColor === 'purple' ? 'bg-transparent border border-purple-500/50 text-purple-400 hover:bg-purple-500/10 hover:border-purple-400 active:scale-[0.98]' : 'bg-transparent border border-[#2a3448] text-[#c4cdd8] hover:bg-[#151c2a] hover:border-[#3a4560] hover:text-white active:scale-[0.98]')}>
               
                 <span>{tier.cta}</span>
                 <ArrowRight size={14} className="transition-transform duration-150 group-hover:translate-x-0.5" />
-              </button>
+              </a>
             </div>
           </motion.div>)}
       </div>

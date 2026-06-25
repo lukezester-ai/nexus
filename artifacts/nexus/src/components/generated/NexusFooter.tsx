@@ -10,64 +10,64 @@ import { Activity, Linkedin, Twitter, Github, MapPin, Mail, Globe, ArrowRight } 
 
 const SOCIAL_LINKS = [{
   icon: Linkedin,
-  href: '#',
+  href: 'https://www.linkedin.com/company/nexuseco',
   label: 'LinkedIn'
 }, {
   icon: Twitter,
-  href: '#',
+  href: 'https://x.com/nexuseco',
   label: 'X (Twitter)'
 }, {
   icon: Github,
-  href: '#',
+  href: 'https://github.com/lukezester-ai/nexus',
   label: 'GitHub'
 }];
 const APPLICATION_LINKS = [{
   name: '01. TerraIQ',
-  href: '#'
+  href: '#apps'
 }, {
   name: '02. AgriNexus Law',
-  href: '#'
+  href: '#apps'
 }, {
   name: '03. FieldLot',
-  href: '#'
+  href: '#apps'
 }, {
   name: '04. AuditNexus',
-  href: '#'
+  href: '#apps'
 }];
 const PLATFORM_LINKS = [{
   name: 'Nexus Core',
-  href: '#'
+  href: '#metrics'
 }, {
   name: 'Decision Engine',
-  href: '#'
+  href: '#validation'
 }, {
   name: 'Audit Engine',
-  href: '#'
+  href: '/dashboard'
 }, {
   name: 'Strategy Engine',
-  href: '#'
+  href: '#roadmap'
 }, {
   name: 'Executive Dashboard',
-  href: '#'
+  href: '/dashboard'
 }, {
   name: 'HUB',
-  href: '#'
+  href: '/hub'
 }];
 const COMPANY_LINKS = [{
   name: 'About',
-  href: '#'
+  href: '#proof'
 }, {
   name: 'Roadmap',
-  href: '#'
+  href: '#roadmap'
 }, {
   name: 'Careers',
-  href: '#'
+  href: 'mailto:contact@nexuseco.io?subject=Careers'
 }, {
   name: 'Press',
-  href: '#'
+  href: 'mailto:contact@nexuseco.io?subject=Press'
 }, {
   name: 'Contact',
-  href: '#'
+  href: '#contact'
 }];
 const CONTACT_INFO = [{
   icon: MapPin,
@@ -81,13 +81,13 @@ const CONTACT_INFO = [{
 }];
 const LEGAL_LINKS = [{
   name: 'PRIVACY POLICY',
-  href: '#'
+  href: '#contact'
 }, {
   name: 'TERMS OF SERVICE',
-  href: '#'
+  href: '#contact'
 }, {
   name: 'GDPR',
-  href: '#'
+  href: '#contact'
 }];
 const COLUMN_HEADING_CLASS = 'text-[10px] font-bold text-[#00e5ff] tracking-[0.22em] uppercase font-mono leading-none mb-6';
 const NAV_LINK_CLASS = 'text-[13px] text-white/60 font-mono leading-[1.6] hover:text-[#00e5ff] hover:translate-x-1 transition-all duration-150 ease-out inline-block whitespace-nowrap';

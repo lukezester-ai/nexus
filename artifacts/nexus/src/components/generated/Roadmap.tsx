@@ -349,10 +349,10 @@ export const Roadmap: React.FC = () => {
         delay: 0.4
       }} className="mt-28 text-center">
           
-          <button className="group relative inline-flex items-center gap-2.5 px-8 py-3.5 rounded-lg border border-white/10 bg-white/[0.03] text-white transition-all duration-200 hover:bg-cyan-500/[0.07] hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(0,229,255,0.08)]">
+          <a href="mailto:contact@nexuseco.io?subject=NexusECO%20Feature%20Suggestion" className="group relative inline-flex items-center gap-2.5 px-8 py-3.5 rounded-lg border border-white/10 bg-white/[0.03] text-white transition-all duration-200 hover:bg-cyan-500/[0.07] hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(0,229,255,0.08)]">
             <span className="font-bold tracking-widest text-[11px] uppercase">Suggest a Feature</span>
             <MessageSquare className="w-3.5 h-3.5 text-cyan-400 transition-transform duration-200 group-hover:translate-x-0.5" />
-          </button>
+          </a>
           <p className="mt-5 text-white/25 text-[11px] font-mono tracking-widest uppercase">
             We build with our clients. Share what you need.
           </p>

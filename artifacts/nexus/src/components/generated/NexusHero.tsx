@@ -23,19 +23,19 @@ interface BadgeItem {
 const NAV_LINKS: NavItem[] = [{
   id: '01',
   label: 'TerraIQ',
-  href: '#'
+  href: '#apps'
 }, {
   id: '02',
   label: 'AgriNexus',
-  href: '#'
+  href: '#apps'
 }, {
   id: '03',
   label: 'FieldLot',
-  href: '#'
+  href: '#apps'
 }, {
   id: '04',
   label: 'AuditNexus',
-  href: '#'
+  href: '#apps'
 }];
 const STATS: StatItem[] = [{
   label: 'ACTIVE FUNCTIONS',
@@ -140,17 +140,17 @@ const Navbar = () => {
               <Globe className="w-4 h-4" />
               <span className="text-[11px] font-mono">BG</span>
             </button>
-            <button className="text-[11px] font-mono text-cyan-400 hover:text-cyan-300 transition-colors duration-150">
+            <a href="/hub" className="text-[11px] font-mono text-cyan-400 hover:text-cyan-300 transition-colors duration-150">
               HUB
-            </button>
-            <button className="text-[11px] font-bold tracking-wide text-white/80 hover:text-white transition-colors duration-150">
+            </a>
+            <a href="/hub" className="text-[11px] font-bold tracking-wide text-white/80 hover:text-white transition-colors duration-150">
               SIGN IN
-            </button>
+            </a>
           </div>
-          <button className="h-9 px-5 bg-cyan-500 hover:bg-cyan-600 text-[#0a0c10] text-[11px] font-black font-mono tracking-[0.08em] rounded-[3px] transition-colors duration-150 flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.25)]">
+          <a href="/dashboard" className="h-9 px-5 bg-cyan-500 hover:bg-cyan-600 text-[#0a0c10] text-[11px] font-black font-mono tracking-[0.08em] rounded-[3px] transition-colors duration-150 flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.25)]">
             <span>EXECUTIVE DASHBOARD</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          </a>
         </div>
 
         {/* Mobile Toggle */}
@@ -181,12 +181,12 @@ const Navbar = () => {
                 {link.label}
               </a>)}
             <div className="pt-5 border-t border-white/[0.06] flex flex-col gap-4">
-              <button className="text-[13px] font-mono text-cyan-400 text-left">HUB</button>
-              <button className="text-[13px] font-bold text-white text-left">SIGN IN</button>
-              <button className="w-full h-11 bg-cyan-500 hover:bg-cyan-600 text-[#0a0c10] text-[11px] font-black font-mono tracking-[0.08em] rounded-[3px] flex items-center justify-center gap-2 transition-colors duration-150">
+              <a href="/hub" className="text-[13px] font-mono text-cyan-400 text-left">HUB</a>
+              <a href="/hub" className="text-[13px] font-bold text-white text-left">SIGN IN</a>
+              <a href="/dashboard" className="w-full h-11 bg-cyan-500 hover:bg-cyan-600 text-[#0a0c10] text-[11px] font-black font-mono tracking-[0.08em] rounded-[3px] flex items-center justify-center gap-2 transition-colors duration-150">
                 <span>EXECUTIVE DASHBOARD</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              </a>
             </div>
           </motion.div>}
       </AnimatePresence>
@@ -288,16 +288,16 @@ export const NexusHero: React.FC = () => {
           {/* Dual CTA */}
           <div className="mt-12 flex flex-col items-center gap-5">
             <div className="flex flex-col sm:flex-row items-center gap-3">
-              <button className="group w-full sm:w-auto h-12 px-8 bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 text-[#0a0c10] text-[12px] font-black font-mono tracking-[0.1em] rounded-[3px] flex items-center justify-center gap-3 shadow-[0_0_28px_rgba(6,182,212,0.2)] transition-colors duration-150">
+              <a href="/dashboard" className="group w-full sm:w-auto h-12 px-8 bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 text-[#0a0c10] text-[12px] font-black font-mono tracking-[0.1em] rounded-[3px] flex items-center justify-center gap-3 shadow-[0_0_28px_rgba(6,182,212,0.2)] transition-colors duration-150">
                 
                 <span>EXECUTIVE DASHBOARD</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150" />
-              </button>
+              </a>
 
-              <button className="w-full sm:w-auto h-12 px-8 bg-transparent hover:bg-white text-white hover:text-[#0a0c10] border border-white/20 hover:border-white text-[12px] font-bold font-mono tracking-[0.1em] rounded-[3px] flex items-center justify-center transition-all duration-150">
+              <a href="#pricing" className="w-full sm:w-auto h-12 px-8 bg-transparent hover:bg-white text-white hover:text-[#0a0c10] border border-white/20 hover:border-white text-[12px] font-bold font-mono tracking-[0.1em] rounded-[3px] flex items-center justify-center transition-all duration-150">
                 
                 REQUEST DEMO
-              </button>
+              </a>
             </div>
 
             <span className="text-[10px] font-mono text-gray-600 uppercase tracking-[0.15em]">
