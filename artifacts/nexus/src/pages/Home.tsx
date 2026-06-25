@@ -22,6 +22,7 @@ import {
 import {
   ValidationLoopSection,
 } from "@/components/generated/ValidationLoop";
+import { NexusSeoSections } from "@/components/landing/NexusSeoSections";
 
 export default function Home() {
   return (
@@ -33,6 +34,7 @@ export default function Home() {
       <section id="proof"><NexusEcoSocialProof /></section>
       <section id="pricing"><NexusPricing /></section>
       <section id="roadmap"><Roadmap /></section>
+      <NexusSeoSections />
       <section id="contact"><NexusFooter /></section>
     </main>
   );

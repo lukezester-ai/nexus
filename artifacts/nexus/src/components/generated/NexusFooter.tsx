@@ -81,13 +81,13 @@ const CONTACT_INFO = [{
 }];
 const LEGAL_LINKS = [{
   name: 'PRIVACY POLICY',
-  href: '#contact'
+  href: '#privacy'
 }, {
   name: 'TERMS OF SERVICE',
-  href: '#contact'
+  href: '#faq'
 }, {
   name: 'GDPR',
-  href: '#contact'
+  href: '#compliance'
 }];
 const COLUMN_HEADING_CLASS = 'text-[10px] font-bold text-[#00e5ff] tracking-[0.22em] uppercase font-mono leading-none mb-6';
 const NAV_LINK_CLASS = 'text-[13px] text-white/60 font-mono leading-[1.6] hover:text-[#00e5ff] hover:translate-x-1 transition-all duration-150 ease-out inline-block whitespace-nowrap';
