@@ -10,28 +10,28 @@ const PACKAGES = [
   {
     name: 'AuditNexus SEO Basic',
     description: 'Single-site SEO audit with technical analysis, keyword gaps, and recommendations report.',
-    amount: 50000,   // $500
+    amount: 4900,   // $49
     currency: 'usd',
     metadata: { tier: 'basic', category: 'seo-audit' },
   },
   {
     name: 'AuditNexus SEO Professional',
     description: 'Full SEO + GEO audit with competitor analysis, content strategy, and implementation roadmap.',
-    amount: 120000,  // $1,200
+    amount: 14900,  // $149
     currency: 'usd',
     metadata: { tier: 'pro', category: 'seo-geo-audit' },
   },
   {
     name: 'AuditNexus Enterprise',
     description: 'Complete SEO/GEO/AEO audit suite with monthly reporting, AI visibility analysis, and dedicated support.',
-    amount: 240000,  // $2,400
+    amount: 29900,  // $299
     currency: 'usd',
     metadata: { tier: 'enterprise', category: 'full-audit' },
   },
   {
     name: 'AuditNexus Custom Project',
     description: 'Custom-scoped audit engagement — price set per contract.',
-    amount: 100000,  // $1,000 placeholder; actual price created per-contract
+    amount: 49000,  // $490 placeholder; actual price created per-contract
     currency: 'usd',
     metadata: { tier: 'custom', category: 'custom' },
   },

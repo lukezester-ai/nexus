@@ -173,21 +173,31 @@ export default function Hub() {
                       ))}
                     </div>
 
-                    <div className="mt-auto pt-6 border-t border-border flex items-center justify-between">
-                      <span className="text-xs font-mono text-muted-foreground flex items-center gap-2">
-                        <Activity className="w-3 h-3" /> {product.metrics}
-                      </span>
-                      
-                      {isDev ? (
-                        <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground uppercase tracking-wider">
-                          <Lock className="w-3 h-3" /> Coming Soon
-                        </div>
-                      ) : (
-                        <Button asChild variant="outline" className="font-mono text-xs uppercase tracking-widest border-[var(--card-accent)]/50 text-[var(--card-accent)] hover:bg-[var(--card-accent)]/10 hover:text-[var(--card-accent)]">
-                          <a href={product.url} target="_blank" rel="noopener noreferrer">
-                            Launch <ArrowUpRight className="w-4 h-4 ml-2" />
-                          </a>
-                        </Button>
+                    <div className="mt-auto pt-6 border-t border-border flex flex-col gap-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-mono text-muted-foreground flex items-center gap-2">
+                          <Activity className="w-3 h-3" /> {product.metrics}
+                        </span>
+                        
+                        {isDev ? (
+                          <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground uppercase tracking-wider">
+                            <Lock className="w-3 h-3" /> Coming Soon
+                          </div>
+                        ) : (
+                          <Button asChild variant="outline" className="font-mono text-xs uppercase tracking-widest border-[var(--card-accent)]/50 text-[var(--card-accent)] hover:bg-[var(--card-accent)]/10 hover:text-[var(--card-accent)]">
+                            <a href={product.url} target="_blank" rel="noopener noreferrer">
+                              Launch <ArrowUpRight className="w-4 h-4 ml-2" />
+                            </a>
+                          </Button>
+                        )}
+                      </div>
+                      {product.id === "auditnexus" && (
+                        <a
+                          href="/audit-nexus/packages"
+                          className="text-xs font-mono text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+                        >
+                          View pricing & packages <ArrowUpRight className="w-3 h-3" />
+                        </a>
                       )}
                     </div>
                   </div>

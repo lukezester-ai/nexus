@@ -40,6 +40,7 @@ export function Navbar() {
           <a href="https://www.agrinexuslaw.com" target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">02.AgriNexus</a>
           <a href="https://www.fieldlot.io" target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">03.FieldLot</a>
           <Link href="/dashboard" className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors">04.AuditNexus</Link>
+          <Link href="/audit-nexus/packages" className="text-sm font-mono text-primary hover:text-foreground transition-colors">Pricing</Link>
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
@@ -80,6 +81,7 @@ export function Navbar() {
           <a href="https://www.agrinexuslaw.com" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">02.AgriNexus</a>
           <a href="https://www.fieldlot.io" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">03.FieldLot</a>
           <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-muted-foreground py-2 border-b border-border/50">04.AuditNexus</Link>
+          <Link href="/audit-nexus/packages" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-primary py-2 border-b border-border/50 tracking-widest uppercase">Pricing</Link>
           <Link href="/hub" onClick={() => setMobileMenuOpen(false)} className="text-sm font-mono text-primary py-2 border-b border-border/50 tracking-widest uppercase">Hub</Link>
           <Button asChild className="mt-4 font-mono text-xs uppercase w-full bg-primary text-primary-foreground">
             <Link href="/dashboard">Executive Dashboard</Link>

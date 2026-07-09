@@ -184,6 +184,74 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section className="py-32 relative z-10 bg-card/30 border-y border-border/50">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center max-w-4xl mx-auto mb-16"
+          >
+            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6">{t('home.pricing_title', 'AuditNexus Plans')}</h2>
+            <p className="text-muted-foreground font-mono text-lg">
+              {t('home.pricing_desc', 'SEO, GEO & AEO audits — from $49 per site.')}
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              { name: "Basic", price: "$49", desc: "Single-site SEO audit", features: ["Technical crawl", "On-page report", "Core Web Vitals", "Structured data"], color: "var(--chart-1)", popular: false },
+              { name: "Professional", price: "$149", desc: "Full SEO + GEO audit", features: ["Everything in Basic", "Competitor analysis (3 domains)", "Backlink audit", "AI-search readiness"], color: "var(--primary)", popular: true },
+              { name: "Enterprise", price: "$299", desc: "Complete audit suite", features: ["Everything in Pro", "Unlimited URLs", "Monthly re-audits", "Dedicated analyst"], color: "var(--chart-4)", popular: false },
+            ].map((plan, i) => (
+              <motion.div
+                key={plan.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className={`relative p-8 bg-background border rounded-xl flex flex-col ${plan.popular ? 'border-primary/50 ring-1 ring-primary/20 shadow-[0_0_30px_-10px_hsl(var(--primary))]' : 'border-border'}`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-[10px] font-mono uppercase tracking-widest rounded-full">
+                    Popular
+                  </div>
+                )}
+                <h3 className="text-2xl font-serif font-bold mb-2">{plan.name}</h3>
+                <p className="text-sm text-muted-foreground font-mono mb-6">{plan.desc}</p>
+                <div className="mb-8">
+                  <span className="text-4xl font-bold font-mono" style={{ color: plan.color }}>{plan.price}</span>
+                  <span className="text-muted-foreground font-mono text-sm ml-1">/site</span>
+                </div>
+                <div className="flex-1 space-y-3 mb-8">
+                  {plan.features.map(f => (
+                    <div key={f} className="flex items-center gap-2.5 text-sm font-mono text-muted-foreground">
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: plan.color }} />
+                      {f}
+                    </div>
+                  ))}
+                </div>
+                <Button asChild variant={plan.popular ? "default" : "outline"} className="w-full font-mono text-xs uppercase tracking-widest">
+                  <a href="/audit-nexus/packages">Choose Plan</a>
+                </Button>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
+          >
+            <p className="text-xs font-mono text-muted-foreground">
+              {t('home.pricing_footnote', 'Custom plans available for agencies & enterprises.')} <a href="/audit-nexus/packages" className="text-primary hover:underline">View all packages →</a>
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Decision Workflow Workflow */}
       <section className="py-32 relative z-10 overflow-hidden">
         <div className="container mx-auto px-6">
