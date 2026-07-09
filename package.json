@@ -19,17 +19,5 @@
     "stripe": "^22.2.0",
     "stripe-replit-sync": "^1.0.0",
     "uuid": "^14.0.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@workspace/db",
-      "puppeteer",
-      "esbuild"
-    ],
-    "approvedBuilds": [
-      "esbuild",
-      "puppeteer",
-      "@workspace/db"
-    ]
   }
 }

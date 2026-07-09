@@ -41,15 +41,27 @@ jobs:
           docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:strategy-${{ github.sha }} ./artifacts/strategy-engine
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:strategy-${{ github.sha }}
 
-      - name: Fill in the new image ID in the ECS task definition
-        id: task-def
+      - name: Fill in decision container image
+        id: task-def-decision
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: decision-container
           image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:decision-${{ github.sha }}
+
+      - name: Fill in audit container image
+        id: task-def-audit
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def-decision.outputs.task-definition }}
           container-name: audit-container
           image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:audit-${{ github.sha }}
+
+      - name: Fill in strategy container image
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def-audit.outputs.task-definition }}
           container-name: strategy-container
           image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:strategy-${{ github.sha }}
 

@@ -13,11 +13,10 @@ COPY artifacts/audit-engine/package.json artifacts/audit-engine/
 COPY artifacts/strategy-engine/package.json artifacts/strategy-engine/
 COPY artifacts/decision-engine/package.json artifacts/decision-engine/
 COPY lib/db/package.json lib/db/
-COPY lib/shared/package.json lib/shared/
-COPY lib/integrations/rabbitmq/package.json lib/integrations/rabbitmq/
+COPY artifacts/shared/package.json artifacts/shared/
 
-# Install dependencies (ignoring missing scripts for now)
-RUN pnpm install --frozen-lockfile --ignore-scripts || true
+# Install dependencies
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # Copy rest of the code
 COPY . .

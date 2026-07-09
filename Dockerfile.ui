@@ -10,7 +10,7 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile --ignore-scripts || true
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # Build the workspace
 RUN pnpm run build
