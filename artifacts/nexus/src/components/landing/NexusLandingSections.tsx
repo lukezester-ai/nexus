@@ -200,7 +200,10 @@ export function NexusHero() {
             <Link href="/dashboard" className="flex h-12 items-center justify-center gap-3 rounded-[3px] bg-cyan-500 px-8 font-mono text-xs font-black tracking-wider text-[#0a0c10] transition-colors hover:bg-cyan-400">
               EXECUTIVE DASHBOARD <ArrowRight className="h-4 w-4" />
             </Link>
-            <a href="#pricing" className="flex h-12 items-center justify-center rounded-[3px] border border-white/20 px-8 font-mono text-xs font-bold tracking-wider text-white transition-all hover:bg-white hover:text-[#0a0c10]">
+            <a href="#pricing" onClick={(e) => {
+              e.preventDefault();
+              document.querySelector('#pricing')?.scrollIntoView({ behavior: 'smooth' });
+            }} className="flex h-12 items-center justify-center rounded-[3px] border border-white/20 px-8 font-mono text-xs font-bold tracking-wider text-white transition-all hover:bg-white hover:text-[#0a0c10]">
               REQUEST DEMO
             </a>
           </div>

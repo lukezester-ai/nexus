@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe, ArrowRight, Lock, Zap, Languages, Menu, X } from 'lucide-react';
 
@@ -122,7 +122,12 @@ const Navbar = () => {
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-8">
-          {NAV_LINKS.map(link => <a key={link.id} href={link.href} className="flex items-center gap-1.5 text-[11px] font-mono text-gray-500 hover:text-white transition-colors duration-150 group" style={{
+          {NAV_LINKS.map(link => <a key={link.id} href={link.href} onClick={(e) => {
+            if (link.href.startsWith('#')) {
+              e.preventDefault();
+              document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+            }
+          }} className="flex items-center gap-1.5 text-[11px] font-mono text-gray-500 hover:text-white transition-colors duration-150 group" style={{
           transitionProperty: 'color'
         }}>
             
@@ -175,7 +180,13 @@ const Navbar = () => {
         duration: 0.15
       }} className="absolute top-full left-0 w-full bg-[#0a0c10] border-b border-white/[0.06] p-6 lg:hidden flex flex-col gap-5">
           
-            {NAV_LINKS.map(link => <a key={link.id} href={link.href} className="text-[13px] font-mono text-gray-400 hover:text-white transition-colors duration-150">
+            {NAV_LINKS.map(link => <a key={link.id} href={link.href} onClick={(e) => {
+              if (link.href.startsWith('#')) {
+                e.preventDefault();
+                setIsOpen(false);
+                document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }} className="text-[13px] font-mono text-gray-400 hover:text-white transition-colors duration-150">
             
                 <span className="text-cyan-500 mr-2">{link.id}.</span>
                 {link.label}
@@ -294,7 +305,10 @@ export const NexusHero: React.FC = () => {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150" />
               </a>
 
-              <a href="#pricing" className="w-full sm:w-auto h-12 px-8 bg-transparent hover:bg-white text-white hover:text-[#0a0c10] border border-white/20 hover:border-white text-[12px] font-bold font-mono tracking-[0.1em] rounded-[3px] flex items-center justify-center transition-all duration-150">
+              <a href="#pricing" onClick={(e) => {
+                e.preventDefault();
+                document.querySelector('#pricing')?.scrollIntoView({ behavior: 'smooth' });
+              }} className="w-full sm:w-auto h-12 px-8 bg-transparent hover:bg-white text-white hover:text-[#0a0c10] border border-white/20 hover:border-white text-[12px] font-bold font-mono tracking-[0.1em] rounded-[3px] flex items-center justify-center transition-all duration-150">
                 
                 REQUEST DEMO
               </a>
